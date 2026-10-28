@@ -1,0 +1,5 @@
+Network icon source: Web3 Icons
+https://github.com/0xa3k5/web3icons
+Author: 0xa3k5
+License: MIT (declared by @web3icons/core)
+Monochrome colors normalized for this interface.

@@ -32,3 +32,12 @@ Thumbs.db
 *.mp4
 *.mov
 artifacts/
+
+# Local design planning and review material
+docs/design/phase-*-review.html
+docs/design/landing-implementation-plan.md
+docs/design/landing-specification.md
+docs/design/reference-typography.md
+
+# Local reference fonts; production distribution requires licensed assets
+apps/web/public/fonts/tomato-grotesk-*.woff2

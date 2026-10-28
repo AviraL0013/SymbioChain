@@ -1,0 +1,26 @@
+{
+  "name": "symbiochain",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "packages/shared"
+  ],
+  "engines": {
+    "node": ">=22.13 <23",
+    "npm": ">=10"
+  },
+  "scripts": {
+    "dev": "npm run dev --workspace=@symbiochain/web",
+    "build": "npm run build --workspace=@symbiochain/web",
+    "start": "npm run start --workspace=@symbiochain/web",
+    "lint": "npm run lint --workspace=@symbiochain/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run build"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}

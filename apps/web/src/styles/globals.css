@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --color-background: #ffffff;
+  --color-foreground: #111111;
+  --color-accent: #b5ff4d;
+  --color-pastel-blue: #a5c7ef;
+  --color-pastel-pink: #f8c6dc;
+  --color-pastel-yellow: #f8e958;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Neutral scaffold only. Page layouts and motion are not implemented. */
+main {
+  padding: 2rem;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}

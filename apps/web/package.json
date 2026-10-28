@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "fonts:setup": "node scripts/setup-fonts.mjs",
+    "predev": "npm run fonts:setup",
+    "prebuild": "npm run fonts:setup",
     "dev": "next dev --hostname 127.0.0.1",
     "build": "next build",
     "start": "next start --hostname 127.0.0.1",

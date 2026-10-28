@@ -204,6 +204,9 @@ export function Chains() {
       </div>
       <div
         id="network-results"
+        role="region"
+        aria-label="Network directory results"
+        tabIndex={0}
         className={`chain-mask${searching ? " is-filtered" : ""}`}
       >
         <ul

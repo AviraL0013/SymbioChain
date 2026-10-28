@@ -1,14 +1,14 @@
 @font-face {
-  font-family: "Tomato Grotesk";
-  src: url("/fonts/tomato-grotesk-medium.woff2") format("woff2");
+  font-family: "DM Sans";
+  src: url("/fonts/dm-sans-variable.woff2") format("woff2");
   font-style: normal;
-  font-weight: 500;
+  font-weight: 100 1000;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Tomato Grotesk";
-  src: url("/fonts/tomato-grotesk-semibold.woff2") format("woff2");
+  font-family: "Clash Display";
+  src: url("/fonts/clash-display-semibold.woff2") format("woff2");
   font-style: normal;
   font-weight: 600;
   font-display: swap;
@@ -27,7 +27,7 @@
   --reference-unit: calc(100vw / 192);
   color: var(--ink);
   background: #fff;
-  font-family: "Tomato Grotesk", Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
   font-weight: 500;
   font-kerning: none;
   letter-spacing: normal;
@@ -46,6 +46,14 @@
 .landing p {
   margin: 0;
   font-weight: 500;
+}
+.landing h1,
+.landing h2,
+.landing h3,
+.landing .statement,
+.landing .footer-title {
+  font-family: "Clash Display", "DM Sans", Arial, sans-serif;
+  font-weight: 600;
 }
 .landing a {
   text-decoration: none;
@@ -191,6 +199,9 @@
   pointer-events: auto;
 }
 .main-nav a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   font-size: 13px;
   padding: 9px 19px;
   position: relative;
@@ -441,6 +452,17 @@
   line-height: 1.02;
 }
 .story-mobile-copy {
+  font-size: 18px;
+  line-height: 1.4;
+  margin-top: 16px !important;
+}
+.story-stage:not(.is-pinned) {
+  grid-template-columns: 1fr;
+  max-width: 700px;
+}
+.story-stage:not(.is-pinned) .demo-frame,
+.story-stage:not(.is-pinned) .story-explanations,
+.is-pinned .story-mobile-copy {
   display: none;
 }
 .demo-frame {
@@ -541,7 +563,7 @@
   border-bottom: 1px solid var(--panel);
 }
 .demo-wordmark {
-  font-size: 14px;
+  font-size: 15px;
 }
 .demo-symbol {
   background: var(--panel);
@@ -568,7 +590,7 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 11px;
+  font-size: 13px;
 }
 .demo-step > span:last-child {
   margin-left: auto;
@@ -581,9 +603,9 @@
   border-radius: 50%;
 }
 .demo-screen h3 {
-  font-size: 28px;
+  font-size: 30px;
   line-height: 1.04;
-  max-width: 265px;
+  max-width: 285px;
 }
 .demo-illustration {
   width: 160px;
@@ -602,7 +624,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 14px;
 }
 .signal-route svg:not(.lucide) {
   width: 24px;
@@ -617,13 +639,13 @@
   color: white;
   padding: 13px 12px;
   border-radius: 9px;
-  font-size: 11px;
+  font-size: 13px;
   margin-top: auto;
 }
 .demo-caption {
   border-top: 1px solid var(--panel);
   padding: 12px 20px;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
   text-align: center;
 }
@@ -636,7 +658,7 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  font-size: 11px;
+  font-size: 13px;
 }
 .assessment-list i {
   width: 6px;
@@ -651,7 +673,7 @@
   gap: 4px;
 }
 .signing-flow span {
-  font-size: 10px;
+  font-size: 12px;
   border: 1px solid #d1d6d2;
   padding: 5px 12px;
   border-radius: 6px;
@@ -720,6 +742,13 @@
   width: min(160px, 19svh);
   height: min(160px, 19svh);
 }
+.is-pinned .demo-screen-2 {
+  gap: 10px;
+}
+.is-pinned .demo-screen-2 .demo-illustration {
+  width: min(130px, 14svh);
+  height: min(130px, 14svh);
+}
 .is-pinned .story-explanations {
   height: 360px;
   position: relative;
@@ -739,7 +768,7 @@
 
 .chain-section {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 8%;
   align-items: center;
   min-height: 760px;
@@ -773,7 +802,10 @@
   min-height: 76px;
   font-size: clamp(30px, 3.1vw, 60px);
   line-height: 1.2;
-  white-space: nowrap;
+}
+.chain-row > span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .chain-badge {
   width: 72px;
@@ -858,6 +890,7 @@
   height: 100%;
 }
 .is-wheel .network-wheel > .chain-row {
+  white-space: nowrap;
   position: absolute;
   top: 50%;
   left: 0;
@@ -1266,7 +1299,7 @@
   margin-bottom: 8px;
 }
 .proof-art span {
-  font-size: 11px;
+  font-size: 13px;
   background: #fff;
   border: 1px solid #d1d6d2;
   border-radius: 6px;
@@ -1341,6 +1374,9 @@
   max-width: 850px;
 }
 .landing-footer {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
   background: var(--paper);
   padding-block: 90px 120px;
 }
@@ -1374,9 +1410,81 @@
   background: var(--green);
 }
 .landing .footer-title {
+  display: flex;
+  align-items: baseline;
+  min-height: 1.1em;
   font-size: calc(var(--reference-unit) * 23);
   line-height: 1;
   font-weight: 600;
+}
+.footer-phrase {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.footer-phrase > span {
+  display: inline-block;
+  width: max-content;
+}
+.footer-phrase--next {
+  width: 0;
+}
+.footer-cursor-trail {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+.cursor-sticker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: clamp(64px, 6vw, 112px);
+  height: clamp(64px, 6vw, 112px);
+  opacity: 0;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 2px 0 #0f0f0f);
+}
+.cursor-sticker > svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(2px 0 0 white) drop-shadow(-2px 0 0 white)
+    drop-shadow(0 2px 0 white) drop-shadow(0 -2px 0 white);
+}
+.cursor-sticker--0 {
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+}
+.cursor-sticker--0 > img {
+  width: 55%;
+  height: 55%;
+  filter: brightness(0);
+}
+.cursor-sticker--1 {
+  background: var(--pink);
+  border: 2px solid var(--ink);
+  border-radius: 24%;
+}
+.cursor-sticker--1 .ribbon-mark {
+  width: 78%;
+  height: 88%;
+}
+.cursor-sticker--1 .ribbon-mark img {
+  width: 408%;
+  max-width: none;
+  height: auto;
+  left: -154%;
+  top: -51%;
+}
+@media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
+  .footer-cursor-trail {
+    display: none;
+  }
 }
 .footer-links {
   display: grid;
@@ -1401,6 +1509,40 @@
 .footer-links a:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+.footer-links a {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+}
+.landing summary:focus-visible,
+.landing [tabindex="0"]:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+.landing-nojs-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 20px;
+  font-size: 16px;
+}
+.landing-nojs-nav a {
+  padding-block: 12px;
+  pointer-events: auto;
+}
+.site-header:has(.landing-nojs-nav) {
+  position: relative;
+  top: 0;
+  padding-block: 20px;
+}
+.site-header:has(.landing-nojs-nav) .main-nav,
+.site-header:has(.landing-nojs-nav) .menu-toggle {
+  display: none;
+}
+.landing:has(.landing-nojs-nav) .chain-search {
+  display: none;
 }
 .footer-bottom {
   display: flex;
@@ -1511,6 +1653,9 @@
     border: 1px solid #d1d6d2;
     border-radius: 20px;
     box-shadow: 0 20px 40px #00000014;
+    max-height: calc(100dvh - 110px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
   .menu-open .main-nav a {
     font-size: 22px;
@@ -1640,6 +1785,7 @@
   }
   .header-cta {
     font-size: 11px;
+    min-height: 44px;
     padding: 12px 14px;
     gap: 7px;
   }
@@ -1650,8 +1796,8 @@
     gap: 8px;
   }
   .menu-toggle {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
   }
   .hero-section {
     min-height: 680px;
@@ -1684,7 +1830,7 @@
     margin-top: 25px;
   }
   .floating-cta {
-    bottom: 20px;
+    bottom: max(20px, env(safe-area-inset-bottom));
     min-height: 52px;
     font-size: 14px;
     width: 240px;
@@ -1721,17 +1867,12 @@
     min-height: 0;
   }
   .chain-mask {
-    padding-block: 40px;
+    padding-block: 16px;
+    max-height: 480px;
   }
   .chain-row {
-    font-size: 37px;
-    gap: 18px;
-  }
-  .chain-list {
-    gap: 24px;
-  }
-  .chain-arrow {
-    margin-right: 8px;
+    font-size: clamp(25px, 7vw, 34px);
+    gap: 14px;
   }
   .landing .statement {
     font-size: clamp(43px, 11vw, 64px);
@@ -1854,6 +1995,9 @@
   .footer-links nav {
     font-size: 12px;
   }
+  .footer-links a {
+    min-height: 44px;
+  }
   .footer-bottom {
     flex-direction: column;
     gap: 8px;
@@ -1866,5 +2010,18 @@
     scroll-behavior: auto !important;
     transition: none !important;
     animation: none !important;
+  }
+}
+@media (max-width: 380px) {
+  .header-inner {
+    gap: 8px;
+  }
+  .brand {
+    font-size: 18px;
+    gap: 4px;
+  }
+  .header-cta {
+    font-size: 10px;
+    padding-inline: 11px;
   }
 }

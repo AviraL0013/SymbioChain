@@ -30,17 +30,23 @@ Run `npm run check` for formatting, lint, TypeScript, and a production build. No
 
 ## Planned frontend
 
-- `/`: Ctrl-inspired SymbioChain landing page.
+- `/`: SymbioChain landing page.
 - `/dashboard`: swarm health, treasury balance, compute burn rate, survival time, decision stream, and recent settlements.
 - `/topology`: EYE, BRAIN, and HAND agent status and interactions.
 - `/verify`: TEE attestation verification.
 - `/nfts`: Proof of Metabolism NFT gallery.
 
-The scaffold uses Next.js 16 App Router, React 19, strict TypeScript, Tailwind CSS, and shadcn path configuration. State, chart, socket, animation, and wallet dependencies will be added with their features. Review dependency advisories before deployment.
+The frontend uses Next.js 16 App Router, React 19, strict TypeScript, Tailwind CSS, GSAP/ScrollTrigger, and Lucide icons. shadcn paths are configured for future application components. State, chart, socket, and wallet dependencies will be added with their features.
+
+### Typography
+
+The landing page uses Clash Display SemiBold (600) for headlines and DM Sans Medium (500) for body text. Both permit free commercial website use. DM Sans is bundled with its SIL Open Font License. Clash Display is downloaded from Fontshare by `npm run fonts:setup --workspace=@symbiochain/web`, which also runs before development and builds. Its official files stay Git-ignored because the ITF Free Font License permits self-hosting but excludes repository redistribution. Font licenses are included under `apps/web/public/fonts`.
 
 ## Current status
 
-Runnable scaffold and explicit route placeholders only. No page designs, animations, wallet connection, mock telemetry, integrations, or contracts are implemented. Keep all work local until the owner authorizes pushing; publish nothing before November 1, 2026.
+The landing page includes responsive layouts, hero motion, a pinned three-agent illustration, a searchable animated network directory, feature sections, agent cards, and a horizontal security sequence. Phones and reduced-motion users receive readable alternatives. FAQ uses native disclosures; the footer includes cycling headlines and a branded cursor sticker trail.
+
+Application routes remain explicit placeholders. Wallet connection, live telemetry, trading, backend integrations, and contracts are not implemented. Keep all work local until the owner authorizes pushing; publish nothing before November 1, 2026.
 
 ## Local secrets
 

@@ -87,6 +87,15 @@ export function Header() {
           </button>
         </div>
       </div>
+      <noscript>
+        <nav className="landing-nojs-nav" aria-label="Main navigation">
+          {links.map(([label, href]) => (
+            <a key={href} href={href}>
+              {label}
+            </a>
+          ))}
+        </nav>
+      </noscript>
     </header>
   );
 }

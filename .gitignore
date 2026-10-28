@@ -41,3 +41,7 @@ docs/design/reference-typography.md
 
 # Local reference fonts; production distribution requires licensed assets
 apps/web/public/fonts/tomato-grotesk-*.woff2
+
+# Fontshare permits self-hosting, but excludes font redistribution through repositories.
+apps/web/public/fonts/clash-display-*.woff2
+apps/web/public/fonts/clash-display-*.ttf

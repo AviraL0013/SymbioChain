@@ -19,7 +19,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Neutral scaffold only. Page layouts and motion are not implemented. */
+/* Default spacing for application scaffolds; the marketing page owns its layout. */
 main {
   padding: 2rem;
 }

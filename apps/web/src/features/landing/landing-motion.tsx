@@ -15,6 +15,7 @@ export function LandingMotion({ children }: { children: ReactNode }) {
       const element = root.current;
       if (!element) return;
       const media = gsap.matchMedia();
+      let initialAnchorHandled = false;
       media.add("(prefers-reduced-motion: no-preference)", () => {
         element.classList.add("motion-ready");
         const select = gsap.utils.selector(element);
@@ -89,7 +90,26 @@ export function LandingMotion({ children }: { children: ReactNode }) {
         };
         let mounted = true;
         document.fonts.ready.then(() => {
-          if (mounted) refresh();
+          if (!mounted) return;
+          refresh();
+          if (initialAnchorHandled) return;
+          initialAnchorHandled = true;
+          // Initial hash navigation runs before pinned sections add their spacing.
+          // Restore the requested section after the final font and pin measurements.
+          const hash = window.location.hash.slice(1);
+          if (!hash) return;
+          let id: string;
+          try {
+            id = decodeURIComponent(hash);
+          } catch {
+            return;
+          }
+          requestAnimationFrame(() => {
+            if (mounted)
+              document
+                .getElementById(id)
+                ?.scrollIntoView({ block: "start", behavior: "instant" });
+          });
         });
         return () => {
           mounted = false;

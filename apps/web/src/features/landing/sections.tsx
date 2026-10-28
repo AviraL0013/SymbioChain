@@ -8,6 +8,7 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import { agents, faqs } from "./content";
+import { FooterCursorTrail, FooterHeadline } from "./footer-effects";
 import {
   BrainArt,
   ChainMark,
@@ -297,7 +298,7 @@ export function Footer() {
             </span>
           </Link>
         </div>
-        <p className="footer-title">Stay alive.</p>
+        <FooterHeadline />
         <div className="footer-links">
           <span className="footer-brand">SymbioChain</span>
           <nav aria-label="Product">
@@ -323,6 +324,7 @@ export function Footer() {
           <span>An autonomous swarm. A shared survival loop.</span>
         </div>
       </div>
+      <FooterCursorTrail />
     </footer>
   );
 }

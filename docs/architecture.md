@@ -1,45 +1,41 @@
 # Architecture
 
-One npm workspace repository with one lockfile. The frontend is runnable; backend and contract directories are ownership boundaries only.
+SymbioChain uses npm workspaces with one lockfile. The frontend runs independently with sample data. Backend and contract directories reserve ownership boundaries for future integration.
+
+## Frontend structure
 
 ```text
-apps/
-  web/
-    public/brand/         Original supplied logo
-    public/fonts/         Webfonts and required licenses
-    src/app/
-      (marketing)/        Landing page at /
-      (app)/              /dashboard, /topology, /verify, /nfts
-    src/components/ui/    shadcn primitives, added when needed
-    src/components/shared/ Cross-route components
-    src/features/
-      landing/            Landing sections and footer motion
-      swarm/              Health, decisions, settlements, store
-      topology/           Agent visualization
-      tee/                Attestation verification
-      nfts/               NFT queries and presentation
-      wallet/             NEAR wallet connection
-    src/hooks/            Cross-feature React hooks
-    src/lib/              Shared frontend utilities
-    src/styles/           Global CSS and visual tokens
-  backend/                Future orchestration service
-packages/shared/          Frontend/backend API contracts
-contracts/                Future NEAR contracts
-docs/design/              Reference analysis and motion requirements
+apps/web/src/
+  app/
+    (marketing)/         Landing page at /
+    (app)/               Dashboard, topology, verifier, and gallery routes
+  components/ui/         Reusable UI primitives
+  features/
+    application/         Shared navigation, shell, and wallet preview
+    landing/             Product sections, artwork, and scroll motion
+    dashboard/           Treasury chart, sample events, and demo state
+    topology/            Agent visualization and transfer animation
+    verify/              Attestation input and sample result states
+    nfts/                Collection previews and generated SVG artwork
+  lib/                   Shared frontend utilities
+  styles/                Global styles and fonts
+packages/shared/src/     API and event type definitions
 ```
 
-Route groups do not add URL segments. Mission Control moves from the original brief's `/` to `/dashboard` because `/` is reserved for the requested landing page.
+Route groups do not add URL segments. The landing page uses `/`; Mission Control uses `/dashboard`. Route files compose feature components rather than owning behavior.
 
-Keep route entry points small. Place feature components, hooks, and state with their owning feature. Extract utilities when reused. Do not duplicate shared data types or invent service layers.
+Landing motion uses GSAP and ScrollTrigger. Application pages share navigation, dialogs, spacing, and typography. Demo events and recovery states run locally; they do not submit transactions or call verification services.
 
-The landing feature contains server-rendered sections and original SVG illustrations, an interactive header, scoped styles, and a GSAP animation boundary. ScrollTrigger owns the pinned agent story and horizontal security sequence. Intersection observers control the persistent CTA's compact state. Motion is optional; the static content remains available without it.
+## Integration boundaries
 
-No wallet, socket, inference, trade, or contract code runs in the frontend. Add state, socket, chart, and wallet dependencies when implementing their features. `components.json` configures shadcn paths; no UI components have been generated.
+The supplied health, decision, and transaction contracts live in `packages/shared/src/types.ts`. Amounts remain decimal strings. The proposed timestamp convention is Unix milliseconds. Balances and compute costs must use the same unit when calculating survival.
 
-Next.js 16.4.3, React 19.3.1, and ESLint 10 replace the original brief's Next.js 14 baseline with the owner's approval. Use Node.js 22.13 or later in the 22.x line. Recheck dependency advisories before deployment.
+Before connecting the backend, agree on authentication, errors, initial snapshots, reconnection, stale-data thresholds, inter-agent payments, NFT responses, kill-switch recovery events, and TEE verification responses. TypeScript types do not validate incoming payloads at runtime.
 
-## API agreement
+Wallet connection, backend event transport, inference, transaction execution, and contracts remain pending. Credentials and signing belong outside browser code. The current wallet UI is a preview, and arbitrary attestation hashes cannot produce a verified result without a verifier service.
 
-The supplied health, decision, and transaction contracts live in `packages/shared/src/types.ts`. Proposed timestamp convention: Unix milliseconds. Amounts remain decimal strings. Balances and compute costs must use the same unit when calculating survival.
+## Build and hosting
 
-Still agree with the backend lead on authentication, errors, snapshots, reconnection, stale-data thresholds, inter-agent payments, NFT responses, kill-switch recovery events, and TEE responses. TypeScript does not validate untrusted runtime payloads.
+Use Node.js 22.13 or later in the 22.x line. `npm run check` runs formatting, lint, TypeScript checks, and a production build. The font setup script fetches missing Clash Display assets from Fontshare before development and builds.
+
+The frontend is hosted on Vercel with `apps/web` as the project root. Set `SITE_URL` to the public origin for metadata. Deployment was performed through the CLI; Git-based deployments are not configured.

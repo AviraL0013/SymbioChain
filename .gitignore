@@ -45,3 +45,9 @@ apps/web/public/fonts/tomato-grotesk-*.woff2
 # Fontshare permits self-hosting, but excludes font redistribution through repositories.
 apps/web/public/fonts/clash-display-*.woff2
 apps/web/public/fonts/clash-display-*.ttf
+
+# Local workspace instructions and reference notes
+AGENTS.md
+docs/design/
+docs/dependency-status.md
+.vercel/

@@ -1,53 +1,64 @@
 # SymbioChain
 
-SymbioChain is a planned autonomous AI agent swarm on NEAR. The proposed swarm monitors cross-chain order flow, assesses risk through TEE-backed inference, and executes cross-chain transactions using Chain Signatures. Its metabolic rule ties continued operation to the ability to fund compute costs.
+An autonomous AI swarm on NEAR, designed to earn the compute it needs to stay alive.
 
-## Team responsibilities
+[Live demo](https://symbiochain.vercel.app) | [Mission Control](https://symbiochain.vercel.app/dashboard) | [Architecture](docs/architecture.md)
 
-- Frontend lead: UI/UX, mission control dashboard, wallet connection, and real-time data integration.
-- Backend lead: agent orchestration, contracts, persistence, and external API integration.
+Three agents share one loop: **EYE** finds candidate routes, **BRAIN** assesses risk, and **HAND** prepares cross-chain execution. The proposed metabolic rule ties the swarm's survival to its ability to fund inference.
 
-## Local setup
+## Explore the frontend
 
-Use Node.js 22.13 or later in the 22.x line and npm 10 or later. From the repository root:
+| Page                                                        | What it shows                                                        |
+| ----------------------------------------------------------- | -------------------------------------------------------------------- |
+| [Landing](https://symbiochain.vercel.app)                   | Product story, animated agents, network directory, and FAQs          |
+| [Mission Control](https://symbiochain.vercel.app/dashboard) | Treasury history, survival metrics, decision stream, and settlements |
+| [Swarm topology](https://symbiochain.vercel.app/topology)   | Agent roles, funding states, and simulated transfers                 |
+| [Proof verifier](https://symbiochain.vercel.app/verify)     | Attestation input and sample verification states                     |
+| [NFT gallery](https://symbiochain.vercel.app/nfts)          | Proof of Metabolism artwork and collection previews                  |
+
+The frontend is implemented with clearly labeled sample data. Wallet connection, live backend events, real attestation verification, trading, and contracts are pending integration. Sample settlements and proofs do not represent on-chain activity or verified results.
+
+## Run locally
+
+Use **Node.js 22.13 or later in the 22.x line** and **npm 10 or later**.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open http://localhost:3000. Copy `apps/web/.env.example` to `apps/web/.env.local` when configuring integrations. The scaffold does not call external services.
+Open [localhost:3000](http://localhost:3000). Development and production builds download the required Clash Display fonts from Fontshare when missing, so the first run needs internet access.
 
-Run `npm run check` for formatting, lint, TypeScript, and a production build. No deployment or remote CI is configured.
+For configuration, copy `apps/web/.env.example` to `apps/web/.env.local`. Set `SITE_URL` to the deployment origin for production metadata. Backend and network variables are reserved for integration; setting them does not connect the current demo to live services.
 
-## Structure
+| Command         | Purpose                                                  |
+| --------------- | -------------------------------------------------------- |
+| `npm run dev`   | Start the local frontend                                 |
+| `npm run check` | Check formatting, lint, TypeScript, and production build |
+| `npm run build` | Build the frontend                                       |
+| `npm run start` | Serve the production build locally                       |
 
-- `apps/web`: frontend application.
-- `apps/backend`: backend lead's future service.
-- `packages/shared`: shared API and socket event types.
-- `contracts`: backend lead's future NEAR contracts.
-- `docs`: [architecture](docs/architecture.md) and [design reference](docs/design/reference.md).
+## Stack
 
-## Planned frontend
+Next.js 16 App Router, React 19, TypeScript, Tailwind CSS, GSAP, Recharts, and Lucide. Clash Display headlines pair with DM Sans body text. Animations include reduced-motion alternatives.
 
-- `/`: SymbioChain landing page.
-- `/dashboard`: swarm health, treasury balance, compute burn rate, survival time, decision stream, and recent settlements.
-- `/topology`: EYE, BRAIN, and HAND agent status and interactions.
-- `/verify`: TEE attestation verification.
-- `/nfts`: Proof of Metabolism NFT gallery.
+## Repository
 
-The frontend uses Next.js 16 App Router, React 19, strict TypeScript, Tailwind CSS, GSAP/ScrollTrigger, and Lucide icons. shadcn paths are configured for future application components. State, chart, socket, and wallet dependencies will be added with their features.
+```text
+apps/
+  web/                  Next.js frontend
+  backend/              Reserved for agent orchestration
+packages/
+  shared/               Shared API and event types
+contracts/              Reserved for NEAR contracts
+docs/
+  architecture.md       Structure and integration boundaries
+```
 
-### Typography
+Route files stay thin. Page behavior lives under `apps/web/src/features`; shared UI lives under `components/ui`. The backend lead owns orchestration, credentials, persistence, verification, and transaction submission.
 
-The landing page uses Clash Display SemiBold (600) for headlines and DM Sans Medium (500) for body text. Both permit free commercial website use. DM Sans is bundled with its SIL Open Font License. Clash Display is downloaded from Fontshare by `npm run fonts:setup --workspace=@symbiochain/web`, which also runs before development and builds. Its official files stay Git-ignored because the ITF Free Font License permits self-hosting but excludes repository redistribution. Font licenses are included under `apps/web/public/fonts`.
+## Assets and credentials
 
-## Current status
+DM Sans is bundled with its SIL Open Font License. Clash Display is fetched by `apps/web/scripts/setup-fonts.mjs`; its font files stay outside Git. Font licenses and chain icon notices accompany the assets in `apps/web/public`.
 
-The landing page includes responsive layouts, hero motion, a pinned three-agent illustration, a searchable animated network directory, feature sections, agent cards, and a horizontal security sequence. Phones and reduced-motion users receive readable alternatives. FAQ uses native disclosures; the footer includes cycling headlines and a branded cursor sticker trail.
-
-Application routes remain explicit placeholders. Wallet connection, live telemetry, trading, backend integrations, and contracts are not implemented. Keep all work local until the owner authorizes pushing; publish nothing before November 1, 2026.
-
-## Local secrets
-
-Keep private keys, seed phrases, API credentials, and local environment files out of Git. Commit only environment templates containing placeholders.
+Keep private keys, seed phrases, API credentials, and local environment files outside Git. Never put secrets in `NEXT_PUBLIC_*` variables.

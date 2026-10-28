@@ -6,8 +6,7 @@ One npm workspace repository with one lockfile. The frontend is runnable; backen
 apps/
   web/
     public/brand/         Original supplied logo
-    public/fonts/         Future licensed local fonts
-    public/stickers/      Future original footer artwork
+    public/fonts/         Webfonts and required licenses
     src/app/
       (marketing)/        Landing page at /
       (app)/              /dashboard, /topology, /verify, /nfts
@@ -33,7 +32,9 @@ Route groups do not add URL segments. Mission Control moves from the original br
 
 Keep route entry points small. Place feature components, hooks, and state with their owning feature. Extract utilities when reused. Do not duplicate shared data types or invent service layers.
 
-No wallet, socket, inference, trade, or contract code runs in this scaffold. Add state, socket, chart, animation, and wallet dependencies when implementing their features. `components.json` configures shadcn paths; no UI components have been generated.
+The landing feature contains server-rendered sections and original SVG illustrations, an interactive header, scoped styles, and a GSAP animation boundary. ScrollTrigger owns the pinned agent story and horizontal security sequence. Intersection observers control the persistent CTA's compact state. Motion is optional; the static content remains available without it.
+
+No wallet, socket, inference, trade, or contract code runs in the frontend. Add state, socket, chart, and wallet dependencies when implementing their features. `components.json` configures shadcn paths; no UI components have been generated.
 
 Next.js 16.4.3, React 19.3.1, and ESLint 10 replace the original brief's Next.js 14 baseline with the owner's approval. Use Node.js 22.13 or later in the 22.x line. Recheck dependency advisories before deployment.
 

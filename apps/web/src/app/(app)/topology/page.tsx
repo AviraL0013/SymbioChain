@@ -1,5 +1,11 @@
-import { RoutePlaceholder } from "@/components/shared/route-placeholder";
+import type { Metadata } from "next";
+import { TopologyPage } from "@/features/topology/topology-page";
 
-export default function TopologyPage() {
-  return <RoutePlaceholder title="Swarm topology" />;
+export const metadata: Metadata = {
+  title: "Swarm topology",
+  description: "SymbioChain frontend preview. Clearly labelled sample data.",
+};
+
+export default function Page() {
+  return <TopologyPage />;
 }

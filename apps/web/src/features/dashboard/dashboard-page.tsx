@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import {
@@ -13,16 +12,12 @@ import {
   CircleHelp,
   Clock3,
   Flame,
-  LayoutDashboard,
-  Network,
   Pause,
   Play,
   Plus,
   Radio,
   RotateCcw,
-  ShieldCheck,
   Sparkles,
-  Square,
   Wallet,
   X,
   Zap,
@@ -30,7 +25,7 @@ import {
 import type { AgentName, DecisionLog } from "@symbiochain/shared";
 import { Dialog } from "@/components/ui/dialog";
 import { BrainArt, EyeArt, HandArt } from "@/features/landing/artwork";
-import { RibbonMark } from "@/features/landing/brand";
+import { AppHeader, AppFooter } from "@/features/application/app-shell";
 import {
   agentInfo,
   DEMO_EPOCH,
@@ -45,12 +40,6 @@ import { TreasuryChart } from "./treasury-chart";
 import { useDemoSwarm } from "./use-demo-swarm";
 import "./dashboard.css";
 
-const navigation = [
-  { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
-  { href: "/topology", label: "Topology", icon: Network },
-  { href: "/verify", label: "Proofs", icon: ShieldCheck },
-  { href: "/nfts", label: "NFTs", icon: Square },
-];
 const illustrations = { EYE: EyeArt, BRAIN: BrainArt, HAND: HandArt };
 const agentColors: Record<AgentName, string> = {
   EYE: "blue",
@@ -73,7 +62,6 @@ export function DashboardPage() {
   );
   const [filter, setFilter] = useState<Filter>("ALL");
   const [transactionFilter, setTransactionFilter] = useState("ALL");
-  const [walletOpen, setWalletOpen] = useState(false);
   const [recoveryOpen, setRecoveryOpen] = useState(false);
   const [selectedDecision, setSelectedDecision] = useState<DecisionLog | null>(
     null,
@@ -109,39 +97,7 @@ export function DashboardPage() {
       <a href="#dashboard-content" className="sc-skip-link">
         Skip to dashboard
       </a>
-      <header className="sc-header">
-        <div className="sc-header-inner">
-          <Link href="/" className="sc-brand" aria-label="SymbioChain home">
-            <RibbonMark />
-            <span>SymbioChain</span>
-          </Link>
-          <nav className="sc-navigation" aria-label="Application navigation">
-            {navigation.map(({ href, label, icon: Icon }) => (
-              <Link
-                key={href}
-                href={href}
-                aria-current={href === "/dashboard" ? "page" : undefined}
-              >
-                <Icon size={16} aria-hidden="true" />
-                {label}
-              </Link>
-            ))}
-          </nav>
-          <div className="sc-header-actions">
-            <span className="sc-network">
-              <span /> NEAR Testnet
-            </span>
-            <button
-              type="button"
-              className="sc-button sc-button-dark"
-              onClick={() => setWalletOpen(true)}
-            >
-              <Wallet size={16} />
-              Connect wallet
-            </button>
-          </div>
-        </div>
-      </header>
+      <AppHeader />
 
       <main id="dashboard-content" className="sc-main">
         <noscript>
@@ -678,15 +634,7 @@ export function DashboardPage() {
           </div>
         </section>
 
-        <footer className="sc-footer">
-          <Link href="/" className="sc-footer-brand">
-            SymbioChain<span>Stay alive.</span>
-          </Link>
-          <p>SymbioChain on NEAR</p>
-          <Link href="/">
-            Back to the website <ArrowUpRight size={14} />
-          </Link>
-        </footer>
+        <AppFooter />
       </main>
 
       {state.notice && (
@@ -705,30 +653,7 @@ export function DashboardPage() {
           </button>
         </div>
       )}
-      <Dialog
-        open={walletOpen}
-        title="Connect your wallet"
-        onClose={() => setWalletOpen(false)}
-      >
-        <div className="sc-dialog-art">
-          <Wallet size={34} strokeWidth={1.4} />
-        </div>
-        <p>
-          Wallet connections are not enabled in this frontend preview. No
-          account is connected, and no funds can be deposited or moved.
-        </p>
-        <div className="sc-dialog-note">
-          <ShieldCheck size={17} />
-          Never share your seed phrase or private keys.
-        </div>
-        <button
-          type="button"
-          className="sc-button sc-button-dark sc-dialog-primary"
-          onClick={() => setWalletOpen(false)}
-        >
-          Back to the demo <ArrowRight size={16} />
-        </button>
-      </Dialog>
+
       <Dialog
         open={recoveryOpen}
         title="Test scout recovery"

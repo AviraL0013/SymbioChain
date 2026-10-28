@@ -1,5 +1,11 @@
-import { RoutePlaceholder } from "@/components/shared/route-placeholder";
+import type { Metadata } from "next";
+import { NftsPage } from "@/features/nfts/nfts-page";
 
-export default function NftsPage() {
-  return <RoutePlaceholder title="NFT gallery" />;
+export const metadata: Metadata = {
+  title: "Proof of Metabolism",
+  description: "SymbioChain frontend preview. Clearly labelled sample data.",
+};
+
+export default function Page() {
+  return <NftsPage />;
 }

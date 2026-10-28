@@ -1,5 +1,11 @@
-import { RoutePlaceholder } from "@/components/shared/route-placeholder";
+import type { Metadata } from "next";
+import { VerifyPage } from "@/features/verify/verify-page";
 
-export default function VerifyPage() {
-  return <RoutePlaceholder title="TEE verifier" />;
+export const metadata: Metadata = {
+  title: "TEE proofs",
+  description: "SymbioChain frontend preview. Clearly labelled sample data.",
+};
+
+export default function Page() {
+  return <VerifyPage />;
 }

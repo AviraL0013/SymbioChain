@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "@/styles/globals.css";
+import "@/styles/fonts.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL || "http://127.0.0.1:3000"),

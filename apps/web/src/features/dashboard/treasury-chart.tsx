@@ -23,14 +23,9 @@ export function TreasuryChart({ data }: { data: ViewerSnapshot | null }) {
   const hours = range === "6H" ? 6 : range === "24H" ? 24 : 168;
   const cutoff = data ? Date.parse(data.capturedAt) - hours * 3600000 : 0;
   const points = data?.history ?? [];
-  // Carry an observed opening balance; never fabricate a point at the range boundary.
-  const before = points
-    .filter((point) => Date.parse(point.timestamp) < cutoff)
-    .at(-1);
-  const visible = [
-    ...(before ? [before] : []),
-    ...points.filter((point) => Date.parse(point.timestamp) >= cutoff),
-  ];
+  const visible = points.filter(
+    (point) => Date.parse(point.timestamp) >= cutoff,
+  );
   const history = visible.map((point) => ({
     ...point,
     time: Date.parse(point.timestamp),

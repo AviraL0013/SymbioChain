@@ -8,6 +8,7 @@ import {
   ReferenceLine,
   ResponsiveContainer,
   Tooltip,
+  type TooltipContentProps,
   XAxis,
   YAxis,
 } from "recharts";
@@ -111,7 +112,7 @@ export function TreasuryChart({ data }: { data: ViewerSnapshot | null }) {
                 tick={{ fill: "#757a74", fontSize: 11 }}
               />
               <Tooltip
-                content={({ active, payload }) => {
+                content={({ active, payload }: TooltipContentProps) => {
                   const point = payload?.[0]?.payload as
                     (typeof history)[number] | undefined;
                   return active && point ? (

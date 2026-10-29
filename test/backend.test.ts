@@ -12,6 +12,30 @@ const original = {
   url: process.env.BACKEND_URL,
   token: process.env.BACKEND_READ_TOKEN,
 };
+const snapshot = {
+  contractVersion: 1,
+  mode: "PAPER",
+  capturedAt: "2026-10-29T12:00:00.000Z",
+  cursor: "1",
+  treasury: {
+    asset: "USDC",
+    decimals: 6,
+    balanceAtoms: "900719925474099312345678",
+    availableAtoms: "900719925474099312345678",
+    reservedAtoms: "0",
+    grossTradingPnlAtoms: "0",
+    minReserveAtoms: "2000000",
+  },
+  compute: { inferenceCostUsdMicros: "100", purchaseImplemented: false },
+  survivalHours: null,
+  paused: false,
+  workers: [],
+  history: [],
+  decisions: [],
+  transactions: [],
+  receipts: [],
+  events: [],
+};
 beforeEach(() => {
   process.env.BACKEND_URL = "https://backend.example";
   process.env.BACKEND_READ_TOKEN = "server-only-test-token";
@@ -48,16 +72,46 @@ test("uses only the configured origin with server authorization and no caching o
 });
 
 test("rejects unexpected fields and LIVE responses at the server boundary", async () => {
-  mock.method(globalThis, "fetch", async () =>
-    Response.json({ mode: "LIVE", privateKey: "sensitive" }),
-  );
-  const response = await viewerResponse(getViewerSnapshot);
-  assert.equal(response.status, 502);
-  assert.equal(response.headers.get("cache-control"), "private, no-store");
-  assert.doesNotMatch(
-    await response.text(),
-    /sensitive|privateKey|server-only-test-token/,
-  );
+  for (const invalid of [
+    { ...snapshot, mode: "LIVE" },
+    { ...snapshot, privateKey: "sensitive" },
+    { ...snapshot, survivalHours: 24 },
+  ]) {
+    const transport = mock.method(globalThis, "fetch", async () =>
+      Response.json(invalid),
+    );
+    const response = await viewerResponse(getViewerSnapshot);
+    assert.equal(response.status, 502);
+    assert.equal(response.headers.get("cache-control"), "private, no-store");
+    assert.doesNotMatch(
+      await response.text(),
+      /sensitive|privateKey|server-only-test-token/,
+    );
+    transport.mock.restore();
+  }
+});
+
+test("accepts the PAPER contract without changing large integer values or unknown runway", async () => {
+  mock.method(globalThis, "fetch", async () => Response.json(snapshot));
+  assert.deepEqual(await getViewerSnapshot(), snapshot);
+});
+
+test("returns stored proof scope without claiming fresh verification", async () => {
+  const proof = {
+    contractVersion: 1,
+    mode: "PAPER",
+    scope: "RECORDED_VERIFICATION",
+    freshAttestationPerformed: false,
+    id: "4a4d06f2-7fcb-4bb7-92f9-b57bba90a258",
+    model: "test-model",
+    signer: null,
+    measurement: null,
+    requestHash: "a".repeat(64),
+    responseHash: "b".repeat(64),
+    verifiedAt: "2026-10-29T12:00:00.000Z",
+  };
+  mock.method(globalThis, "fetch", async () => Response.json(proof));
+  assert.deepEqual(await getViewerProof("a".repeat(64)), proof);
 });
 
 test("does not relay upstream errors or tokens", async () => {

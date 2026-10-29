@@ -42,7 +42,6 @@ export default async function OpenGraphImage() {
           }}
         >
           {/* The supplied logo remains intact inside its presentation window. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={source}
             width={245}

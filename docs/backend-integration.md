@@ -1,6 +1,12 @@
 # Existing Vercel project handoff
 
-The integration targets the existing teammate-owned project at **https://symbiochain.vercel.app**. It does not require creating a Vercel project, changing hosting accounts or upgrading a subscription.
+The integration targets the existing teammate-owned project at **https://symbiochain.vercel.app**. No new Vercel project, account change or plan upgrade has been made.
+
+## Preview access
+
+Vercel blocked the pull request's automatic preview with: “Git author SuyashAlphaC must have access to the project on Vercel to create deployments.” GitHub repository access alone is insufficient. The existing project owner must handle the reviewed release through their own authorized account or resolve the project's Git collaboration permissions. The available collaboration options depend on the current plan; see [Vercel's project collaboration documentation](https://vercel.com/docs/deployments/troubleshoot-project-collaboration).
+
+The source and production build have been checked locally against the hosted backend. A hosted preview remains unverified until that access requirement is resolved. The production domain has not been updated by this integration branch.
 
 ## Environment
 

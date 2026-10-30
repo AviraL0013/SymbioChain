@@ -8,15 +8,15 @@ Three agents share one loop: **EYE** finds candidate routes, **BRAIN** assesses 
 
 ## Explore the frontend
 
-| Page                                                        | What it shows                                                        |
-| ----------------------------------------------------------- | -------------------------------------------------------------------- |
-| [Landing](https://symbiochain.vercel.app)                   | Product story, animated agents, network directory, and FAQs          |
-| [Mission Control](https://symbiochain.vercel.app/dashboard) | Treasury history, survival metrics, decision stream, and settlements |
-| [Swarm topology](https://symbiochain.vercel.app/topology)   | Agent roles, funding states, and simulated transfers                 |
-| [Proof verifier](https://symbiochain.vercel.app/verify)     | Attestation input and sample verification states                     |
-| [NFT gallery](https://symbiochain.vercel.app/nfts)          | Proof of Metabolism artwork and collection previews                  |
+| Page                                                        | What it shows                                               |
+| ----------------------------------------------------------- | ----------------------------------------------------------- |
+| [Landing](https://symbiochain.vercel.app)                   | Product story, animated agents, network directory, and FAQs |
+| [Mission Control](https://symbiochain.vercel.app/dashboard) | Recorded PAPER treasury history, decisions and settlements  |
+| [Swarm topology](https://symbiochain.vercel.app/topology)   | Worker roles, heartbeat availability and recorded decisions |
+| [Proof verifier](https://symbiochain.vercel.app/verify)     | Lookup of previously verified inference records             |
+| [NFT gallery](https://symbiochain.vercel.app/nfts)          | Persisted, unminted PAPER execution receipts                |
 
-The frontend is implemented with clearly labeled sample data. Wallet connection, live backend events, real attestation verification, trading, and contracts are pending integration. Sample settlements and proofs do not represent on-chain activity or verified results.
+The application reads a curated PAPER feed through Next.js server routes. It displays persisted backend records, marks simulations clearly and shows disconnected or stale states when unavailable. Wallet funding, real trading, fresh attestation and on-chain NFT ownership are not enabled by this integration. See the [existing Vercel project handoff](docs/backend-integration.md) before deploying this branch.
 
 ## Run locally
 
@@ -29,10 +29,11 @@ npm run dev
 
 Open [localhost:3000](http://localhost:3000). Development and production builds download the required Clash Display fonts from Fontshare when missing, so the first run needs internet access.
 
-For configuration, copy `apps/web/.env.example` to `apps/web/.env.local`. Set `SITE_URL` to the deployment origin for production metadata. Backend and network variables are reserved for integration; setting them does not connect the current demo to live services.
+For configuration, copy `apps/web/.env.example` to `apps/web/.env.local`. Set the server-only `BACKEND_URL` and `BACKEND_READ_TOKEN`, plus `SITE_URL` for metadata. Never use a `NEXT_PUBLIC_` variable for the token. Keep the existing teammate-owned Vercel project; [deployment steps](docs/backend-integration.md) describe the environment and preview checks.
 
 | Command         | Purpose                                                  |
 | --------------- | -------------------------------------------------------- |
+| `npm test`      | Validate server transport, amounts and worker state      |
 | `npm run dev`   | Start the local frontend                                 |
 | `npm run check` | Check formatting, lint, TypeScript, and production build |
 | `npm run build` | Build the frontend                                       |
@@ -49,7 +50,7 @@ apps/
   web/                  Next.js frontend
   backend/              Reserved for agent orchestration
 packages/
-  shared/               Shared API and event types
+  shared/               Validated PAPER viewer contracts
 contracts/              Reserved for NEAR contracts
 docs/
   architecture.md       Structure and integration boundaries

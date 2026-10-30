@@ -5,3 +5,9 @@ export type {
   TransactionLog,
   ServerToClientEvents,
 } from "./types";
+export {
+  ViewerSnapshot,
+  ViewerProof,
+  ViewerCursor,
+  ViewerRole,
+} from "./viewer-contract";

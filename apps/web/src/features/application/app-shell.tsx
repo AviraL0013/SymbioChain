@@ -6,6 +6,7 @@ import { useState, type ReactNode } from "react";
 import { ArrowRight, ArrowUpRight, Wallet } from "lucide-react";
 import { Dialog } from "@/components/ui/dialog";
 import { RibbonMark } from "@/features/landing/brand";
+import { ConnectionNotice, useSwarm } from "@/features/swarm/swarm-provider";
 import "@/features/dashboard/dashboard.css";
 import "./application.css";
 
@@ -13,11 +14,12 @@ const navigation = [
   ["/dashboard", "Overview"],
   ["/topology", "Topology"],
   ["/verify", "Proofs"],
-  ["/nfts", "NFTs"],
+  ["/nfts", "Receipts"],
 ] as const;
 
 export function AppHeader() {
   const path = usePathname();
+  const { data, error, loading } = useSwarm();
   const [walletOpen, setWalletOpen] = useState(false);
   return (
     <>
@@ -41,7 +43,13 @@ export function AppHeader() {
           <div className="sc-header-actions">
             <span className="sc-network">
               <span />
-              NEAR Testnet
+              {error
+                ? "Disconnected"
+                : loading
+                  ? "Connecting"
+                  : data
+                    ? "PAPER"
+                    : "Unavailable"}
             </span>
             <button
               type="button"
@@ -49,7 +57,7 @@ export function AppHeader() {
               onClick={() => setWalletOpen(true)}
             >
               <Wallet size={16} />
-              Connect wallet
+              Wallet status
             </button>
           </div>
         </div>
@@ -72,15 +80,15 @@ export function WalletPreview({
         <Wallet size={34} />
       </div>
       <p>
-        Wallet connections will be available after integration. This preview
-        does not connect an account or move funds.
+        The connected dashboard publishes PAPER telemetry. Wallet authentication
+        and real deposits are not available here.
       </p>
       <button
         type="button"
         className="sc-button sc-button-dark sc-dialog-primary"
         onClick={onClose}
       >
-        Back to preview <ArrowRight size={16} />
+        Back to dashboard <ArrowRight size={16} />
       </button>
     </Dialog>
   );
@@ -120,13 +128,8 @@ export function AppShell({
       </a>
       <AppHeader />
       <main className="sc-main" id="app-content">
-        <div className="sc-demo-notice">
-          <div className="sc-demo-label">
-            <strong>Frontend preview</strong>
-            <span className="sc-demo-separator" />
-            <span>{notice}</span>
-          </div>
-        </div>
+        <ConnectionNotice />
+        <p className="app-muted">{notice}</p>
         <section className="sc-page-heading">
           <div>
             <h1>

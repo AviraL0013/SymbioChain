@@ -18,3 +18,9 @@ export {
   ViewerCycle,
   ViewerEvents,
 } from "./viewer-details-contract";
+export {
+  OperatorCapabilities,
+  OperatorPolicy,
+  OperatorState,
+  OperatorAction,
+} from "./operator-contract";

@@ -66,6 +66,15 @@ export async function readBackend<T>(
         404,
         "No recorded verified inference matches this hash.",
       );
+    if (!response.ok && init.method === "POST")
+      throw new BackendError(
+        [400, 403, 409, 429].includes(response.status) ? response.status : 503,
+        response.status === 409
+          ? "The backend rejected this operation because its state changed. Refresh before retrying."
+          : response.status === 400
+            ? "The backend rejected the operation fields. Check the values and refresh."
+            : "The operation was not confirmed. Refresh before retrying; do not submit a different reference.",
+      );
     if (!response.ok)
       throw new BackendError(
         503,
@@ -152,7 +161,13 @@ export async function viewerResponse(operation: () => Promise<unknown>) {
     "x-content-type-options": "nosniff",
   };
   try {
-    return Response.json(await operation(), { headers });
+    const value = await operation();
+    if (value instanceof Response) {
+      for (const [key, header] of Object.entries(headers))
+        value.headers.set(key, header);
+      return value;
+    }
+    return Response.json(value, { headers });
   } catch (error) {
     const known = error instanceof BackendError;
     return Response.json(

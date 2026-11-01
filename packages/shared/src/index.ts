@@ -11,3 +11,10 @@ export {
   ViewerCursor,
   ViewerRole,
 } from "./viewer-contract";
+
+export {
+  ViewerStatus,
+  ViewerCycles,
+  ViewerCycle,
+  ViewerEvents,
+} from "./viewer-details-contract";

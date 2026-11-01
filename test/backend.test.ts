@@ -5,6 +5,9 @@ import {
   BackendError,
   getViewerSnapshot,
   getViewerProof,
+  getViewerCycle,
+  getViewerEvents,
+  getViewerStatus,
   viewerResponse,
 } from "../apps/web/src/lib/server/backend";
 
@@ -167,4 +170,61 @@ test("proof lookup validates input before transport and distinguishes no record 
     String(transport.mock.calls[0]!.arguments[0]),
     `https://backend.example/api/viewer/proof?hash=${"a".repeat(64)}`,
   );
+});
+
+test("validates cycle and replay identifiers before reaching the backend", async () => {
+  const transport = mock.method(globalThis, "fetch", async () =>
+    Response.json({}),
+  );
+  for (const value of [
+    "../admin/pause",
+    "https://evil.example",
+    "-".repeat(36),
+  ])
+    await assert.rejects(async () => getViewerCycle(value));
+  for (const value of ["-1", "1e4", "9223372036854775808", "1&token=secret"])
+    await assert.rejects(async () => getViewerEvents(value));
+  assert.equal(transport.mock.callCount(), 0);
+});
+
+test("bounds upstream response bodies and excludes unsupported status fields", async () => {
+  let transport = mock.method(
+    globalThis,
+    "fetch",
+    async () =>
+      new Response("{}", { headers: { "content-length": "2000001" } }),
+  );
+  await assert.rejects(
+    getViewerStatus(),
+    (e: unknown) => e instanceof BackendError && e.status === 502,
+  );
+  transport.mock.restore();
+  const data = {
+    contractVersion: 1,
+    mode: "PAPER",
+    capturedAt: "2026-11-01T00:00:00Z",
+    model: "z-ai/glm-5.3-flash",
+    liveTradingEnabled: false,
+    measurementApprovalConfigured: false,
+    deploymentActionsApprovalConfigured: false,
+    computePurchaseImplemented: false,
+    providerCreditBalanceKnown: false,
+    computeControl: {
+      source: "LOCAL_BUDGET",
+      limitUsdMicros: "1000000",
+      committedUsdMicros: "0",
+      availableUsdMicros: "1000000",
+      halted: false,
+      providerBalanceVerified: false,
+    },
+  };
+  transport = mock.method(globalThis, "fetch", async () => Response.json(data));
+  assert.deepEqual(await getViewerStatus(), data);
+  transport.mock.restore();
+  mock.method(globalThis, "fetch", async () =>
+    Response.json({ ...data, apiKey: "do-not-publish" }),
+  );
+  const response = await viewerResponse(getViewerStatus);
+  assert.equal(response.status, 502);
+  assert.doesNotMatch(await response.text(), /do-not-publish/);
 });

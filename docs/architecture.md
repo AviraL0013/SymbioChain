@@ -1,56 +1,44 @@
 # Architecture
 
-The Next.js frontend reads a deliberately published PAPER view from the separate Fastify backend. The backend owns the database, durable workers, provider credentials, signing, cost approvals and administrative actions.
+The browser uses same-origin Next.js routes. Next authenticates fixed requests to the separate Fastify backend, which owns PostgreSQL, the durable agent workers, provider keys, signing and accounting.
 
-```text
-Browser → same-origin /api/swarm/* → Fastify /api/viewer/* → PostgreSQL
-                         │
-                 server-only read token
+```mermaid
+flowchart LR
+  Browser --> Public[Public Next.js routes]
+  Browser --> Operator[Operator routes / HttpOnly session]
+  Public -->|server-only read token| Viewer[Fastify curated PAPER views]
+  Operator -->|server-only admin token / expected PAPER mode| Actions[Fastify capabilities and admin handlers]
+  Viewer --> Database[(PostgreSQL)]
+  Actions --> Database
+  Workers[SCOUT / BRAIN / HAND] --> Database
 ```
 
-## Data contract
+## Publication contracts
 
-`packages/shared/src/viewer-contract.ts` is a runtime-validated copy of the backend's `src/viewer-contract.ts`. Both ends reject unsupported versions, additional fields and modes other than PAPER. Regenerate it from a reviewed backend checkout:
+`packages/shared/src/viewer-contract.ts` preserves the original strict v1 snapshot/proof contract. `viewer-details-contract.ts` adds status, paginated cycle details and event metadata. Both are generated from reviewed backend source using `scripts/sync-viewer-contract.mjs`. The backend rejects LIVE/REPLAY publication even with valid read credentials.
 
-```sh
-node scripts/sync-viewer-contract.mjs /path/to/symbiochain-core
-```
+Cycle views publish selected proposal fields, quote arithmetic, phase names, sanitized job error codes, accounting summaries and proof hashes. They exclude raw decisions, model prompts, private event payloads, signing bytes and accounting references. Profit admission diagnostics compare the recorded quote with the **current policy**; they are not a historical policy attestation or realized P&L.
 
-Amounts are integer strings with explicit asset decimals. Exact display and comparisons use BigInt. Chart geometry uses floating point; tooltips and the data table retain exact amounts. Timestamps are ISO UTC strings. EYE is the display name for the SCOUT worker. Runway stays null until a complete cost basis supports a measurement.
+Application compute allowance is published without its internal budget ID. Provider balance remains explicitly unknown when that allowance is the only spending control. The model/measurement fields report configuration, not a fresh attestation. Runway stays null.
 
-The backend snapshot reads ledger balances, workers, decisions, transactions, execution receipts and event metadata in a repeatable-read transaction. Published decisions use phase descriptions rather than arbitrary prompts or decision JSON. Proof evidence, signing material, invoice references and raw event payloads are excluded.
+## Refresh and replay
 
-## Frontend structure
+The shared provider reads a snapshot every ten seconds, slowing to sixty seconds in a hidden tab. Requests abort on unmount or refresh. Failure marks retained data stale; an initial failure shows a disconnected empty state. Optional status failure does not prevent the main snapshot from loading.
 
-```text
-apps/web/src/
-  app/
-    (marketing)/         Landing page at /
-    (app)/               Shared telemetry provider and application pages
-    api/swarm/           Fixed GET snapshot and proof handlers
-  features/
-    application/         Shared navigation, shell and wallet status
-    swarm/               Snapshot lifecycle and exact amount formatting
-    dashboard/           Ledger history, decisions and settlements
-    topology/            Worker heartbeats and recorded coordination
-    verify/              Recorded verification lookup
-    nfts/                Unminted PAPER receipts and SVG artwork
-  lib/server/            Server-only authenticated backend reader
-packages/shared/src/     Validated viewer schemas and legacy preview types
-```
+An EventSource connection to `/api/swarm/events` carries sanitized durable event metadata. Next polls the backend's curated event endpoint, deduplicates ascending integer sequence numbers and emits SSE IDs. Native reconnects resume through `Last-Event-ID`. A stream lasts at most a bounded function window, then reconnects; event notification coalesces snapshot refreshes. Polling remains available when streaming fails. Backend bearer credentials never enter the browser's event URL or frames.
 
-One provider polls the same-origin snapshot every 10 seconds while an application page is open, and every 60 seconds in a hidden tab. Requests are sequential and aborted on unmount or refresh. A failed request marks retained data stale. An initial failure shows empty, disconnected states. There is no sample-data fallback. The marketing page does not poll.
+## Operator boundary
 
-The proof page looks up a request or response hash in previously verified NEAR AI records. A 404 means no matching record, not an invalid signature. A successful lookup returns stored metadata and explicitly records that no fresh attestation took place. PAPER inference fixtures cannot qualify as verified evidence.
+Operator routes require a signed 30-minute HttpOnly cookie. The access code is a separate server secret from both backend bearer tokens. Cookies use SameSite=Strict; production adds Secure and the `__Host-` prefix. Logout clears the session, and rotating the access code invalidates existing signatures. The application does not persist credentials in browser storage.
 
-## Security and operator boundary
+Mutations require the browser Origin to match the HTTP request authority, JSON bodies within 16 KiB and an enumerated, strict operation schema. The server constructs fixed backend paths. It checks administrative capability and PAPER mode before dispatch. The backend separately validates `x-symbio-expected-mode: PAPER` before executing an admin handler, preventing a capability-check/deployment race from turning a PAPER request into a LIVE action.
 
-Only `BACKEND_URL`, `BACKEND_READ_TOKEN` and `SITE_URL` belong in this frontend's server environment. The browser receives the curated PAPER view. It never receives the read token, administrative token, database URL, NEAR keys or provider keys. The reader permits a configured HTTPS origin (HTTP only for local development), fixed paths, no redirects, no upstream caching and a 15-second timeout. Public errors exclude upstream details.
+Supported actions are simulated funding, idempotent cycle creation, treasury/lane pause and resume, revision-bound policy changes, a targeted one-shot PAPER worker crash and immutable settlement-bound cost approval. Uncertain funding/cycle responses retain the same request identity for explicit retry. Buttons remain disabled while an operation is pending. Evidence download requires the same operator session and mode gate; it is not a public viewer feature.
 
-The public routes expose no arbitrary backend proxy or mutation handler. The existing operator dashboard remains the authenticated entry point for funding simulations, cost approvals, pause/resume and fault recovery. Wallet authentication, real deposits, trading, purchased compute and on-chain ownership are separate capabilities; this integration does not enable them.
+Wallet authentication, mainnet funding, compute purchasing and new chain recovery signers are not supplied by this interface.
 
-## Build and hosting
+## Hosting and rollback
 
-Use Node.js 22.13 or later in the 22.x line. `npm test` checks the server transport and amount/heartbeat handling. `npm run check` runs formatting, lint, TypeScript and the production build. CI runs both without production credentials.
+The existing teammate-owned Vercel project continues serving `https://symbiochain.vercel.app`, with Node 22, `apps/web` and workspace access. The backend remains on Render with Node 24. Browser-to-backend CORS changes are unnecessary.
 
-Keep the teammate-owned Vercel project serving `https://symbiochain.vercel.app` and its existing `apps/web` project root. Follow [the deployment handoff](backend-integration.md) to configure that project and validate a preview. The backend remains on the existing Render service. Browser-to-backend CORS changes are unnecessary because the browser talks to Next.js on its own origin.
+Frontend rollback promotes the preceding deployment in the same project. Backend additions preserve the old snapshot and operator panel and require no schema migration. Withdrawing frontend access means rotating/removing its server credentials; wallet/provider keys remain solely in the backend environment.

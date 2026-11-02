@@ -1,3 +1,5 @@
-# Backend boundary
+# Backend source
 
-Reserved for the backend lead's Node.js/TypeScript orchestration service. No runtime is scaffolded yet. Consume `packages/shared` contracts. Own credentials, orchestration, persistence, TEE verification, and transaction submission here. Agree on REST responses and missing socket events before integration.
+The running backend is maintained in [SuyashAlphaC/symbiochain-core](https://github.com/SuyashAlphaC/symbiochain-core). It contains Fastify, Prisma/PostgreSQL, durable workers, NEAR/Intents/provider integrations and the treasury contract. This directory is a pointer, not an unimplemented production service.
+
+The frontend consumes strict publication contracts and fixed administrative operations through its Next.js server. See [architecture](../../docs/architecture.md), [deployment](../../docs/backend-integration.md) and [isolated integration tests](../../docs/testing.md).

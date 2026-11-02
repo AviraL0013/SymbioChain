@@ -1,0 +1,17 @@
+# Prompt for the existing Vercel project owner
+
+Continue the SymbioChain frontend release in `AviraL0013/SymbioChain` from branch `codex/complete-backend-integration`. Use the existing owner-controlled Vercel project `avirals-projects-27965510/symbiochain` serving `https://symbiochain.vercel.app`. Do not create another project, switch accounts, rewrite contributor attribution or change the production domain.
+
+Read `README.md`, `docs/backend-integration.md`, `docs/architecture.md` and `docs/validation.md`. The backend additions are already deployed on the existing Render service at `https://symbiochain-core.onrender.com`, including curated status/cycle/events endpoints and the `x-symbio-expected-mode` check. The full mutating browser recovery flow was tested against an isolated local PAPER backend. Perform read-only checks on the shared hosted backend.
+
+Complete these steps autonomously through your authorized owner account:
+
+1. Confirm the existing project's Node 22, Next.js, `apps/web` root, workspace access and Git connection. Inspect the integration PR and its scoped commits. Preserve teammate attribution and existing project configuration.
+2. Keep the existing server-only `BACKEND_URL`, `BACKEND_READ_TOKEN` and `SITE_URL` values. For Preview and Production, add `BACKEND_ADMIN_TOKEN` from the backend operator's private `ADMIN_TOKEN`, plus a distinct newly generated random `OPERATOR_ACCESS_TOKEN` of at least 32 characters. Obtain/share these through a private environment or secret channel; never print them in chat, logs, PRs or source. Do not prefix them with `NEXT_PUBLIC_`. Do not copy the entire backend environment or add wallet/provider/database credentials to Vercel.
+3. Resolve any Git-author/project access requirement using the existing project's permitted collaboration or owner deployment workflow. Do not spoof a contributor's author identity to bypass access. Trigger a protected preview in this existing project after configuring its environment.
+4. Require passing GitHub CI and a Vercel production build. Check snapshot/status/cycles/proof routes, event notification with polling fallback, receipts and stale/disconnected behavior. Confirm the unknown-hash verdict is “No verified record found.” Keep PAPER labels and null runway.
+5. Unlock `/operator` with the separate access code, inspect state and log out. Check unauthenticated action/evidence rejection and cross-origin rejection. Do not fund, trade, create a shared cycle, approve costs, mint or trigger a crash on the shared hosted service. No fresh inference is required.
+6. Inspect browser requests, storage, HTML and loaded JavaScript for backend read/admin credentials. Browser traffic should stay on same-origin `/api/swarm/*` and `/api/operator/*` routes. Only the entered operator access code belongs in its intentional login request; backend bearer tokens never belong in browser traffic.
+7. When CI and preview pass, merge the reviewed PR with a merge commit to preserve its small commit history. Let the existing project deploy production. Repeat the read-only production checks and report the exact source commit, deployment URL/status and any remaining blocker accurately.
+
+If owner project access or the private admin token is unavailable, report that precise missing input and leave the release pending. A passing local build is not a deployed production release. Keep all mainnet execution and paid inference disabled; this task authorizes the existing PAPER integration only.

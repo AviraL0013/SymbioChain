@@ -1,65 +1,82 @@
 # SymbioChain
 
-An autonomous AI swarm on NEAR, designed to earn the compute it needs to stay alive.
+A policy-controlled three-agent treasury with durable execution, verifiable inference gates and explicit cost accounting on NEAR.
 
-[Live demo](https://symbiochain.vercel.app) | [Mission Control](https://symbiochain.vercel.app/dashboard) | [Architecture](docs/architecture.md)
+[Website](https://symbiochain.vercel.app) · [Dashboard](https://symbiochain.vercel.app/dashboard) · [Backend source](https://github.com/SuyashAlphaC/symbiochain-core) · [Architecture](docs/architecture.md) · [Deployment](docs/backend-integration.md)
 
-Three agents share one loop: **EYE** finds candidate routes, **BRAIN** assesses risk, and **HAND** prepares cross-chain execution. The proposed metabolic rule ties the swarm's survival to its ability to fund inference.
+**The deployed demonstration uses PAPER execution.** Its telemetry comes from persisted backend records; economic results, inference and receipts in that mode are simulated. Real wallet deposits, live trading and on-chain ownership are not enabled by this frontend. The goal of an agent earning and purchasing its own compute remains an incomplete business loop.
 
-## Explore the frontend
+EYE (the SCOUT worker) discovers candidate routes, BRAIN assesses committed terms, and HAND tracks execution, reconciliation and receipts. The Fastify backend owns PostgreSQL, jobs, signing and provider integrations. This Next.js repository supplies the public application and protected PAPER operator controls.
 
-| Page                                                        | What it shows                                               |
-| ----------------------------------------------------------- | ----------------------------------------------------------- |
-| [Landing](https://symbiochain.vercel.app)                   | Product story, animated agents, network directory, and FAQs |
-| [Mission Control](https://symbiochain.vercel.app/dashboard) | Recorded PAPER treasury history, decisions and settlements  |
-| [Swarm topology](https://symbiochain.vercel.app/topology)   | Worker roles, heartbeat availability and recorded decisions |
-| [Proof verifier](https://symbiochain.vercel.app/verify)     | Lookup of previously verified inference records             |
-| [NFT gallery](https://symbiochain.vercel.app/nfts)          | Persisted, unminted PAPER execution receipts                |
+## Explore
 
-The application reads a curated PAPER feed through Next.js server routes. It displays persisted backend records, marks simulations clearly and shows disconnected or stale states when unavailable. Wallet funding, real trading, fresh attestation and on-chain NFT ownership are not enabled by this integration. See the [existing Vercel project handoff](docs/backend-integration.md) before deploying this branch.
+| Route         | Connected behavior                                                                                                                                              |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/dashboard`  | Treasury history, agent heartbeats, recorded decisions, settlements and the application compute allowance                                                       |
+| `/topology`   | Actual worker availability and recorded coordination                                                                                                            |
+| `/cycles`     | Paginated execution journal, including rejected and incomplete cycles                                                                                           |
+| `/cycles/:id` | Quote shortfall, current-policy comparison, durable job attempts, settlement economics and recorded proofs                                                      |
+| `/verify`     | Stored verification lookup; a missing record does not mean a signature is invalid                                                                               |
+| `/nfts`       | Persisted PAPER receipts, clearly marked unminted and simulated                                                                                                 |
+| `/operator`   | Authenticated simulated funding, idempotent cycle creation, pause/resume, recovery demonstration, policy revisions, cost approval and private evidence download |
+
+Public pages read runtime-validated publication schemas through fixed server routes. A resumable event stream refreshes persisted telemetry; polling continues through interruptions. Stale and disconnected states retain their labels. No page invents records when the backend is unavailable.
+
+Operator access uses a separate code and a signed, 30-minute HttpOnly session. Backend read/admin credentials stay on the server. Each operation checks backend capabilities and binds the requested execution mode to PAPER, including across a backend deployment change. No public catch-all proxy or LIVE arming control exists.
+
+## What is demonstrated
+
+- A browser can follow an actual durable PAPER cycle through a worker crash, reclaim of the same job, settlement-bound cost approval and receipt creation.
+- Admission uses integer amounts and a conservative return minus configured cost allowances. Losing routes remain rejected before paid inference or signing.
+- Cost approval is immutable and identifies the exact settlement, native-fee evidence and billed inference total. Missing approval leaves net values unknown.
+- Application compute allowance is distinct from provider credit balance. It does not establish a measured business runway or a profit-funded compute purchase.
+- Proof lookup exposes recorded verification scope. PAPER inference never becomes a verified hardware proof.
+
+The backend has separate real gateway/model hardware audit evidence and confidential-inference verification code. Final deployment approval and a signed paid completion still depend on the [documented provenance gate](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TEE_APPROVAL_HANDOFF.md). Mainnet execution awaits the dedicated account, explicit funding limits and a genuinely profitable executable route. More detail: [trading evidence](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TRADING_GATES.md).
 
 ## Run locally
 
-Use **Node.js 22.13 or later in the 22.x line** and **npm 10 or later**.
+Use **Node 22.13 or later in the 22.x line** and npm 10 or later. The separately deployed backend uses Node 24.
 
 ```sh
 npm ci
+cp apps/web/.env.example apps/web/.env.local
 npm run dev
 ```
 
-Open [localhost:3000](http://localhost:3000). Development and production builds download the required Clash Display fonts from Fontshare when missing, so the first run needs internet access.
+Set `BACKEND_URL`, `BACKEND_READ_TOKEN` and `SITE_URL` in that ignored file. Optional operator controls additionally require `BACKEND_ADMIN_TOKEN` and a distinct, random `OPERATOR_ACCESS_TOKEN` of at least 32 characters. Never prefix credentials with `NEXT_PUBLIC_`; never copy the entire backend environment into this application. See [configuration and release steps](docs/backend-integration.md).
 
-For configuration, copy `apps/web/.env.example` to `apps/web/.env.local`. Set the server-only `BACKEND_URL` and `BACKEND_READ_TOKEN`, plus `SITE_URL` for metadata. Never use a `NEXT_PUBLIC_` variable for the token. Keep the existing teammate-owned Vercel project; [deployment steps](docs/backend-integration.md) describe the environment and preview checks.
+Open [localhost:3000](http://localhost:3000). Font setup downloads licensed Clash Display files from Fontshare when missing; first-run builds need internet access.
 
-| Command         | Purpose                                                  |
-| --------------- | -------------------------------------------------------- |
-| `npm test`      | Validate server transport, amounts and worker state      |
-| `npm run dev`   | Start the local frontend                                 |
-| `npm run check` | Check formatting, lint, TypeScript, and production build |
-| `npm run build` | Build the frontend                                       |
-| `npm run start` | Serve the production build locally                       |
+| Command                           | Purpose                                                                                             |
+| --------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `npm test`                        | Transport, schema, exact amounts, cursor replay, authentication and mode-boundary regression checks |
+| `npm run check`                   | Formatting, lint, TypeScript and production build                                                   |
+| `npm run test:e2e`                | Full browser flow against an isolated local PAPER backend; [setup](docs/testing.md)                 |
+| `npm run build` / `npm run start` | Production build and local server                                                                   |
 
-## Stack
+The browser suite refuses remote targets and checks that backend credentials never enter browser traffic, page assets or browser storage. It is intentionally separate from credential-free CI checks. [Validation notes](docs/validation.md) distinguish local execution proof from hosted release status.
 
-Next.js 16 App Router, React 19, TypeScript, Tailwind CSS, GSAP, Recharts, and Lucide. Clash Display headlines pair with DM Sans body text. Animations include reduced-motion alternatives.
-
-## Repository
+## Repository and contracts
 
 ```text
-apps/
-  web/                  Next.js frontend
-  backend/              Reserved for agent orchestration
-packages/
-  shared/               Validated PAPER viewer contracts
-contracts/              Reserved for NEAR contracts
-docs/
-  architecture.md       Structure and integration boundaries
+apps/web/                  Next.js application and server routes
+packages/shared/           Validated public and operator schemas
+scripts/                   Contract synchronization and font setup
+test/e2e/                 Browser integration checks
+docs/                     Architecture, setup, validation and release handoff
 ```
 
-Route files stay thin. Page behavior lives under `apps/web/src/features`; shared UI lives under `components/ui`. The backend lead owns orchestration, credentials, persistence, verification, and transaction submission.
+The [backend repository](https://github.com/SuyashAlphaC/symbiochain-core) contains Fastify, Prisma, durable workers, provider adapters and the Rust NEAR treasury. The local `apps/backend` and `contracts` directories are pointers to that source, not duplicate implementations.
 
-## Assets and credentials
+Public schemas are copied from a reviewed backend checkout with:
 
-DM Sans is bundled with its SIL Open Font License. Clash Display is fetched by `apps/web/scripts/setup-fonts.mjs`; its font files stay outside Git. Font licenses and chain icon notices accompany the assets in `apps/web/public`.
+```sh
+node scripts/sync-viewer-contract.mjs /path/to/symbiochain-core
+```
 
-Keep private keys, seed phrases, API credentials, and local environment files outside Git. Never put secrets in `NEXT_PUBLIC_*` variables.
+The original v1 snapshot remains compatible. New status, cycle and event endpoints are additive. Monetary values and event cursors remain strings; BigInt handles arithmetic and exact display. See [architecture](docs/architecture.md) for the publication boundary.
+
+## Assets and attribution
+
+The existing interface, teammate contributions and commit history are preserved. DM Sans is bundled under its SIL Open Font License. Clash Display files stay outside Git; their setup script and license remain in the repository. Chain icon notices accompany their assets. No private keys, seed phrases, provider credentials or local environment files belong in Git.

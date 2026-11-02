@@ -1,6 +1,6 @@
 # Prompt for the existing Vercel project owner
 
-Continue the SymbioChain frontend release in `AviraL0013/SymbioChain` from branch `codex/complete-backend-integration`. Use the existing owner-controlled Vercel project `avirals-projects-27965510/symbiochain` serving `https://symbiochain.vercel.app`. Do not create another project, switch accounts, rewrite contributor attribution or change the production domain.
+Continue the SymbioChain frontend release in `AviraL0013/SymbioChain` from branch `feature/backend-integration`. Use the existing owner-controlled Vercel project `avirals-projects-27965510/symbiochain` serving `https://symbiochain.vercel.app`. Do not create another project, switch accounts, rewrite contributor attribution or change the production domain.
 
 Read `README.md`, `docs/backend-integration.md`, `docs/architecture.md` and `docs/validation.md`. The backend additions are already deployed on the existing Render service at `https://symbiochain-core.onrender.com`, including curated status/cycle/events endpoints and the `x-symbio-expected-mode` check. The full mutating browser recovery flow was tested against an isolated local PAPER backend. Perform read-only checks on the shared hosted backend.
 

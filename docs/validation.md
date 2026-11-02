@@ -7,7 +7,7 @@ The integration has two separate browser proofs:
 
 The frontend passes 19 credential-free regression checks, ESLint, TypeScript, formatting and `next build` with Node 22. The backend additions pass its CI backend/contract jobs at commit `72611fa8d9a83bda5d2e35731d68de7dcce1bd06`: [workflow run](https://github.com/SuyashAlphaC/symbiochain-core/actions/runs/41390734080). Its deployment is live on the existing Render service in PAPER mode.
 
-The production build keeps backend read/admin tokens and the separate operator access secret server-only. The browser suite additionally verifies rejection of cross-origin operations, duplicate-safe request identifiers, logout/private-evidence rejection, no direct browser-to-backend requests and no backend credentials in browser storage.
+The production build keeps backend read/admin tokens and the separate operator access secret server-only. The regression checks cover stable idempotency-key forwarding. The browser suite additionally verifies cross-origin rejection, logout/private-evidence rejection, no direct browser-to-backend requests and no backend credentials in browser storage.
 
 ## Hosted release status
 

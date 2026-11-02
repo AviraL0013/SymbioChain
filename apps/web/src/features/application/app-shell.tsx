@@ -16,6 +16,7 @@ const navigation = [
   ["/cycles", "Cycles"],
   ["/verify", "Proofs"],
   ["/nfts", "Receipts"],
+  ["/operator", "Operator"],
 ] as const;
 
 export function AppHeader() {

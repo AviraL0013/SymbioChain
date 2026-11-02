@@ -14,8 +14,8 @@ import { AppShell } from "@/features/application/app-shell";
 import { timestamp } from "@/features/swarm/format";
 
 type Result = "recorded" | "not-found" | "unavailable" | null;
-export function VerifyPage() {
-  const [hash, setHash] = useState("");
+export function VerifyPage({ initialHash = "" }: { initialHash?: string }) {
+  const [hash, setHash] = useState(initialHash);
   const [error, setError] = useState("");
   const [result, setResult] = useState<Result>(null);
   const [proof, setProof] = useState<ViewerProof | null>(null);

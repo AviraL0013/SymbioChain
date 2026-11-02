@@ -32,9 +32,10 @@ export async function performOperatorAction(token: string, input: unknown) {
     throw new BackendError(400, "Invalid operation or fields.");
   const action = parsed.data;
   const { capabilities } = await getOperatorState(token);
-  let path: string,
-    body: unknown,
-    headers: Record<string, string> = { "content-type": "application/json" };
+  let path: string, body: unknown;
+  const headers: Record<string, string> = {
+    "content-type": "application/json",
+  };
   switch (action.action) {
     case "treasury":
       path = `/api/admin/${action.control}`;

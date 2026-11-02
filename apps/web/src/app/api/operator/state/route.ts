@@ -6,3 +6,5 @@ export const dynamic = "force-dynamic";
 export function GET(request: Request) {
   return viewerResponse(() => getOperatorState(requireOperator(request)));
 }
+
+export const maxDuration = 60;

@@ -97,11 +97,10 @@ export function CyclesPage() {
 }
 export function CyclePage({ id }: { id: string }) {
   const { data } = useSwarm();
-  const [record, setRecord] = useState<ViewerCycle | null>(null),
+  const [stored, setRecord] = useState<ViewerCycle | null>(null),
     [error, setError] = useState("");
   useEffect(() => {
     const controller = new AbortController();
-    setRecord(null);
     void fetch(`/api/swarm/cycles/${encodeURIComponent(id)}`, {
       cache: "no-store",
       signal: controller.signal,
@@ -124,6 +123,7 @@ export function CyclePage({ id }: { id: string }) {
       });
     return () => controller.abort();
   }, [id, data?.cursor]);
+  const record = stored?.cycle.id === id ? stored : null;
   const units = (value: string | null | undefined) =>
     `${formatAtoms(value, record?.baseDecimals ?? 6)} ${record?.baseAsset ?? ""}`;
   return (
@@ -211,7 +211,7 @@ export function CyclePage({ id }: { id: string }) {
                       <dt>Profit gate</dt>
                       <dd>
                         {record.profitCheck.passesProfitFloor
-                          ? "Passed at quote time"
+                          ? "Passed against current policy"
                           : "Rejected"}
                       </dd>
                     </div>

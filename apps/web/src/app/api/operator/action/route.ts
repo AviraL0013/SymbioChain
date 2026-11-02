@@ -14,3 +14,5 @@ export function POST(request: Request) {
     return performOperatorAction(token, await operatorBody(request));
   });
 }
+
+export const maxDuration = 60;

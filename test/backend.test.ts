@@ -8,8 +8,10 @@ import {
   getViewerCycle,
   getViewerEvents,
   getViewerStatus,
+  getTestnetReport,
   viewerResponse,
 } from "../apps/web/src/lib/server/backend";
+import { emptyTestnetReport } from "../packages/shared/src/testnet-contract";
 
 const original = {
   url: process.env.BACKEND_URL,
@@ -97,6 +99,31 @@ test("rejects unexpected fields and LIVE responses at the server boundary", asyn
 test("accepts the PAPER contract without changing large integer values or unknown runway", async () => {
   mock.method(globalThis, "fetch", async () => Response.json(snapshot));
   assert.deepEqual(await getViewerSnapshot(), snapshot);
+});
+test("publishes testnet scope through server authorization and rejects expanded or misleading evidence", async () => {
+  const report = emptyTestnetReport();
+  const transport = mock.method(globalThis, "fetch", async () =>
+    Response.json(report),
+  );
+  assert.deepEqual(await getTestnetReport(), report);
+  assert.equal(
+    String(transport.mock.calls[0]!.arguments[0]),
+    "https://backend.example/api/viewer/testnet",
+  );
+  transport.mock.restore();
+  for (const invalid of [
+    { ...report, secret: "private-key" },
+    { ...report, mainnetTransactions: 1 },
+    { ...report, profile: "LIVE" },
+  ]) {
+    const mocked = mock.method(globalThis, "fetch", async () =>
+      Response.json(invalid),
+    );
+    const response = await viewerResponse(getTestnetReport);
+    assert.equal(response.status, 502);
+    assert.doesNotMatch(await response.text(), /private-key/);
+    mocked.mock.restore();
+  }
 });
 
 test("returns stored proof scope without claiming fresh verification", async () => {

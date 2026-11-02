@@ -6,6 +6,7 @@ import {
   ViewerCycles,
   ViewerCycle,
   ViewerEvents,
+  TestnetReport,
 } from "@symbiochain/shared";
 import { z } from "zod";
 
@@ -136,6 +137,8 @@ export function getViewerProof(input: string) {
 
 export const getViewerStatus = () =>
   readBackend("/api/viewer/status", ViewerStatus);
+export const getTestnetReport = () =>
+  readBackend("/api/viewer/testnet", TestnetReport);
 export function getViewerCycles(cursor?: string) {
   if (cursor && !z.uuid().safeParse(cursor).success)
     throw new BackendError(400, "Invalid cycle cursor.");

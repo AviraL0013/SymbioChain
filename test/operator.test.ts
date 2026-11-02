@@ -152,6 +152,10 @@ test("uses a fixed backend path and preserves the cycle idempotency key without 
       assert.equal(url.pathname, "/api/cycles");
       assert.equal(init?.method, "POST");
       assert.equal(
+        (init?.headers as Record<string, string>)["x-symbio-expected-mode"],
+        "PAPER",
+      );
+      assert.equal(
         (init?.headers as Record<string, string>)["idempotency-key"],
         "stable-cycle-key",
       );

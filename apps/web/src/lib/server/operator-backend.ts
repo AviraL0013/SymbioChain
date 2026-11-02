@@ -35,6 +35,7 @@ export async function performOperatorAction(token: string, input: unknown) {
   let path: string, body: unknown;
   const headers: Record<string, string> = {
     "content-type": "application/json",
+    "x-symbio-expected-mode": "PAPER",
   };
   switch (action.action) {
     case "treasury":

@@ -21,7 +21,7 @@ export function GET(request: Request) {
     const evidence = await readBackend(
       `/api/cycles/${id.data}/evidence`,
       z.unknown(),
-      {},
+      { headers: { "x-symbio-expected-mode": "PAPER" } },
       token,
     );
     return new Response(JSON.stringify(evidence, null, 2), {

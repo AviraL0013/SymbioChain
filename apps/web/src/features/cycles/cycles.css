@@ -1,0 +1,117 @@
+.cycle-table-wrap {
+  overflow: auto;
+  border-top: 1px solid #d9ded8;
+  margin-top: 30px;
+}
+.cycle-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+.cycle-table th,
+.cycle-table td {
+  padding: 18px 12px;
+  border-bottom: 1px solid #d9ded8;
+  vertical-align: top;
+}
+.cycle-table th {
+  color: #687368;
+  font-weight: 500;
+}
+.cycle-table a {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.cycle-state {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.cycle-actions {
+  display: flex;
+  gap: 12px;
+  margin: 25px 0;
+}
+.cycle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-top: 24px;
+}
+.cycle-card {
+  border: 1px solid #cfd7cc;
+  border-radius: 18px;
+  padding: 28px;
+  margin: 24px 0;
+  min-width: 0;
+}
+.cycle-grid .cycle-card {
+  margin: 0;
+}
+.cycle-card h2 {
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+}
+.cycle-metrics > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  padding: 13px 0;
+  border-bottom: 1px solid #e1e5de;
+  font-size: 14px;
+}
+.cycle-metrics dt {
+  color: #687368;
+  flex-shrink: 0;
+}
+.cycle-metrics dd {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.cycle-timeline {
+  list-style: none;
+  padding: 0;
+}
+.cycle-timeline li,
+.cycle-job {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  border-bottom: 1px solid #e1e5de;
+  padding: 15px 0;
+  font-size: 14px;
+}
+.cycle-timeline time,
+.cycle-job span {
+  font-size: 12px;
+  color: #687368;
+}
+.cycle-callout {
+  background: #f0edcf;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 20px;
+  font-size: 14px;
+}
+.cycle-card code {
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+@media (max-width: 720px) {
+  .cycle-grid {
+    grid-template-columns: 1fr;
+  }
+  .cycle-card {
+    padding: 20px;
+  }
+  .cycle-metrics > div {
+    gap: 16px;
+  }
+  .cycle-table {
+    min-width: 600px;
+  }
+}

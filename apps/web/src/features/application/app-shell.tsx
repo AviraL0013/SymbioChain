@@ -13,8 +13,10 @@ import "./application.css";
 const navigation = [
   ["/dashboard", "Overview"],
   ["/topology", "Topology"],
+  ["/cycles", "Cycles"],
   ["/verify", "Proofs"],
   ["/nfts", "Receipts"],
+  ["/operator", "Operator"],
 ] as const;
 
 export function AppHeader() {
@@ -34,7 +36,11 @@ export function AppHeader() {
               <Link
                 href={href}
                 key={href}
-                aria-current={path === href ? "page" : undefined}
+                aria-current={
+                  path === href || path.startsWith(href + "/")
+                    ? "page"
+                    : undefined
+                }
               >
                 {label}
               </Link>

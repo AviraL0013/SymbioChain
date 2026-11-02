@@ -1,50 +1,50 @@
-# Existing Vercel project handoff
+# Existing Vercel project release
 
-The integration targets the existing teammate-owned project at **https://symbiochain.vercel.app**. No new Vercel project, account change or plan upgrade has been made.
+Use the existing `symbiochain` project serving **https://symbiochain.vercel.app**. Preserve the owner/team, Node 22, Next.js configuration, `apps/web` root and access to workspace files. No new Vercel project or paid infrastructure is needed for this integration.
 
-## Preview access
+PR #1 already merged the original read-only feed. This branch adds execution inspection, compute-budget telemetry, resumable event notification and protected PAPER operations. The backend additions are backward compatible; deploy them before releasing this frontend.
 
-Vercel blocked the pull request's automatic preview with: “Git author SuyashAlphaC must have access to the project on Vercel to create deployments.” GitHub repository access alone is insufficient. The existing project owner must handle the reviewed release through their own authorized account or resolve the project's Git collaboration permissions. The available collaboration options depend on the current plan; see [Vercel's project collaboration documentation](https://vercel.com/docs/deployments/troubleshoot-project-collaboration).
+## Server-only environment
 
-The source and production build have been checked locally against the hosted backend. A hosted preview remains unverified until that access requirement is resolved. The production domain has not been updated by this integration branch.
+Configure Preview and Production deliberately in the existing project:
 
-## Environment
+| Variable                | Value / source                                                                               |
+| ----------------------- | -------------------------------------------------------------------------------------------- |
+| `BACKEND_URL`           | `https://symbiochain-core.onrender.com`                                                      |
+| `BACKEND_READ_TOKEN`    | Existing backend `READ_TOKEN`, shared privately                                              |
+| `SITE_URL`              | Production domain above; the intended preview origin for preview metadata                    |
+| `BACKEND_ADMIN_TOKEN`   | Optional operator feature: existing backend `ADMIN_TOKEN`, shared privately                  |
+| `OPERATOR_ACCESS_TOKEN` | Optional operator feature: a distinct randomly generated access code, at least 32 characters |
 
-In that project's **Settings → Environment Variables**, add the following server variables to the intended Preview and Production environments:
+Both operator variables are required to unlock administrative controls. Missing variables disable that feature without breaking public data views. All three credentials must differ. Generate a fresh random access code, for example with `openssl rand -hex 32`, and deliver it privately to the operator. Do not put its output in chat, a PR, committed documentation or a `NEXT_PUBLIC_` variable.
 
-| Variable             | Value                                                                         |
-| -------------------- | ----------------------------------------------------------------------------- |
-| `BACKEND_URL`        | `https://symbiochain-core.onrender.com`                                       |
-| `BACKEND_READ_TOKEN` | The backend's existing `READ_TOKEN`, shared privately by its operator         |
-| `SITE_URL`           | `https://symbiochain.vercel.app` in Production; the preview origin in Preview |
+Do not copy the backend `.env` into Vercel. This frontend does not need `DATABASE_URL`, NEAR recovery/worker keys, provider/model keys, Render credentials or the evidence encryption key. Keep local configuration in ignored `apps/web/.env.local`.
 
-Never prefix the token with `NEXT_PUBLIC_`. Do not copy the backend `.env` into Vercel. This frontend does not need `ADMIN_TOKEN`, `DATABASE_URL`, wallet keys, `RENDER_API_KEY`, model credentials or encryption keys. Remove the unused `NEXT_PUBLIC_BACKEND_URL` and `NEXT_PUBLIC_NEAR_NETWORK_ID` settings if they were added for the old preview.
+Operator cookies expire after 30 minutes. Production uses Secure, HttpOnly, SameSite=Strict and a host-scoped cookie. The access code is entered on `/operator`; backend bearer credentials are never returned to the browser. The operator page cannot arm LIVE or purchase inference.
 
-For local development, use `apps/web/.env.local`, based on `.env.example`. Keep this file outside Git. Restart Next.js after setting it.
+## Release sequence
 
-## Deploy the reviewed branch
+1. Confirm the existing Render backend includes the new `/api/viewer/status`, `/cycles`, `/cycles/:id` and `/events` routes, plus the operator expected-mode check.
+2. Run `npm ci`, `npm test` and `npm run check` at the repository root with Node 22. Browser checks use a separate isolated local backend; see [testing](testing.md).
+3. Configure the variables above in the existing Vercel project. Environment changes need a new deployment.
+4. Push/deploy the PR branch as a protected preview in that same project. GitHub repository access and Vercel project access are separate. If Vercel refuses the commit author or project access, the existing owner must resolve that access or trigger the preview through their authorized account. Do not impersonate a teammate or create another project.
+5. Complete the read-only preview checks below. Confirm operator configuration without funding, trades or crash injection on the shared hosted backend.
+6. Merge through the repository's reviewed workflow, preserving the scoped commit history. Let the existing project's Git integration deploy production.
+7. Repeat read-only production checks. Do not call a local build or unmerged PR a completed production release.
 
-1. Keep the existing Vercel project's framework and `apps/web` root directory. Keep workspace files outside that directory included, as required by `@symbiochain/shared`.
-2. Run `npm ci`, `npm test` and `npm run check` with Node 22 at the repository root.
-3. Deploy the integration branch as a **preview in the existing project**, using its current owner/team. If Git previews are enabled, use the pull request deployment. If the project is still CLI-managed, use the already-linked checkout and `vercel` without `--prod`. Confirm the project is `symbiochain` before deploying.
-4. Confirm the Preview environment has the server read token. Environment changes require a new deployment.
-5. Validate the preview, merge the reviewed branch, then deploy it to the existing production domain through the project's usual Git or CLI workflow.
+## Hosted acceptance
 
-Do not paste credentials into the pull request or chat. Access to the frontend GitHub repository does not grant access to its owner's Vercel project.
-
-## Acceptance checks
-
-- `/api/swarm/snapshot` returns 200, `contractVersion: 1`, `mode: PAPER`, integer string amounts and `survivalHours: null`. It sets `Cache-Control: private, no-store`.
-- `/dashboard` matches the snapshot's treasury asset, balances, decisions and simulated settlements.
-- `/topology` shows recorded heartbeats and decisions. It does not animate invented payments or display invented agent balances.
-- `/nfts` shows actual execution receipt IDs, marks them unminted and leaves missing cost approvals unknown.
-- `/verify` rejects malformed hashes. An unknown 64-character hash produces “No verified record found,” without declaring a signature invalid. A missing backend connection produces an unavailable result.
-- Blocking `/api/swarm/snapshot` marks an already-loaded snapshot stale. Blocking it before first load produces disconnected empty states without sample records.
-- Browser requests, response bodies, HTML, static JavaScript and browser storage contain no backend credentials. Browser network calls stay on `/api/swarm/*`; authorization is added only between Next.js and Fastify.
-- POST to the public snapshot route is refused. Unknown proxy paths are not routed to the backend.
-
-Telemetry refreshes every 10 seconds through bounded GET requests. Render's free service may take time to wake up; the UI retries and reports connection state. Durable workers and storage remain backend responsibilities.
+- `/api/swarm/snapshot`: 200, contractVersion 1, PAPER, exact integer strings, null runway and no backend credentials.
+- `/api/swarm/status`: application allowance distinguished from unknown provider credits; configuration gates do not claim fresh TEE verification.
+- `/cycles` and `/cycles/:id`: real persisted records and job attempts; no quote/profit fixtures invented by the browser.
+- `/api/swarm/events`: bounded sanitized SSE; reconnects use sequence IDs, with polling fallback.
+- `/nfts`: persisted unminted PAPER receipts with unknown net values until cost approval.
+- `/verify?hash=...`: hash is prefilled; unknown hashes show no verified record, not an invalid-signature verdict.
+- Anonymous `/api/operator/action` and private evidence requests fail. Cross-origin mutations fail even with an operator session. No arbitrary backend path can be proxied.
+- `/operator`: missing optional configuration is explicit; configured access opens a short-lived session. Check state and logout only on the shared preview. The mutating recovery demonstration belongs on an isolated local PAPER backend.
+- Browser traffic/storage, HTML and JavaScript contain no backend read/admin credentials or provider keys. Browser API calls remain same-origin.
+- Unavailable/stale backend data stays visibly disconnected or stale, with no sample fallback.
 
 ## Rollback
 
-Promote the preceding frontend deployment in the same Vercel project if a release fails. The new backend viewer endpoints are additive and do not change the old operator dashboard. No database migration is required. Remove the frontend read credential if access is being withdrawn.
+Promote the preceding frontend deployment in the same project. Remove/rotate the optional operator access code to revoke sessions. Backend additions preserve the old viewer and require no database migration. Mainnet mode and funding remain separately unarmed.

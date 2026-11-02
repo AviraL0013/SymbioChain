@@ -7,15 +7,10 @@ if (!backend)
   throw new Error(
     "Usage: node scripts/sync-viewer-contract.mjs /path/to/symbiochain-core",
   );
-const source = await readFile(
-  resolve(backend, "src/viewer-contract.ts"),
-  "utf8",
-);
-const destination = new URL(
-  "../packages/shared/src/viewer-contract.ts",
-  import.meta.url,
-);
-await writeFile(
-  destination,
-  await format(source, { parser: "typescript", singleQuote: false }),
-);
+for (const name of ["viewer-contract", "viewer-details-contract"]) {
+  const source = await readFile(resolve(backend, `src/${name}.ts`), "utf8");
+  await writeFile(
+    new URL(`../packages/shared/src/${name}.ts`, import.meta.url),
+    await format(source, { parser: "typescript", singleQuote: false }),
+  );
+}

@@ -1,6 +1,13 @@
 import "server-only";
-import { ViewerProof, ViewerSnapshot } from "@symbiochain/shared";
-import type { z } from "zod";
+import {
+  ViewerProof,
+  ViewerSnapshot,
+  ViewerStatus,
+  ViewerCycles,
+  ViewerCycle,
+  ViewerEvents,
+} from "@symbiochain/shared";
+import { z } from "zod";
 
 export class BackendError extends Error {
   constructor(
@@ -35,11 +42,21 @@ function configuration() {
   return { origin, token };
 }
 
-async function read<T>(path: string, schema: z.ZodType<T>): Promise<T> {
+export async function readBackend<T>(
+  path: string,
+  schema: z.ZodType<T>,
+  init: RequestInit = {},
+  credential?: string,
+): Promise<T> {
   const { origin, token } = configuration();
   try {
     const response = await fetch(new URL(path, origin), {
-      headers: { authorization: `Bearer ${token}`, accept: "application/json" },
+      ...init,
+      headers: {
+        ...Object.fromEntries(new Headers(init.headers)),
+        authorization: `Bearer ${credential ?? token}`,
+        accept: "application/json",
+      },
       cache: "no-store",
       redirect: "error",
       signal: AbortSignal.timeout(15_000),
@@ -49,12 +66,50 @@ async function read<T>(path: string, schema: z.ZodType<T>): Promise<T> {
         404,
         "No recorded verified inference matches this hash.",
       );
+    if (!response.ok && init.method === "POST")
+      throw new BackendError(
+        [400, 403, 409, 429].includes(response.status) ? response.status : 503,
+        response.status === 409
+          ? "The backend rejected this operation because its state changed. Refresh before retrying."
+          : response.status === 400
+            ? "The backend rejected the operation fields. Check the values and refresh."
+            : "The operation was not confirmed. Refresh before retrying; do not submit a different reference.",
+      );
     if (!response.ok)
       throw new BackendError(
         503,
         "The PAPER backend is temporarily unavailable.",
       );
-    const parsed = schema.safeParse(await response.json());
+    if (Number(response.headers.get("content-length") ?? 0) > 2_000_000)
+      throw new BackendError(
+        502,
+        "The backend response exceeds the supported limit.",
+      );
+    const reader = response.body?.getReader();
+    const chunks: Uint8Array[] = [];
+    let size = 0;
+    if (reader) {
+      try {
+        while (true) {
+          const result = await reader.read();
+          if (result.done) break;
+          size += result.value.length;
+          if (size > 2_000_000) {
+            await reader.cancel();
+            throw new BackendError(
+              502,
+              "The backend response exceeds the supported limit.",
+            );
+          }
+          chunks.push(result.value);
+        }
+      } finally {
+        reader.releaseLock();
+      }
+    }
+    const parsed = schema.safeParse(
+      JSON.parse(Buffer.concat(chunks).toString("utf8")),
+    );
     if (!parsed.success)
       throw new BackendError(
         502,
@@ -71,12 +126,33 @@ async function read<T>(path: string, schema: z.ZodType<T>): Promise<T> {
 }
 
 export const getViewerSnapshot = () =>
-  read("/api/viewer/snapshot", ViewerSnapshot);
+  readBackend("/api/viewer/snapshot", ViewerSnapshot);
 export function getViewerProof(input: string) {
   const hash = input.replace(/^0x/i, "").toLowerCase();
   if (!/^[a-f0-9]{64}$/.test(hash))
     throw new BackendError(400, "Enter a 64-character hexadecimal hash.");
-  return read(`/api/viewer/proof?hash=${hash}`, ViewerProof);
+  return readBackend(`/api/viewer/proof?hash=${hash}`, ViewerProof);
+}
+
+export const getViewerStatus = () =>
+  readBackend("/api/viewer/status", ViewerStatus);
+export function getViewerCycles(cursor?: string) {
+  if (cursor && !z.uuid().safeParse(cursor).success)
+    throw new BackendError(400, "Invalid cycle cursor.");
+  return readBackend(
+    `/api/viewer/cycles${cursor ? `?cursor=${cursor}` : ""}`,
+    ViewerCycles,
+  );
+}
+export function getViewerCycle(id: string) {
+  if (!z.uuid().safeParse(id).success)
+    throw new BackendError(400, "Invalid cycle identifier.");
+  return readBackend(`/api/viewer/cycles/${id}`, ViewerCycle);
+}
+export function getViewerEvents(after: string) {
+  if (!/^\d{1,19}$/.test(after) || BigInt(after) > 9223372036854775807n)
+    throw new BackendError(400, "Invalid event cursor.");
+  return readBackend(`/api/viewer/events?after=${after}`, ViewerEvents);
 }
 
 export async function viewerResponse(operation: () => Promise<unknown>) {
@@ -85,7 +161,13 @@ export async function viewerResponse(operation: () => Promise<unknown>) {
     "x-content-type-options": "nosniff",
   };
   try {
-    return Response.json(await operation(), { headers });
+    const value = await operation();
+    if (value instanceof Response) {
+      for (const [key, header] of Object.entries(headers))
+        value.headers.set(key, header);
+      return value;
+    }
+    return Response.json(value, { headers });
   } catch (error) {
     const known = error instanceof BackendError;
     return Response.json(

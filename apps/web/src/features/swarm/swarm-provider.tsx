@@ -6,12 +6,15 @@ import {
   useEffect,
   useState,
   useCallback,
+  useRef,
   type ReactNode,
 } from "react";
-import { ViewerSnapshot } from "@symbiochain/shared";
+import { ViewerSnapshot, ViewerStatus } from "@symbiochain/shared";
 
 type Swarm = {
   data: ViewerSnapshot | null;
+  status: ViewerStatus | null;
+  streaming: boolean;
   error: string | null;
   loading: boolean;
   refresh: () => void;
@@ -20,6 +23,9 @@ const Context = createContext<Swarm | null>(null);
 
 export function SwarmProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<ViewerSnapshot | null>(null);
+  const [status, setStatus] = useState<ViewerStatus | null>(null);
+  const [streaming, setStreaming] = useState(false);
+  const cursor = useRef("0");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshCount, setRefreshCount] = useState(0);
@@ -43,7 +49,20 @@ export function SwarmProvider({ children }: { children: ReactNode }) {
             "The backend connection is unavailable. Retrying automatically.",
           );
         const snapshot = ViewerSnapshot.parse(await response.json());
+        void fetch("/api/swarm/status", {
+          cache: "no-store",
+          signal: AbortSignal.any([
+            controller.signal,
+            AbortSignal.timeout(20_000),
+          ]),
+        })
+          .then(async (r) => (r.ok ? ViewerStatus.parse(await r.json()) : null))
+          .catch(() => null)
+          .then((result) => {
+            if (active) setStatus(result);
+          });
         if (active) {
+          cursor.current = snapshot.cursor;
           setData(snapshot);
           setError(null);
         }
@@ -72,8 +91,29 @@ export function SwarmProvider({ children }: { children: ReactNode }) {
     };
   }, [refreshCount, refresh]);
 
+  const initialized = !!data;
+  useEffect(() => {
+    if (!initialized) return;
+    const source = new EventSource(`/api/swarm/events?after=${cursor.current}`);
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    source.addEventListener("ready", () => setStreaming(true));
+    source.onerror = () => setStreaming(false);
+    source.addEventListener("unavailable", () => setStreaming(false));
+    source.addEventListener("change", () => {
+      clearTimeout(timer);
+      timer = setTimeout(refresh, 500);
+    });
+    return () => {
+      source.close();
+      clearTimeout(timer);
+      setStreaming(false);
+    };
+  }, [initialized, refresh]);
+
   return (
-    <Context.Provider value={{ data, error, loading, refresh }}>
+    <Context.Provider
+      value={{ data, status, streaming, error, loading, refresh }}
+    >
       {children}
     </Context.Provider>
   );
@@ -86,7 +126,7 @@ export function useSwarm() {
 }
 
 export function ConnectionNotice() {
-  const { data, error, loading, refresh } = useSwarm();
+  const { data, error, loading, refresh, streaming } = useSwarm();
   return (
     <div className="sc-demo-notice" role="status">
       <div className="sc-demo-label">
@@ -103,9 +143,14 @@ export function ConnectionNotice() {
         <span>
           {error ??
             (data
-              ? "Recorded simulation. No on-chain funds or NFTs. Refreshes every 10 seconds."
+              ? "Recorded simulation. No on-chain funds or NFTs."
               : "Waiting for the backend snapshot.")}
         </span>
+        {data && !error && (
+          <span>
+            {streaming ? "Event stream connected" : "Polling every 10 seconds"}
+          </span>
+        )}
       </div>
       <button type="button" className="sc-text-button" onClick={refresh}>
         Refresh

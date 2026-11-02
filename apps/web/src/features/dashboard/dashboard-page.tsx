@@ -24,6 +24,7 @@ import {
   timestamp,
   workerStatus,
 } from "@/features/swarm/format";
+import { ComputeStatus } from "@/features/swarm/compute-status";
 import { TreasuryChart } from "./treasury-chart";
 import "./dashboard.css";
 
@@ -166,6 +167,7 @@ export function DashboardPage() {
             <span className="sc-vital-foot">No estimated survival claim</span>
           </article>
         </section>
+        <ComputeStatus />
         {lowReserve && (
           <div className="sc-reserve-notice" role="status">
             <Flame size={18} />

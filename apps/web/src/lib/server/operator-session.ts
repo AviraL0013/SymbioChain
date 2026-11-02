@@ -36,10 +36,31 @@ const sign = (value: string, secret: string) =>
     .update(`symbio-operator-v1:${value}`)
     .digest("base64url");
 export function requireSameOrigin(request: Request) {
+  // Next's standalone/dev URL can use an internal hostname. Compare the
+  // browser Origin with the actual HTTP authority, never a forwarded host.
+  const target = new URL(request.url);
+  const host = request.headers.get("host");
+  if (host) {
+    let authority: URL;
+    try {
+      authority = new URL(`${target.protocol}//${host}`);
+    } catch {
+      throw new BackendError(403, "Invalid request authority.");
+    }
+    if (
+      authority.username ||
+      authority.password ||
+      authority.pathname !== "/" ||
+      authority.search ||
+      authority.hash
+    )
+      throw new BackendError(403, "Invalid request authority.");
+    target.host = authority.host;
+  }
   const origin = request.headers.get("origin"),
     site = request.headers.get("sec-fetch-site");
   if (
-    origin !== new URL(request.url).origin ||
+    origin !== target.origin ||
     (site && site !== "same-origin" && site !== "none")
   )
     throw new BackendError(

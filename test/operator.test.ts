@@ -194,3 +194,33 @@ test("does not expose upstream error bodies through operator responses", async (
     /secret-owner-material|aaaaaaaaaa|gggggggggg/,
   );
 });
+
+test("checks the actual HTTP authority when Next uses an internal URL", () => {
+  requireSameOrigin(
+    new Request("http://localhost:3300/api/operator/action", {
+      headers: {
+        host: "127.0.0.1:3300",
+        origin: "http://127.0.0.1:3300",
+        "sec-fetch-site": "same-origin",
+      },
+    }),
+  );
+  assert.throws(
+    () =>
+      requireSameOrigin(
+        new Request("http://localhost:3300/api/operator/action", {
+          headers: { host: "127.0.0.1:3300", origin: "http://localhost:3300" },
+        }),
+      ),
+    /same-origin/,
+  );
+  assert.throws(
+    () =>
+      requireSameOrigin(
+        new Request("https://app.example/api/operator/action", {
+          headers: { host: "evil.example", origin: "https://app.example" },
+        }),
+      ),
+    /same-origin/,
+  );
+});

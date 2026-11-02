@@ -1189,3 +1189,18 @@
     stroke-dashoffset: -24;
   }
 }
+
+.app-page .sc-page-heading p {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 639px) {
+  .sc-navigation {
+    gap: 18px;
+    overflow-x: auto;
+    justify-content: flex-start;
+    min-width: 0;
+  }
+  .sc-navigation a {
+    flex-shrink: 0;
+  }
+}

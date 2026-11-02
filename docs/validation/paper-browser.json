@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-11-02T04:57:23.356Z",
+  "mode": "PAPER",
+  "cycleId": "17d390a9-95a7-4ac5-899f-aa125826a7b3",
+  "crashRecovery": true,
+  "scoutClaimAttempts": 2,
+  "costApproval": true,
+  "cycleState": "CLOSED",
+  "browserCredentialsExposed": false,
+  "directBackendRequests": 0,
+  "realTrades": 0,
+  "paidInferenceRequests": 0,
+  "scope": "Isolated localhost PostgreSQL and PAPER backend; real browser HTTP path, simulated economics/inference/receipts.",
+  "frontendProductCommit": "45aa241e551b551342f9e7b61060b7536367cb2e",
+  "backendCommit": "72611fa8d9a83bda5d2e35731d68de7dcce1bd06",
+  "unitChecksPassed": 19,
+  "viewportWidths": [1440, 390],
+  "source": "npm run test:e2e"
+}

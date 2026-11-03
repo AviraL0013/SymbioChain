@@ -103,6 +103,8 @@ test("testnet evidence keeps recorded signatures and simulations distinct", asyn
       {
         checkedAt: new Date().toISOString(),
         profile: report.profile,
+        backendOrigin,
+        frontendOrigin: new URL(page.url()).origin,
         contractId: report.contractId,
         checks: report.checks.map((c: { id: string; status: string }) => ({
           id: c.id,

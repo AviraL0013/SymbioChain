@@ -8,6 +8,13 @@ The integration has three separate browser proofs:
 
 The frontend passes 20 credential-free regression checks, ESLint, TypeScript, formatting and `next build` with Node 22. The earlier backend integration passes its CI backend/contract jobs at commit `72611fa8d9a83bda5d2e35731d68de7dcce1bd06`: [workflow run](https://github.com/SuyashAlphaC/symbiochain-core/actions/runs/41390734080). The testnet additions pass 96 backend unit tests, 50 PostgreSQL integration tests, TypeScript and the production build locally. The isolated rehearsal records its own [actual execution scope](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TESTNET_REHEARSAL.md).
 
+The [hosted report check](validation/testnet-hosted.json) verifies the existing
+Render service at `ce2b870f79051867cb16d54ce3319b86f35fc467`: readiness 200,
+anonymous report 401, authenticated report 200, exact equality with the reviewed
+artifact and no credential exposure. Agent execution remains PAPER. Backend and
+contract CI, including the release-image report check, passes at that revision:
+[workflow run](https://github.com/SuyashAlphaC/symbiochain-core/actions/runs/41428905783).
+
 The production build keeps backend read/admin tokens and the separate operator access secret server-only. The regression checks cover stable idempotency-key forwarding. The browser suite additionally verifies cross-origin rejection, logout/private-evidence rejection, no direct browser-to-backend requests and no backend credentials in browser storage.
 
 ## Hosted release status

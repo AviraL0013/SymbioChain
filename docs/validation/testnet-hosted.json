@@ -1,0 +1,75 @@
+{
+  "checkedAt": "2026-11-02T10:31:36.177Z",
+  "backendCommit": "ce2b870f79051867cb16d54ce3319b86f35fc467",
+  "deployId": "dep-dbk6bh8473hc73foj320",
+  "backendUrl": "https://symbiochain-core.onrender.com",
+  "readinessStatus": 200,
+  "anonymousReportStatus": 401,
+  "authenticatedReportStatus": 200,
+  "reviewedReportDigest": "3a6fc21dc5d6b4d4713fb50ce239ea274643d4e91cf5f2dc796e51a16c0b2348",
+  "reportMatchesArtifact": true,
+  "credentialLeaks": 0,
+  "agentMode": "PAPER",
+  "contractId": "treasury.sc-rehearsal-1bb69cb2.testnet",
+  "transactionCount": 34,
+  "checks": [
+    {
+      "id": "network",
+      "status": "PASSED"
+    },
+    {
+      "id": "deployment",
+      "status": "PASSED"
+    },
+    {
+      "id": "roles",
+      "status": "PASSED"
+    },
+    {
+      "id": "policy",
+      "status": "PASSED"
+    },
+    {
+      "id": "pause",
+      "status": "PASSED"
+    },
+    {
+      "id": "services",
+      "status": "PASSED"
+    },
+    {
+      "id": "evm_signature",
+      "status": "PASSED"
+    },
+    {
+      "id": "solana_signature",
+      "status": "PASSED"
+    },
+    {
+      "id": "settlement",
+      "status": "SIMULATED"
+    },
+    {
+      "id": "receipt",
+      "status": "PASSED"
+    },
+    {
+      "id": "dividends",
+      "status": "PASSED"
+    },
+    {
+      "id": "tee_hardware",
+      "status": "PASSED"
+    },
+    {
+      "id": "tee_deployment",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "inference",
+      "status": "BLOCKED"
+    }
+  ],
+  "mainnetTransactions": 0,
+  "paidInferenceRequests": 0
+}

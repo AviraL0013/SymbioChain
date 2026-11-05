@@ -154,6 +154,18 @@ export function TestnetPage() {
                         <code>{execution.txHash}</code> ↗
                       </a>
                     )}
+                    {execution.nearTransactions?.map((tx) => (
+                      <p key={tx.hash}>
+                        <a
+                          href={`https://testnet.nearblocks.io/txns/${tx.hash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          NEAR {tx.operation.split(":").at(-1)} ·{" "}
+                          <code>{tx.hash}</code> ↗
+                        </a>
+                      </p>
+                    ))}
                   </li>
                 ))}
               </ul>

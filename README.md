@@ -26,6 +26,7 @@ Released frontend: [`83d46d8`](https://github.com/AviraL0013/SymbioChain/commit/
 | `/cycles/:id` | Quote shortfall, current-policy comparison, durable job attempts, settlement economics and recorded proofs                                                      |
 | `/verify`     | Stored verification lookup; a missing record does not mean a signature is invalid                                                                               |
 | `/nfts`       | Persisted PAPER receipts, clearly marked unminted and simulated                                                                                                 |
+| `/business`   | Source candidate: confirmed receipts, reported-cost windows and explicit unfinished funding claims; requires paired backend release                             |
 | `/testnet`    | Separate historical rehearsal report, testnet transaction links, explicit simulations and TEE approval gates                                                    |
 | `/operator`   | Authenticated simulated funding, idempotent cycle creation, pause/resume, recovery demonstration, policy revisions, cost approval and private evidence download |
 
@@ -42,6 +43,8 @@ Operator access uses a separate code and a signed, 30-minute HttpOnly session. B
 - Proof lookup exposes recorded verification scope. PAPER inference never becomes a verified hardware proof.
 
 The backend has separate real gateway/model hardware audit evidence and confidential-inference verification code. Final deployment approval and a signed paid completion still depend on the [documented provenance gate](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TEE_APPROVAL_HANDOFF.md). Mainnet execution awaits the dedicated account, explicit funding limits and a genuinely profitable executable route. More detail: [trading evidence](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TRADING_GATES.md).
+
+The business-accounting source candidate adds `/business` through a strict server-only proxy. It reports zero confirmed external revenue and unknown net costs for the unfunded PAPER deployment. Proceeds reservations are labelled unpaid; automatic credit purchases and business-funded distributions remain unimplemented. This feature is locally verified and not part of the deployed baseline above. See [candidate revisions and validation](docs/validation.md#business-feature-source-candidate).
 
 ## Run locally
 

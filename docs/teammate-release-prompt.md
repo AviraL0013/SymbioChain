@@ -1,40 +1,35 @@
-# Completed owner release runbook
+# Existing-project release verification
 
-**Completed November 5, 2026.** PR #3 merged at
-`83d46d8eb5db2257989bf1c831694da20617635e`; the existing Vercel project is READY,
-`/testnet` is live, the repository is public, and the owner verified operator
-login/state/logout. [Validation notes](validation.md#hosted-release-status)
-record the current state. No initial deployment or visibility step remains pending.
+Initial owner release is complete as of November 5, 2026. PR #3 merged at
+`83d46d8eb5db2257989bf1c831694da20617635e`. The repository is public, the existing
+Vercel project is READY, `/testnet` is live, operator variables are configured,
+and the owner verified login, PAPER state and logout. No initial publication,
+operator configuration or merge step remains pending.
 
-The original owner instructions below are retained as a historical runbook.
-They are not a request to rotate secrets, republish the repository or repeat
-completed configuration. Reuse only the applicable checks for a subsequent release.
+For a subsequent reviewed release, use the existing
+`avirals-projects-27965510/symbiochain` project and domain
+`https://symbiochain.vercel.app`. Preserve Node 22, `apps/web`, workspace access,
+contributor attribution and server-only credentials. Do not create another
+project or change the production domain.
 
-## Historical instructions
+1. Review the precise source revisions and backend compatibility. The business
+   evidence feature requires the backend's additive business migration and API
+   before its frontend is released. See [revision scope](validation.md#business-feature-source-candidate).
+2. Require passing tests, full checks and a protected preview in the same project.
+   Keep read/admin credentials server-only and distinct from the operator access code.
+   The preview should make unavailable or stale data explicit.
+3. Verify snapshot, cycles, proof, testnet and operator discovery. For the business
+   feature, verify `/business` and `/api/swarm/business` show zero confirmed revenue,
+   unknown net/runway and unfinished purchases/distributions in the unfunded PAPER
+   deployment. Do not fabricate records when a backend route is unavailable.
+4. Inspect browser traffic, HTML, JavaScript and storage for backend credentials.
+   Browser API requests must remain same-origin. Verify operator login/state/logout,
+   anonymous-action rejection and cross-origin rejection without hosted mutations.
+5. After review, merge using a merge commit, let the existing project deploy, and
+   repeat read-only production checks. Record the exact source commit and deployment.
 
-Complete the authorized SymbioChain testnet frontend release in `AviraL0013/SymbioChain` from branch `feature/testnet-rehearsal`, PR #3. Use the existing owner-controlled Vercel project `avirals-projects-27965510/symbiochain` serving `https://symbiochain.vercel.app`. Do not create another project, create a `codex` branch, switch accounts, rewrite contributor attribution or change the production domain. The teammate has elected to perform the owner-only release and public-repository steps.
-
-Read `README.md`, `docs/backend-integration.md`, `docs/architecture.md`, `docs/validation.md` and the backend's `docs/TESTNET_SUBMISSION.md`. PR #2 is already merged. The pre-release baseline had a valid PAPER snapshot, an unconfigured optional operator session and no `/testnet` page; those observations were superseded by the completed release. The backend at `https://symbiochain-core.onrender.com` provides the protected report at `/api/viewer/testnet`. Its new records distinguish the integrated runner's blocked TEE gate from two confirmed MPC-authorized Sepolia/Solana devnet execution fixtures. There is no verified model completion, autonomous testnet trade, real Intents swap or proven business profit. Only read-only checks are authorized on the shared deployed service during this release.
-
-Complete these steps autonomously through your authorized owner account:
-
-1. Confirm the existing project's Node 22, Next.js, `apps/web` root, workspace access and Git connection. Inspect the integration PR and its scoped commits. Preserve teammate attribution and existing project configuration.
-2. Keep the existing server-only `BACKEND_URL`, `BACKEND_READ_TOKEN` and `SITE_URL` values. For Preview and Production, add `BACKEND_ADMIN_TOKEN` from the backend operator's private `ADMIN_TOKEN`, plus a distinct newly generated random `OPERATOR_ACCESS_TOKEN` of at least 32 characters. Obtain/share these through a private environment or secret channel; never print them in chat, logs, PRs or source. Do not prefix them with `NEXT_PUBLIC_`. Do not copy the entire backend environment or add wallet/provider/database credentials to Vercel.
-3. Resolve any Git-author/project access requirement using the existing project's permitted collaboration or owner deployment workflow. Do not spoof a contributor's author identity to bypass access. Trigger a protected preview in this existing project after configuring its environment.
-4. Require passing GitHub CI and a Vercel production build. Check snapshot/status/cycles/proof/testnet routes, event notification with polling fallback, receipts and stale/disconnected behavior. Confirm the unknown-hash verdict is “No verified record found.” Keep PAPER labels and null runway. The separate `/testnet` page must distinguish recorded contract/MPC checks, simulated settlement/economics, TEE hardware and deployment approval; its links must target the testnet explorer. Do not interpret it as a LIVE trading mode or purchase inference to refresh it.
-5. Unlock `/operator` with the separate access code, inspect state and log out. Check unauthenticated action/evidence rejection and cross-origin rejection. Do not fund, trade, create a shared cycle, approve costs, mint or trigger a crash on the shared hosted service. No fresh inference is required.
-6. Inspect browser requests, storage, HTML and loaded JavaScript for backend read/admin credentials. Browser traffic should stay on same-origin `/api/swarm/*` and `/api/operator/*` routes. Only the entered operator access code belongs in its intentional login request; backend bearer tokens never belong in browser traffic.
-7. When CI and preview pass, merge the reviewed PR with a merge commit to preserve its small commit history. Let the existing project deploy production. Repeat the read-only production checks and report the exact source commit, deployment URL/status and any remaining blocker accurately.
-
-8. Publish `AviraL0013/SymbioChain` as a public repository for the hackathon. The current collaborator has write access but no administrator permission, which is why this step belongs to the owner. Both repositories now contain MIT application-code licences and preserved asset notices. Inspect all reachable history for credentials and private material, including owner-specific values unavailable to the collaborator. The collaborator's bounded history check found no matches against 11 known credentials or private-key patterns; this is not a guarantee about unknown secrets. Use the repository visibility settings or `gh repo edit AviraL0013/SymbioChain --visibility public --accept-visibility-change-consequences` through the authorized owner account. Do not submit the hackathon application or publish the team's X post as part of this task.
-
-The release is successful only when public unauthenticated GitHub access works,
-the existing production domain serves `/testnet`, its same-origin report matches
-the hosted backend, and no backend credentials appear in browser responses,
-storage or JavaScript assets. The operator must be protected by its separate
-access code and reject unauthenticated and cross-origin actions. Confirm the
-recorded swarm remains blocked at TEE approval with zero paid requests, while the
-separate Sepolia and Solana devnet fixture transactions are confirmed. Do not
-reinterpret either fixture as an AI-approved trade.
-
-If owner project access or the private admin token is unavailable, report that precise missing input and leave the release pending. A passing local build is not a deployed production release. Keep all mainnet execution and paid inference disabled; this task authorizes the existing PAPER integration only.
+No funding, trade, mint, crash or paid inference is required for these checks.
+The mainnet account/caps are still unset and the owner has no mainnet funds.
+The TEE deployment gate, provider purchase protocol and business-funded NFT
+settlement remain separate unfinished work. Submission of the hackathon form or
+publication of a social post is outside this runbook.

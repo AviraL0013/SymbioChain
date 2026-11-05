@@ -48,3 +48,14 @@ Operator cookies expire after 30 minutes. Production uses Secure, HttpOnly, Same
 ## Rollback
 
 Promote the preceding frontend deployment in the same project. Remove/rotate the optional operator access code to revoke sessions. Backend additions preserve the old viewer and require no database migration. Mainnet mode and funding remain separately unarmed.
+
+## Business evidence source update
+
+The `feature/business-revenue-loop` candidate adds `/business` and the fixed
+`/api/swarm/business` proxy to `/api/business/status`. It does not expose the
+backend's financial-write APIs. Apply the backend's additive
+`20261105120000_business_evidence` migration and run server-only database
+hardening before deploying the paired backend, then release the frontend through
+the existing project. See [candidate revisions](validation.md#business-feature-source-candidate).
+The previous deployment remains valid without this page. An unavailable business
+endpoint produces an explicit failure state rather than fabricated economic data.

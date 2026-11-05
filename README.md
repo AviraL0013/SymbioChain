@@ -43,6 +43,12 @@ The backend has separate real gateway/model hardware audit evidence and confiden
 
 ## Run locally
 
+The testnet follow-up also displays the integrated runner's recorded stage and
+remaining TEE gate, plus separate confirmed Sepolia and Solana devnet execution
+fixtures. These are independent of the PAPER overview. Follow the backend's
+[testnet judge walkthrough](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TESTNET_SUBMISSION.md)
+for commands, transaction links, recovery and precise simulation boundaries.
+
 Use **Node 22.13 or later in the 22.x line** and npm 10 or later. The separately deployed backend uses Node 24.
 
 ```sh

@@ -1,8 +1,8 @@
 # Prompt for the existing Vercel project owner
 
-Continue the SymbioChain frontend release in `AviraL0013/SymbioChain` from branch `feature/backend-integration`. Use the existing owner-controlled Vercel project `avirals-projects-27965510/symbiochain` serving `https://symbiochain.vercel.app`. Do not create another project, switch accounts, rewrite contributor attribution or change the production domain.
+Complete the authorized SymbioChain testnet frontend release in `AviraL0013/SymbioChain` from branch `feature/testnet-rehearsal`, PR #3. Use the existing owner-controlled Vercel project `avirals-projects-27965510/symbiochain` serving `https://symbiochain.vercel.app`. Do not create another project, create a `codex` branch, switch accounts, rewrite contributor attribution or change the production domain. The teammate has elected to perform the owner-only release and public-repository steps.
 
-Read `README.md`, `docs/backend-integration.md`, `docs/architecture.md` and `docs/validation.md`. The earlier integration PR #2 has been merged. The testnet follow-up is on `feature/testnet-rehearsal`. A production read found a valid PAPER snapshot, an unconfigured optional operator session, and no `/testnet` page yet. The existing backend at `https://symbiochain-core.onrender.com` provides the curated status/cycle/events endpoints and `x-symbio-expected-mode` check; verify the separate `/api/viewer/testnet` report before releasing its page. The full mutating browser recovery flow was tested against an isolated local PAPER backend. Perform read-only checks on the shared hosted backend.
+Read `README.md`, `docs/backend-integration.md`, `docs/architecture.md`, `docs/validation.md` and the backend's `docs/TESTNET_SUBMISSION.md`. PR #2 is already merged. Production was last observed with a valid PAPER snapshot, an unconfigured optional operator session and no `/testnet` page. The backend at `https://symbiochain-core.onrender.com` provides the protected report at `/api/viewer/testnet`. Its new records distinguish the integrated runner's blocked TEE gate from two confirmed MPC-authorized Sepolia/Solana devnet execution fixtures. There is no verified model completion, autonomous testnet trade, real Intents swap or proven business profit. Only read-only checks are authorized on the shared deployed service during this release.
 
 Complete these steps autonomously through your authorized owner account:
 
@@ -13,5 +13,16 @@ Complete these steps autonomously through your authorized owner account:
 5. Unlock `/operator` with the separate access code, inspect state and log out. Check unauthenticated action/evidence rejection and cross-origin rejection. Do not fund, trade, create a shared cycle, approve costs, mint or trigger a crash on the shared hosted service. No fresh inference is required.
 6. Inspect browser requests, storage, HTML and loaded JavaScript for backend read/admin credentials. Browser traffic should stay on same-origin `/api/swarm/*` and `/api/operator/*` routes. Only the entered operator access code belongs in its intentional login request; backend bearer tokens never belong in browser traffic.
 7. When CI and preview pass, merge the reviewed PR with a merge commit to preserve its small commit history. Let the existing project deploy production. Repeat the read-only production checks and report the exact source commit, deployment URL/status and any remaining blocker accurately.
+
+8. Publish `AviraL0013/SymbioChain` as a public repository for the hackathon. The current collaborator has write access but no administrator permission, which is why this step belongs to the owner. Both repositories now contain MIT application-code licences and preserved asset notices. Inspect all reachable history for credentials and private material, including owner-specific values unavailable to the collaborator. The collaborator's bounded history check found no matches against 11 known credentials or private-key patterns; this is not a guarantee about unknown secrets. Use the repository visibility settings or `gh repo edit AviraL0013/SymbioChain --visibility public --accept-visibility-change-consequences` through the authorized owner account. Do not submit the hackathon application or publish the team's X post as part of this task.
+
+The release is successful only when public unauthenticated GitHub access works,
+the existing production domain serves `/testnet`, its same-origin report matches
+the hosted backend, and no backend credentials appear in browser responses,
+storage or JavaScript assets. The operator must be protected by its separate
+access code and reject unauthenticated and cross-origin actions. Confirm the
+recorded swarm remains blocked at TEE approval with zero paid requests, while the
+separate Sepolia and Solana devnet fixture transactions are confirmed. Do not
+reinterpret either fixture as an AI-approved trade.
 
 If owner project access or the private admin token is unavailable, report that precise missing input and leave the release pending. A passing local build is not a deployed production release. Keep all mainnet execution and paid inference disabled; this task authorizes the existing PAPER integration only.

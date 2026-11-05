@@ -6,7 +6,7 @@ The integration has three separate browser proofs:
 - [Production build against hosted data](validation/hosted-read.json): the local optimized frontend read the existing Render backend, including persisted cycles, compute allowance and resumable event readiness. Anonymous administrative requests returned 401. Browser traffic and assets did not expose the actual backend credentials. No hosted mutation was performed. This proves the application/backend connection; it is not a claim that the branch has been deployed to Vercel.
 - [Testnet evidence page](validation/testnet-browser.json): Chromium checked the historical contract report, the integrated runner's recorded Brain approval gate, two confirmed Sepolia/Solana devnet authorization fixtures and their NEAR MPC request links. It also checked explicit simulation, unavailable responses and the 390px layout. Two server-held credentials were checked against browser traffic and loaded responses; no exposure or direct browser-to-backend request was found. Reading this page performs no chain writes or inference purchase.
 
-The latest frontend verification passes 22 credential-free regression checks, ESLint, TypeScript, formatting and `next build` with Node 22. The backend additions pass 116 unit tests, 58 PostgreSQL integration tests, TypeScript and the production build locally. The [testnet submission walkthrough](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TESTNET_SUBMISSION.md) records reproducible commands, actual transactions, worker recovery and remaining gates. Browser verification observes a blocked integrated run, not a completed authenticated AI cycle.
+The latest frontend verification passes 22 credential-free regression checks, ESLint, TypeScript, formatting and `next build` with Node 22. The backend additions pass 116 unit tests, 59 PostgreSQL integration tests, TypeScript and the production build locally. The [testnet submission walkthrough](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TESTNET_SUBMISSION.md) records reproducible commands, actual transactions, worker recovery and remaining gates. Browser verification observes a blocked integrated run, not a completed authenticated AI cycle.
 
 The [hosted report check](validation/testnet-hosted.json) verifies Render deployment
 `dep-dbm0nohsrm7s73en4t9g` at backend commit `e1633c7ff16cb2ce3ce484aa44b12d09cc0117a5`:
@@ -55,7 +55,7 @@ for subsequent updates in the same projects.
 The locally verified application commits are frontend
 [`be50793f719f8696736a648ad9ac9e4d3eb3a9a2`](https://github.com/AviraL0013/SymbioChain/commit/be50793f719f8696736a648ad9ac9e4d3eb3a9a2)
 and backend
-[`54883186106c70f2b83589f15f6003e9b87dbf92`](https://github.com/SuyashAlphaC/symbiochain-core/commit/54883186106c70f2b83589f15f6003e9b87dbf92).
+[`ae70bbfb63a244ec86811c7abb66a443ba771555`](https://github.com/SuyashAlphaC/symbiochain-core/commit/ae70bbfb63a244ec86811c7abb66a443ba771555).
 Both are on `feature/business-revenue-loop`. Subsequent documentation commits
 maintain release notes without changing those application revisions. These are
 source candidates, not deployed or confirmed submitted revisions. The exact

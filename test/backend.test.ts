@@ -126,6 +126,61 @@ test("publishes testnet scope through server authorization and rejects expanded 
   }
 });
 
+test("accepts recorded workflow gates and destination transactions without publishing private state", async () => {
+  const report = {
+    ...emptyTestnetReport(),
+    swarm: {
+      profile: "TESTNET_SWARM",
+      runId: "dd29a8af-1a32-400a-b2e2-0dd7cccfc418",
+      updatedAt: new Date().toISOString(),
+      stage: "BRAIN",
+      status: "BLOCKED",
+      settlement: "SIMULATED",
+      economics: "SIMULATED",
+      paidInferenceRequests: 0,
+      billedUsdMicros: null,
+      inference: null,
+      execution: null,
+      receiptTokenId: null,
+      events: [
+        {
+          stage: "BRAIN",
+          at: new Date().toISOString(),
+          code: "TEE_DEPLOYMENT_UNAPPROVED",
+        },
+      ],
+    },
+    executions: [
+      {
+        chain: "eip155:11155111",
+        source: "AUTHORIZATION_FIXTURE",
+        sender: `0x${"11".repeat(20)}`,
+        status: "CONFIRMED",
+        code: "CONFIRMED",
+        txHash: `0x${"22".repeat(32)}`,
+        nativeFeeAtoms: "1",
+      },
+    ],
+  };
+  const transport = mock.method(globalThis, "fetch", async () =>
+    Response.json(report),
+  );
+  assert.deepEqual(await getTestnetReport(), report);
+  transport.mock.restore();
+  for (const swarm of [
+    { ...report.swarm, privatePrompt: "DO_NOT_LEAK" },
+    { ...report.swarm, status: "CLOSED", stage: "CLOSED" },
+  ]) {
+    const invalid = mock.method(globalThis, "fetch", async () =>
+      Response.json({ ...report, swarm }),
+    );
+    const response = await viewerResponse(getTestnetReport);
+    assert.equal(response.status, 502);
+    assert.doesNotMatch(await response.text(), /DO_NOT_LEAK|privatePrompt/);
+    invalid.mock.restore();
+  }
+});
+
 test("returns stored proof scope without claiming fresh verification", async () => {
   const proof = {
     contractVersion: 1,

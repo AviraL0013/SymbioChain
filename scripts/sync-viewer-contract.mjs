@@ -11,10 +11,14 @@ for (const name of [
   "viewer-contract",
   "viewer-details-contract",
   "testnet-contract",
+  "testnet-swarm-contract",
 ]) {
   const source = await readFile(resolve(backend, `src/${name}.ts`), "utf8");
   await writeFile(
     new URL(`../packages/shared/src/${name}.ts`, import.meta.url),
-    await format(source, { parser: "typescript", singleQuote: false }),
+    await format(source.replace(/(from\s+['"]\.\/[^'"]+)\.js(['"])/g, "$1$2"), {
+      parser: "typescript",
+      singleQuote: false,
+    }),
   );
 }

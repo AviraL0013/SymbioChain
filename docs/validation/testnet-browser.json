@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-11-02T10:33:49.274Z",
+  "checkedAt": "2026-11-05T04:33:26.590Z",
   "profile": "TESTNET_REHEARSAL",
-  "backendOrigin": "https://symbiochain-core.onrender.com",
-  "frontendOrigin": "http://127.0.0.1:3304",
+  "backendOrigin": "http://127.0.0.1:3327",
+  "frontendOrigin": "http://127.0.0.1:3328",
   "contractId": "treasury.sc-rehearsal-1bb69cb2.testnet",
   "checks": [
     {
@@ -72,5 +72,7 @@
     "credentialLeaks": 0
   },
   "mainnetTransactions": 0,
-  "paidInferenceRequests": 0
+  "paidInferenceRequests": 0,
+  "swarmStatus": "BLOCKED",
+  "confirmedDestinationExecutions": 2
 }

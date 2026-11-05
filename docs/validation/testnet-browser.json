@@ -1,0 +1,78 @@
+{
+  "checkedAt": "2026-11-05T04:43:15.390Z",
+  "profile": "TESTNET_REHEARSAL",
+  "backendOrigin": "https://symbiochain-core.onrender.com",
+  "frontendOrigin": "http://127.0.0.1:3328",
+  "contractId": "treasury.sc-rehearsal-1bb69cb2.testnet",
+  "checks": [
+    {
+      "id": "network",
+      "status": "PASSED"
+    },
+    {
+      "id": "deployment",
+      "status": "PASSED"
+    },
+    {
+      "id": "roles",
+      "status": "PASSED"
+    },
+    {
+      "id": "policy",
+      "status": "PASSED"
+    },
+    {
+      "id": "pause",
+      "status": "PASSED"
+    },
+    {
+      "id": "services",
+      "status": "PASSED"
+    },
+    {
+      "id": "evm_signature",
+      "status": "PASSED"
+    },
+    {
+      "id": "solana_signature",
+      "status": "PASSED"
+    },
+    {
+      "id": "settlement",
+      "status": "SIMULATED"
+    },
+    {
+      "id": "receipt",
+      "status": "PASSED"
+    },
+    {
+      "id": "dividends",
+      "status": "PASSED"
+    },
+    {
+      "id": "tee_hardware",
+      "status": "PASSED"
+    },
+    {
+      "id": "tee_deployment",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "inference",
+      "status": "BLOCKED"
+    }
+  ],
+  "assertions": {
+    "sameOriginProxy": true,
+    "explicitSimulation": true,
+    "noHorizontalOverflowAt390px": true,
+    "pageErrors": 0,
+    "directBackendRequests": 0,
+    "inspectedCredentialCount": 2,
+    "credentialLeaks": 0
+  },
+  "mainnetTransactions": 0,
+  "paidInferenceRequests": 0,
+  "swarmStatus": "BLOCKED",
+  "confirmedDestinationExecutions": 2
+}

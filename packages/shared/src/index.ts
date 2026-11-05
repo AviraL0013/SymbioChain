@@ -24,3 +24,4 @@ export {
   OperatorState,
   OperatorAction,
 } from "./operator-contract";
+export { TestnetReport, emptyTestnetReport } from "./testnet-contract";

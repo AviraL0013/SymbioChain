@@ -6,6 +6,12 @@ A policy-controlled three-agent treasury with durable execution, verifiable infe
 
 **The deployed demonstration uses PAPER execution.** Its telemetry comes from persisted backend records; economic results, inference and receipts in that mode are simulated. Real wallet deposits, live trading and on-chain ownership are not enabled by this frontend. The goal of an agent earning and purchasing its own compute remains an incomplete business loop.
 
+The integration branch also adds a separate `/testnet` evidence page. It publishes
+recorded NEAR testnet contract checks and real MPC signature results independently
+from the PAPER agent feed. Market settlement and reported economics in that
+rehearsal remain explicitly simulated. Hardware verification, deployment approval
+and signed inference are displayed as separate gates.
+
 EYE (the SCOUT worker) discovers candidate routes, BRAIN assesses committed terms, and HAND tracks execution, reconciliation and receipts. The Fastify backend owns PostgreSQL, jobs, signing and provider integrations. This Next.js repository supplies the public application and protected PAPER operator controls.
 
 ## Explore
@@ -18,6 +24,7 @@ EYE (the SCOUT worker) discovers candidate routes, BRAIN assesses committed term
 | `/cycles/:id` | Quote shortfall, current-policy comparison, durable job attempts, settlement economics and recorded proofs                                                      |
 | `/verify`     | Stored verification lookup; a missing record does not mean a signature is invalid                                                                               |
 | `/nfts`       | Persisted PAPER receipts, clearly marked unminted and simulated                                                                                                 |
+| `/testnet`    | Separate historical rehearsal report, testnet transaction links, explicit simulations and TEE approval gates                                                    |
 | `/operator`   | Authenticated simulated funding, idempotent cycle creation, pause/resume, recovery demonstration, policy revisions, cost approval and private evidence download |
 
 Public pages read runtime-validated publication schemas through fixed server routes. A resumable event stream refreshes persisted telemetry; polling continues through interruptions. Stale and disconnected states retain their labels. No page invents records when the backend is unavailable.
@@ -35,6 +42,12 @@ Operator access uses a separate code and a signed, 30-minute HttpOnly session. B
 The backend has separate real gateway/model hardware audit evidence and confidential-inference verification code. Final deployment approval and a signed paid completion still depend on the [documented provenance gate](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TEE_APPROVAL_HANDOFF.md). Mainnet execution awaits the dedicated account, explicit funding limits and a genuinely profitable executable route. More detail: [trading evidence](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TRADING_GATES.md).
 
 ## Run locally
+
+The testnet follow-up also displays the integrated runner's recorded stage and
+remaining TEE gate, plus separate confirmed Sepolia and Solana devnet execution
+fixtures. These are independent of the PAPER overview. Follow the backend's
+[testnet judge walkthrough](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TESTNET_SUBMISSION.md)
+for commands, transaction links, recovery and precise simulation boundaries.
 
 Use **Node 22.13 or later in the 22.x line** and npm 10 or later. The separately deployed backend uses Node 24.
 

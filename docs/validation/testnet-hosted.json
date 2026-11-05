@@ -1,0 +1,129 @@
+{
+  "checkedAt": "2026-11-05T04:57:10.340Z",
+  "backendCommit": "e1633c7ff16cb2ce3ce484aa44b12d09cc0117a5",
+  "deployId": "dep-dbm0nohsrm7s73en4t9g",
+  "backendUrl": "https://symbiochain-core.onrender.com",
+  "readinessStatus": 200,
+  "anonymousReportStatus": 401,
+  "authenticatedReportStatus": 200,
+  "reviewedReportDigest": "3371c93e49f074f9c3abe3f7d8e79c8b70e6c9d7f3d29ffc8feadcdc4be78d97",
+  "reportMatchesArtifact": true,
+  "credentialLeaks": 0,
+  "agentMode": "PAPER",
+  "contractId": "treasury.sc-rehearsal-1bb69cb2.testnet",
+  "transactionCount": 34,
+  "swarm": {
+    "runId": "058c4f9b-3d75-4938-84d6-1c48e04dd706",
+    "status": "BLOCKED",
+    "stage": "BRAIN",
+    "paidInferenceRequests": 0
+  },
+  "executions": [
+    {
+      "chain": "eip155:11155111",
+      "source": "AUTHORIZATION_FIXTURE",
+      "sender": "0x5C5890Cf4B4B79982F201b18CAAa43419179290D",
+      "status": "CONFIRMED",
+      "code": "CONFIRMED",
+      "txHash": "0xd47cc9a925ca1bd0f0232181736894a744ed9ba41284e920cd14cb5029ca81e3",
+      "nativeFeeAtoms": "54613026",
+      "nearTransactions": [
+        {
+          "operation": "630ac5e3-fd71-4c8b-8ad9-4362a9fc6487:evm:authorize",
+          "hash": "HFVyLEVhs2kuno4CYAkwSiC6ZJ4fuCooxHeSmF8Bm3Yw"
+        },
+        {
+          "operation": "630ac5e3-fd71-4c8b-8ad9-4362a9fc6487:evm:sign",
+          "hash": "65ABq2sVWQdCk2xKZvYup3SFdZ8pd6Kdm1Wo2DdP2HJc"
+        },
+        {
+          "operation": "630ac5e3-fd71-4c8b-8ad9-4362a9fc6487:evm:submission",
+          "hash": "HDceUhsFF5X3DxkFPYowf9A9QWmUgRX3wUHi93A84uYJ"
+        }
+      ]
+    },
+    {
+      "chain": "solana:devnet",
+      "source": "AUTHORIZATION_FIXTURE",
+      "sender": "2QqkogoRzLx1Tr55osURq8DSNzKRG2J1NFfRCEN9b7NW",
+      "status": "CONFIRMED",
+      "code": "CONFIRMED",
+      "txHash": "2hMmyjDc1bYdyoi4QdfhpRLUb4bFYAWeDcJnjGQgGkTGPRmFuuMKeHdrYmrqaBmbV3QjSet2ZXeXzUYnbfBVvRkb",
+      "nativeFeeAtoms": "5000",
+      "nearTransactions": [
+        {
+          "operation": "630ac5e3-fd71-4c8b-8ad9-4362a9fc6487:solana:authorize",
+          "hash": "Hvhke5RQVcmfYbJ9eZGogzbpARmVxT75JqfMnywyK6ef"
+        },
+        {
+          "operation": "630ac5e3-fd71-4c8b-8ad9-4362a9fc6487:solana:sign",
+          "hash": "3fRorBtMLKE1yo5aNYcLt341sHrfh6dfzJwbPjy9Cg3G"
+        },
+        {
+          "operation": "630ac5e3-fd71-4c8b-8ad9-4362a9fc6487:solana:submission",
+          "hash": "9cyEPS6WmercUSKE5wLbXxHgNwfVQ5zBCa5H3eem6cJT"
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "network",
+      "status": "PASSED"
+    },
+    {
+      "id": "deployment",
+      "status": "PASSED"
+    },
+    {
+      "id": "roles",
+      "status": "PASSED"
+    },
+    {
+      "id": "policy",
+      "status": "PASSED"
+    },
+    {
+      "id": "pause",
+      "status": "PASSED"
+    },
+    {
+      "id": "services",
+      "status": "PASSED"
+    },
+    {
+      "id": "evm_signature",
+      "status": "PASSED"
+    },
+    {
+      "id": "solana_signature",
+      "status": "PASSED"
+    },
+    {
+      "id": "settlement",
+      "status": "SIMULATED"
+    },
+    {
+      "id": "receipt",
+      "status": "PASSED"
+    },
+    {
+      "id": "dividends",
+      "status": "PASSED"
+    },
+    {
+      "id": "tee_hardware",
+      "status": "PASSED"
+    },
+    {
+      "id": "tee_deployment",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "inference",
+      "status": "BLOCKED"
+    }
+  ],
+  "mainnetTransactions": 0,
+  "paidInferenceRequests": 0
+}

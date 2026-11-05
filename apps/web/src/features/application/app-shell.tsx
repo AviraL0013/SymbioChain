@@ -14,6 +14,7 @@ const navigation = [
   ["/dashboard", "Overview"],
   ["/topology", "Topology"],
   ["/cycles", "Cycles"],
+  ["/testnet", "Testnet"],
   ["/verify", "Proofs"],
   ["/nfts", "Receipts"],
   ["/operator", "Operator"],

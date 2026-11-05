@@ -1,7 +1,7 @@
 {
-  "checkedAt": "2026-11-05T04:42:35.473Z",
-  "backendCommit": "b2c223a265eb566e379ea159ccee07a7cf655542",
-  "deployId": "dep-dbm0gemc6qcc73fjkn6g",
+  "checkedAt": "2026-11-05T04:57:10.340Z",
+  "backendCommit": "e1633c7ff16cb2ce3ce484aa44b12d09cc0117a5",
+  "deployId": "dep-dbm0nohsrm7s73en4t9g",
   "backendUrl": "https://symbiochain-core.onrender.com",
   "readinessStatus": 200,
   "anonymousReportStatus": 401,

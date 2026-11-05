@@ -78,6 +78,32 @@ test("testnet evidence keeps recorded signatures and simulations distinct", asyn
     expect(await link.getAttribute("href")).toMatch(
       /^https:\/\/testnet\.nearblocks\.io\/(address|txns)\//,
     );
+  if (report.swarm) {
+    await expect(
+      page.getByRole("heading", { name: "Integrated testnet agent workflow" }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(`${report.swarm.stage} · ${report.swarm.status}.`, {
+        exact: false,
+      }),
+    ).toBeVisible();
+    if (report.swarm.status === "BLOCKED")
+      expect(report.swarm.receiptTokenId).toBeNull();
+  }
+  for (const execution of report.executions ?? []) {
+    await expect(
+      page.getByText(`${execution.chain} · ${execution.status}`, {
+        exact: true,
+      }),
+    ).toBeVisible();
+    if (execution.txHash) {
+      const href =
+        execution.chain === "eip155:11155111"
+          ? `https://sepolia.etherscan.io/tx/${execution.txHash}`
+          : `https://explorer.solana.com/tx/${execution.txHash}?cluster=devnet`;
+      await expect(page.locator(`a[href="${href}"]`)).toBeVisible();
+    }
+  }
   await page.screenshot({
     path: "artifacts/browser/testnet-desktop.png",
     fullPage: true,
@@ -121,6 +147,10 @@ test("testnet evidence keeps recorded signatures and simulations distinct", asyn
         },
         mainnetTransactions: 0,
         paidInferenceRequests: 0,
+        swarmStatus: report.swarm?.status ?? null,
+        confirmedDestinationExecutions: (report.executions ?? []).filter(
+          (execution: { status: string }) => execution.status === "CONFIRMED",
+        ).length,
       },
       null,
       2,

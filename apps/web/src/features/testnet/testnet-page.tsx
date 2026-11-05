@@ -26,19 +26,26 @@ export function TestnetPage() {
   const [error, setError] = useState("");
   useEffect(() => {
     const controller = new AbortController();
-    void fetch("/api/swarm/testnet", {
-      cache: "no-store",
-      signal: controller.signal,
-    })
-      .then(async (response) => {
-        if (!response.ok) throw Error("The rehearsal report is unavailable.");
-        setReport(TestnetReport.parse(await response.json()));
+    const refresh = () =>
+      void fetch("/api/swarm/testnet", {
+        cache: "no-store",
+        signal: controller.signal,
       })
-      .catch(() => {
-        if (!controller.signal.aborted)
-          setError("The rehearsal report is unavailable. Refresh to retry.");
-      });
-    return () => controller.abort();
+        .then(async (response) => {
+          if (!response.ok) throw Error("The rehearsal report is unavailable.");
+          setReport(TestnetReport.parse(await response.json()));
+          setError("");
+        })
+        .catch(() => {
+          if (!controller.signal.aborted)
+            setError("The rehearsal report is unavailable. Refresh to retry.");
+        });
+    refresh();
+    const poll = setInterval(refresh, 10000);
+    return () => {
+      controller.abort();
+      clearInterval(poll);
+    };
   }, []);
   return (
     <AppShell
@@ -59,6 +66,99 @@ export function TestnetPage() {
             does not establish deployment approval or a verified AI response.
             Simulated settlement does not prove real profit.
           </div>
+          {report.swarm && (
+            <section className="cycle-card">
+              <h2>Integrated testnet agent workflow</h2>
+              <p>
+                {report.swarm.stage} · {report.swarm.status}. This recorded
+                workflow has its own run identity and guarded checkpoints.
+                Market settlement and economics remain SIMULATED, including any
+                positive accountant fixture used to exercise NFT minting.
+              </p>
+              <dl className="cycle-metrics">
+                <div>
+                  <dt>Run</dt>
+                  <dd>
+                    <code>{report.swarm.runId}</code>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Last recorded</dt>
+                  <dd>{timestamp(report.swarm.updatedAt)}</dd>
+                </div>
+                <div>
+                  <dt>Paid requests / reserved attempts</dt>
+                  <dd>{report.swarm.paidInferenceRequests}</dd>
+                </div>
+                <div>
+                  <dt>Verified model response</dt>
+                  <dd>{report.swarm.inference?.status ?? "Not verified"}</dd>
+                </div>
+                <div>
+                  <dt>Provider charge (USD micros)</dt>
+                  <dd>
+                    {report.swarm.billedUsdMicros ?? "Unknown / not purchased"}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Destination execution</dt>
+                  <dd>{report.swarm.execution?.status ?? "Not executed"}</dd>
+                </div>
+                <div>
+                  <dt>Testnet receipt</dt>
+                  <dd>{report.swarm.receiptTokenId ?? "Not minted"}</dd>
+                </div>
+              </dl>
+              <ul className="cycle-timeline">
+                {report.swarm.events.map((event, index) => (
+                  <li key={`${event.at}:${index}`}>
+                    <strong>
+                      {event.stage} · {event.code}
+                    </strong>
+                    <p>{timestamp(event.at)}</p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {!!report.executions?.length && (
+            <section className="cycle-card">
+              <h2>Destination-chain execution checks</h2>
+              <p>
+                Authorization fixtures verify testnet execution independently of
+                AI approval. They are not AI-approved trades or Intents
+                settlements.
+              </p>
+              <ul className="cycle-timeline">
+                {report.executions.map((execution) => (
+                  <li key={execution.chain}>
+                    <strong>
+                      {execution.chain} · {execution.status}
+                    </strong>
+                    <p>
+                      {execution.code} · {execution.source}
+                    </p>
+                    <p>
+                      Derived wallet: <code>{execution.sender}</code>
+                    </p>
+                    {execution.txHash && (
+                      <a
+                        href={
+                          execution.chain === "eip155:11155111"
+                            ? `https://sepolia.etherscan.io/tx/${execution.txHash}`
+                            : `https://explorer.solana.com/tx/${execution.txHash}?cluster=devnet`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <code>{execution.txHash}</code> ↗
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
           <div className="cycle-grid">
             <section className="cycle-card">
               <h2>Execution scope</h2>

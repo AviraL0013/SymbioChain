@@ -2,7 +2,7 @@
 
 Use the existing `symbiochain` project serving **https://symbiochain.vercel.app**. Preserve the owner/team, Node 22, Next.js configuration, `apps/web` root and access to workspace files. No new Vercel project or paid infrastructure is needed for this integration.
 
-PR #1 already merged the original read-only feed. This branch adds execution inspection, compute-budget telemetry, resumable event notification and protected PAPER operations. The backend additions are backward compatible; deploy them before releasing this frontend.
+PRs #1–#3 are merged. Production includes execution inspection, compute-budget telemetry, resumable event notification, protected PAPER operations and `/testnet`. The repository is public and operator configuration is complete. See [verified revisions and release evidence](validation.md#hosted-release-status). The checklist below applies to future updates; it does not describe pending initial deployment. Backend additions must remain compatible with the released frontend.
 
 ## Server-only environment
 

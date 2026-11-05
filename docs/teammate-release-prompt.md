@@ -1,8 +1,20 @@
-# Prompt for the existing Vercel project owner
+# Completed owner release runbook
+
+**Completed November 5, 2026.** PR #3 merged at
+`83d46d8eb5db2257989bf1c831694da20617635e`; the existing Vercel project is READY,
+`/testnet` is live, the repository is public, and the owner verified operator
+login/state/logout. [Validation notes](validation.md#hosted-release-status)
+record the current state. No initial deployment or visibility step remains pending.
+
+The original owner instructions below are retained as a historical runbook.
+They are not a request to rotate secrets, republish the repository or repeat
+completed configuration. Reuse only the applicable checks for a subsequent release.
+
+## Historical instructions
 
 Complete the authorized SymbioChain testnet frontend release in `AviraL0013/SymbioChain` from branch `feature/testnet-rehearsal`, PR #3. Use the existing owner-controlled Vercel project `avirals-projects-27965510/symbiochain` serving `https://symbiochain.vercel.app`. Do not create another project, create a `codex` branch, switch accounts, rewrite contributor attribution or change the production domain. The teammate has elected to perform the owner-only release and public-repository steps.
 
-Read `README.md`, `docs/backend-integration.md`, `docs/architecture.md`, `docs/validation.md` and the backend's `docs/TESTNET_SUBMISSION.md`. PR #2 is already merged. Production was last observed with a valid PAPER snapshot, an unconfigured optional operator session and no `/testnet` page. The backend at `https://symbiochain-core.onrender.com` provides the protected report at `/api/viewer/testnet`. Its new records distinguish the integrated runner's blocked TEE gate from two confirmed MPC-authorized Sepolia/Solana devnet execution fixtures. There is no verified model completion, autonomous testnet trade, real Intents swap or proven business profit. Only read-only checks are authorized on the shared deployed service during this release.
+Read `README.md`, `docs/backend-integration.md`, `docs/architecture.md`, `docs/validation.md` and the backend's `docs/TESTNET_SUBMISSION.md`. PR #2 is already merged. The pre-release baseline had a valid PAPER snapshot, an unconfigured optional operator session and no `/testnet` page; those observations were superseded by the completed release. The backend at `https://symbiochain-core.onrender.com` provides the protected report at `/api/viewer/testnet`. Its new records distinguish the integrated runner's blocked TEE gate from two confirmed MPC-authorized Sepolia/Solana devnet execution fixtures. There is no verified model completion, autonomous testnet trade, real Intents swap or proven business profit. Only read-only checks are authorized on the shared deployed service during this release.
 
 Complete these steps autonomously through your authorized owner account:
 

@@ -6,13 +6,15 @@ A policy-controlled three-agent treasury with durable execution, verifiable infe
 
 **The deployed demonstration uses PAPER execution.** Its telemetry comes from persisted backend records; economic results, inference and receipts in that mode are simulated. Real wallet deposits, live trading and on-chain ownership are not enabled by this frontend. The goal of an agent earning and purchasing its own compute remains an incomplete business loop.
 
-The integration branch also adds a separate `/testnet` evidence page. It publishes
+The deployed site includes a separate `/testnet` evidence page. It publishes
 recorded NEAR testnet contract checks and real MPC signature results independently
 from the PAPER agent feed. Market settlement and reported economics in that
 rehearsal remain explicitly simulated. Hardware verification, deployment approval
 and signed inference are displayed as separate gates.
 
 EYE (the SCOUT worker) discovers candidate routes, BRAIN assesses committed terms, and HAND tracks execution, reconciliation and receipts. The Fastify backend owns PostgreSQL, jobs, signing and provider integrations. This Next.js repository supplies the public application and protected PAPER operator controls.
+
+Released frontend: [`83d46d8`](https://github.com/AviraL0013/SymbioChain/commit/83d46d8eb5db2257989bf1c831694da20617635e) (PR #3). The repository is public and the existing Vercel project serves `/testnet`; operator configuration and owner login/logout checks are complete. See [release evidence and revision scope](docs/validation.md#hosted-release-status). This records deployment, not confirmation of a hackathon form submission.
 
 ## Explore
 
@@ -43,7 +45,7 @@ The backend has separate real gateway/model hardware audit evidence and confiden
 
 ## Run locally
 
-The testnet follow-up also displays the integrated runner's recorded stage and
+The testnet page also displays the integrated runner's recorded stage and
 remaining TEE gate, plus separate confirmed Sepolia and Solana devnet execution
 fixtures. These are independent of the PAPER overview. Follow the backend's
 [testnet judge walkthrough](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TESTNET_SUBMISSION.md)

@@ -20,10 +20,32 @@ The production build keeps backend read/admin tokens and the separate operator a
 
 ## Hosted release status
 
-The earlier integration was merged in PR #2 at `2b5f2964699bbc7e7cd71effd5183b7c23c94fe6`. A fresh production read returned a valid PAPER snapshot (200). Operator session discovery returned `configured: false`; the optional server-side operator credentials still need configuration in the existing Vercel project. The `/testnet` route returned 404 because the rehearsal page is a separate follow-up change.
+Verified on November 5, 2026: PR #3 merged at
+[`83d46d8eb5db2257989bf1c831694da20617635e`](https://github.com/AviraL0013/SymbioChain/commit/83d46d8eb5db2257989bf1c831694da20617635e).
+The public repository is anonymously accessible. The existing Vercel project
+`avirals-projects-27965510/symbiochain` serves
+[the testnet page](https://symbiochain.vercel.app/testnet); its same-origin JSON
+report matches the hosted backend. Snapshot returns PAPER, contract version 1,
+and null survival hours. Operator discovery is configured; anonymous operator
+state returns 401. The owner separately verified login, PAPER state and logout,
+and reported the existing deployment READY. These completed owner steps replace
+the earlier observations of a missing page and unconfigured operator.
 
-The new testnet page remains on `feature/testnet-rehearsal` until its follow-up PR is reviewed and released. The local Vercel login cannot resolve the teammate-owned `avirals-projects-27965510` scope. Repository write permission does not grant access to that project. No new Vercel project or account was created.
+The verified Render deployment serves backend application revision
+[`e1633c7ff16cb2ce3ce484aa44b12d09cc0117a5`](https://github.com/SuyashAlphaC/symbiochain-core/commit/e1633c7ff16cb2ce3ce484aa44b12d09cc0117a5).
+Later documentation or feature commits are not automatically deployed. The
+[backend release evidence](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/frontend-production-release.json)
+separates independent read checks from owner-reported browser checks.
 
-The owner must configure the two optional operator server variables, verify a protected preview in the existing project, merge the reviewed follow-up PR and verify its production deployment. Use the [ready-to-run teammate prompt](teammate-release-prompt.md) and [configuration checklist](backend-integration.md).
+Real execution evidence covers NEAR testnet contract calls, MPC signatures and
+separate confirmed Sepolia/Solana devnet transfers. Those transfers are
+**authorization fixtures**, not TEE-approved trades. Market data, quotes,
+settlement economics and PAPER receipts are simulated. The recorded integrated
+runner stops at TEE deployment approval with zero paid requests. External customer
+revenue, realized business profit, automatic AI-credit purchases and business-funded
+NFT distributions remain unproven. A testnet NFT funding fixture is not revenue.
 
-These checks do not complete mainnet funding, prove profitable live trading, purchase compute credits, approve an unverified image measurement or mint a mainnet NFT. The separate rehearsal does mint a real testnet NFT and exercises a test-token distribution/claim against synthetic accountant reconciliation. Those testnet mechanics do not establish an autonomous business or replace the remaining production gates.
+No hackathon submission receipt has been recorded. The revisions above identify
+the verified deployed baseline, not an assertion that a later feature branch was
+submitted or released. Follow the [release checklist](backend-integration.md)
+for subsequent updates in the same projects.

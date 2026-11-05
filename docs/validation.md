@@ -8,12 +8,13 @@ The integration has three separate browser proofs:
 
 The latest frontend verification passes 21 credential-free regression checks, ESLint, TypeScript, formatting and `next build` with Node 22. The backend additions pass 105 unit tests, 50 PostgreSQL integration tests, TypeScript and the production build locally. The [testnet submission walkthrough](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TESTNET_SUBMISSION.md) records reproducible commands, actual transactions, worker recovery and remaining gates. Browser verification observes a blocked integrated run, not a completed authenticated AI cycle.
 
-The [hosted report check](validation/testnet-hosted.json) verifies the existing
-Render service at `ce2b870f79051867cb16d54ce3319b86f35fc467`: readiness 200,
-anonymous report 401, authenticated report 200, exact equality with the reviewed
-artifact and no credential exposure. Agent execution remains PAPER. Backend and
-contract CI, including the release-image report check, passes at that revision:
-[workflow run](https://github.com/SuyashAlphaC/symbiochain-core/actions/runs/41428905783).
+The [hosted report check](validation/testnet-hosted.json) verifies Render deployment
+`dep-dbm0gemc6qcc73fjkn6g` at backend commit `b2c223a265eb566e379ea159ccee07a7cf655542`:
+readiness 200, anonymous report 401, authenticated report 200, exact equality with
+the reviewed artifact and no credential exposure. It records both confirmed
+destination fixtures and the blocked integrated Brain run with zero paid requests.
+Agent operations remain PAPER. Backend/container and Rust contract CI pass:
+[workflow run](https://github.com/SuyashAlphaC/symbiochain-core/actions/runs/41968673489).
 
 The production build keeps backend read/admin tokens and the separate operator access secret server-only. The regression checks cover stable idempotency-key forwarding. The browser suite additionally verifies cross-origin rejection, logout/private-evidence rejection, no direct browser-to-backend requests and no backend credentials in browser storage.
 

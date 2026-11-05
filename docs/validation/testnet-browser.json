@@ -1,7 +1,7 @@
 {
-  "checkedAt": "2026-11-05T04:33:26.590Z",
+  "checkedAt": "2026-11-05T04:43:15.390Z",
   "profile": "TESTNET_REHEARSAL",
-  "backendOrigin": "http://127.0.0.1:3327",
+  "backendOrigin": "https://symbiochain-core.onrender.com",
   "frontendOrigin": "http://127.0.0.1:3328",
   "contractId": "treasury.sc-rehearsal-1bb69cb2.testnet",
   "checks": [

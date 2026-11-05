@@ -1,0 +1,18 @@
+{
+  "scope": "ISOLATED_LOCAL_PAPER",
+  "checkedAt": "2026-11-05T12:54:42.978Z",
+  "mainnetTransactions": 0,
+  "paidInferenceRequests": 0,
+  "assertions": [
+    "confirmed revenue is zero",
+    "net and runway remain unknown",
+    "purchase and distribution unproven",
+    "stale and unavailable states",
+    "390px layout",
+    "no credential exposure",
+    "no direct browser-to-backend requests"
+  ],
+  "pageErrors": 0,
+  "credentialLeaks": 0,
+  "directBackendRequests": 0
+}

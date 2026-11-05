@@ -25,3 +25,5 @@ export {
   OperatorAction,
 } from "./operator-contract";
 export { TestnetReport, emptyTestnetReport } from "./testnet-contract";
+
+export { BusinessStatus } from "./business-contract";

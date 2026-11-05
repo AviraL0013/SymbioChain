@@ -2,7 +2,7 @@
 
 Use the existing `symbiochain` project serving **https://symbiochain.vercel.app**. Preserve the owner/team, Node 22, Next.js configuration, `apps/web` root and access to workspace files. No new Vercel project or paid infrastructure is needed for this integration.
 
-PR #1 already merged the original read-only feed. This branch adds execution inspection, compute-budget telemetry, resumable event notification and protected PAPER operations. The backend additions are backward compatible; deploy them before releasing this frontend.
+PRs #1–#3 are merged. Production includes execution inspection, compute-budget telemetry, resumable event notification, protected PAPER operations and `/testnet`. The repository is public and operator configuration is complete. See [verified revisions and release evidence](validation.md#hosted-release-status). The checklist below applies to future updates; it does not describe pending initial deployment. Backend additions must remain compatible with the released frontend.
 
 ## Server-only environment
 
@@ -48,3 +48,14 @@ Operator cookies expire after 30 minutes. Production uses Secure, HttpOnly, Same
 ## Rollback
 
 Promote the preceding frontend deployment in the same project. Remove/rotate the optional operator access code to revoke sessions. Backend additions preserve the old viewer and require no database migration. Mainnet mode and funding remain separately unarmed.
+
+## Business evidence source update
+
+The `feature/business-revenue-loop` candidate adds `/business` and the fixed
+`/api/swarm/business` proxy to `/api/business/status`. It does not expose the
+backend's financial-write APIs. Apply the backend's additive
+`20261105120000_business_evidence` migration and run server-only database
+hardening before deploying the paired backend, then release the frontend through
+the existing project. See [candidate revisions](validation.md#business-feature-source-candidate).
+The previous deployment remains valid without this page. An unavailable business
+endpoint produces an explicit failure state rather than fabricated economic data.

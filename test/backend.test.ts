@@ -9,6 +9,7 @@ import {
   getViewerEvents,
   getViewerStatus,
   getTestnetReport,
+  getBusinessStatus,
   viewerResponse,
 } from "../apps/web/src/lib/server/backend";
 import { emptyTestnetReport } from "../packages/shared/src/testnet-contract";
@@ -309,4 +310,57 @@ test("bounds upstream response bodies and excludes unsupported status fields", a
   const response = await viewerResponse(getViewerStatus);
   assert.equal(response.status, 502);
   assert.doesNotMatch(await response.text(), /do-not-publish/);
+});
+
+test("business evidence keeps unknown costs and rejects fabricated purchases or revenue", async () => {
+  const data = {
+    contractVersion: 1,
+    capturedAt: "2026-11-05T12:00:00.000Z",
+    coverage: "CLOSED_WINDOWS_ONLY",
+    mode: "PAPER",
+    simulated: true,
+    asset: null,
+    configured: false,
+    confirmedReceiptCount: 0,
+    revenueAtoms: "0",
+    closedWindowCount: 0,
+    receiptsAwaitingCostWindow: 0,
+    netAfterReportedCostsAtoms: null,
+    costVerification: "UNKNOWN",
+    independentlyVerifiedBusinessProfit: false,
+    fullBusinessRunway: null,
+    reservedAtoms: "0",
+    computePurchaseImplemented: false,
+    purchasedCreditsUsdMicros: "0",
+    businessFundedNftDistributions: 0,
+    blockers: [
+      "PROVIDER_PURCHASE_PROTOCOL_REQUIRED",
+      "EARNED_PROCEEDS_NFT_SETTLEMENT_UNPROVEN",
+    ],
+  };
+  let transport = mock.method(globalThis, "fetch", async () =>
+    Response.json(data),
+  );
+  assert.deepEqual(await getBusinessStatus(), data);
+  assert.equal(
+    String(transport.mock.calls[0]!.arguments[0]),
+    "https://backend.example/api/business/status",
+  );
+  transport.mock.restore();
+  for (const invalid of [
+    { ...data, computePurchaseImplemented: true },
+    { ...data, purchasedCreditsUsdMicros: "10" },
+    { ...data, revenueAtoms: "100" },
+    { ...data, businessFundedNftDistributions: 1 },
+    { ...data, mode: "LIVE" },
+    { ...data, apiKey: "private" },
+  ]) {
+    transport = mock.method(globalThis, "fetch", async () =>
+      Response.json(invalid),
+    );
+    const response = await viewerResponse(getBusinessStatus);
+    assert.equal(response.status, 502);
+    assert.doesNotMatch(await response.text(), /apiKey|server-only-test-token/);
+    transport.mock.restore();
+  }
 });

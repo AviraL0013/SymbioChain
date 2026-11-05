@@ -7,6 +7,7 @@ import {
   ViewerCycle,
   ViewerEvents,
   TestnetReport,
+  BusinessStatus,
 } from "@symbiochain/shared";
 import { z } from "zod";
 
@@ -137,6 +138,8 @@ export function getViewerProof(input: string) {
 
 export const getViewerStatus = () =>
   readBackend("/api/viewer/status", ViewerStatus);
+export const getBusinessStatus = () =>
+  readBackend("/api/business/status", BusinessStatus);
 export const getTestnetReport = () =>
   readBackend("/api/viewer/testnet", TestnetReport);
 export function getViewerCycles(cursor?: string) {

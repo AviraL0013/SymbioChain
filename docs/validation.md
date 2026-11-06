@@ -6,7 +6,7 @@ The integration has three separate browser proofs:
 - [Production build against hosted data](validation/hosted-read.json): the local optimized frontend read the existing Render backend, including persisted cycles, compute allowance and resumable event readiness. Anonymous administrative requests returned 401. Browser traffic and assets did not expose the actual backend credentials. No hosted mutation was performed. This proves the application/backend connection; it is not a claim that the branch has been deployed to Vercel.
 - [Testnet evidence page](validation/testnet-browser.json): Chromium checked the historical contract report, the integrated runner's recorded Brain approval gate, two confirmed Sepolia/Solana devnet authorization fixtures and their NEAR MPC request links. It also checked explicit simulation, unavailable responses and the 390px layout. Two server-held credentials were checked against browser traffic and loaded responses; no exposure or direct browser-to-backend request was found. Reading this page performs no chain writes or inference purchase.
 
-The latest frontend verification passes 22 credential-free regression checks, ESLint, TypeScript, formatting and `next build` with Node 22. The backend additions pass 116 unit tests, 59 PostgreSQL integration tests, TypeScript and the production build locally. The [testnet submission walkthrough](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TESTNET_SUBMISSION.md) records reproducible commands, actual transactions, worker recovery and remaining gates. Browser verification observes a blocked integrated run, not a completed authenticated AI cycle.
+The latest frontend verification passes 23 credential-free regression checks, ESLint, TypeScript, formatting and `next build` with Node 22. The backend additions pass 129 unit tests, 70 PostgreSQL integration tests, TypeScript and the production build locally. The [testnet submission walkthrough](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TESTNET_SUBMISSION.md) records reproducible commands, actual transactions, worker recovery and remaining gates. Browser verification observes a blocked integrated run, not a completed authenticated AI cycle.
 
 The [hosted report check](validation/testnet-hosted.json) verifies Render deployment
 `dep-dbm0nohsrm7s73en4t9g` at backend commit `e1633c7ff16cb2ce3ce484aa44b12d09cc0117a5`:
@@ -53,32 +53,36 @@ for subsequent updates in the same projects.
 ## Business feature source candidate
 
 The locally verified application commits are frontend
-[`be50793f719f8696736a648ad9ac9e4d3eb3a9a2`](https://github.com/AviraL0013/SymbioChain/commit/be50793f719f8696736a648ad9ac9e4d3eb3a9a2)
+[`e6bbcfe57d608297447b068d11c4910456c016d7`](https://github.com/AviraL0013/SymbioChain/commit/e6bbcfe57d608297447b068d11c4910456c016d7)
 and backend
-[`ae70bbfb63a244ec86811c7abb66a443ba771555`](https://github.com/SuyashAlphaC/symbiochain-core/commit/ae70bbfb63a244ec86811c7abb66a443ba771555).
+[`bc5df4e4c67fde7cd336a466436d1b53dacf7dac`](https://github.com/SuyashAlphaC/symbiochain-core/commit/bc5df4e4c67fde7cd336a466436d1b53dacf7dac).
 Both are on `feature/business-revenue-loop`. Subsequent documentation commits
 maintain release notes without changing those application revisions. These are
 source candidates, not deployed or confirmed submitted revisions. The exact
-[release manifest](https://github.com/SuyashAlphaC/symbiochain-core/blob/feature/business-revenue-loop/artifacts/business-release-manifest.json)
+[release manifest](https://github.com/SuyashAlphaC/symbiochain-core/blob/feature/business-revenue-loop/artifacts/funding-release-manifest.json)
 keeps those states separate.
 
-The new `/business` page reads a curated backend projection through a fixed
-same-origin route. It excludes invoices, deposits and internal transfers from
+The new `/business` page reads a curated backend projection through fixed
+same-origin business/funding routes. It excludes invoices, deposits and internal transfers from
 confirmed revenue, labels closed-window net as accountant-reported, and retains
-unknown runway. Unimplemented credit purchasing and earned-proceeds NFT funding
-remain explicit. No public financial-write proxy is added; LIVE business responses
+unknown runway. The NFT funding code capability is implemented but disabled; automatic credit
+purchasing remains provider-blocked and unimplemented. No public financial-write proxy is added; LIVE business responses
 remain outside this frontend's PAPER publication contract.
 
 [Browser evidence](validation/business-browser.json) covers the actual isolated
 Next.js/Fastify/PostgreSQL connection, zero confirmed revenue, unknown net/runway,
-unfinished cash flows, stale/unavailable responses, a 390px viewport and absence
-of credential exposure/direct backend requests. Backend receipt verification is
-tested with injected RPC fixtures; the public RPC probe timed out and no actual
-customer receipt was verified. These are implementation tests, not economic proof.
+disabled NFT funding capability, unfinished credit purchases, stale/unavailable responses, a 390px viewport and absence
+of credential exposure/direct backend requests. Backend invoice receipt verification is
+tested with injected RPC fixtures. A separate November 6 credit parser check
+passed against a third-party final public transaction; no actual project customer
+receipt was verified. These are implementation tests, not economic proof.
 
 Deploy the additive backend migration and API before this frontend feature. No
 hosted Supabase migration, Render deployment or Vercel production release was
 performed for the feature. The existing deployed site remains the baseline in
-the preceding section. Automatic credit purchases and business-funded NFT
-settlement still need implementation, a supported provider contract and actual
-earned proceeds; the owner currently has no mainnet funds/account/caps.
+the preceding section. Automatic credit purchases still lack a publicly supported provider protocol.
+The NFT conversion, withdrawal, allocation and recovery code is implementation-tested
+but lacks funded mainnet validation. The owner has no mainnet funds/account/caps.
+The existing testnet treasury received the new getters/pause protection in a
+state-preserving upgrade and remains paused; this is not business revenue or
+a proceeds-funded payout. See the [funding runbook](https://github.com/SuyashAlphaC/symbiochain-core/blob/feature/business-revenue-loop/docs/BUSINESS_FUNDING.md).

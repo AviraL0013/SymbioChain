@@ -52,10 +52,18 @@ Promote the preceding frontend deployment in the same project. Remove/rotate the
 ## Business evidence source update
 
 The `feature/business-revenue-loop` candidate adds `/business` and the fixed
-`/api/swarm/business` proxy to `/api/business/status`. It does not expose the
+`/api/swarm/business` proxy to `/api/business/status`, plus `/api/swarm/funding`
+to `/api/business/funding`. Both endpoints are required by the updated page. It does not expose the
 backend's financial-write APIs. Apply the backend's additive
 `20261105120000_business_evidence` migration and run server-only database
 hardening before deploying the paired backend, then release the frontend through
 the existing project. See [candidate revisions](validation.md#business-feature-source-candidate).
 The previous deployment remains valid without this page. An unavailable business
 endpoint produces an explicit failure state rather than fabricated economic data.
+
+The funding projection reports code capability separately from completed payments.
+For the unfunded PAPER deployment, NFT funding must be implemented but disabled,
+all completed payment counters must be zero, and compute purchasing must remain
+unimplemented with its provider-protocol blocker. No financial-write proxy or
+LIVE control was added. This extension requires no migration beyond the additive
+business table already listed above.

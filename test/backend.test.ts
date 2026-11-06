@@ -10,6 +10,7 @@ import {
   getViewerStatus,
   getTestnetReport,
   getBusinessStatus,
+  getBusinessFunding,
   viewerResponse,
 } from "../apps/web/src/lib/server/backend";
 import { emptyTestnetReport } from "../packages/shared/src/testnet-contract";
@@ -362,5 +363,44 @@ test("business evidence keeps unknown costs and rejects fabricated purchases or 
     assert.equal(response.status, 502);
     assert.doesNotMatch(await response.text(), /apiKey|server-only-test-token/);
     transport.mock.restore();
+  }
+});
+
+test("NFT funding capability remains separate from actual paid distributions", async () => {
+  const data = {
+    contractVersion: 1,
+    mode: "PAPER",
+    nftFundingImplemented: true,
+    nftFundingEnabled: false,
+    computePurchaseImplemented: false,
+    computePurchaseBlocker: "NO_PUBLIC_NEAR_AI_PURCHASE_PROTOCOL",
+    completedDistributions: 0,
+    spentInputAtoms: "0",
+    distributedNearYocto: "0",
+    allocatedNearYocto: "0",
+    operations: [],
+  };
+  let t = mock.method(globalThis, "fetch", async () => Response.json(data));
+  assert.deepEqual(await getBusinessFunding(), data);
+  assert.equal(
+    String(t.mock.calls[0]!.arguments[0]),
+    "https://backend.example/api/business/funding",
+  );
+  t.mock.restore();
+  for (const invalid of [
+    { ...data, nftFundingEnabled: true },
+    { ...data, completedDistributions: 1 },
+    { ...data, computePurchaseImplemented: true },
+    { ...data, mode: "LIVE" },
+    { ...data, apiKey: "private" },
+  ]) {
+    t = mock.method(globalThis, "fetch", async () => Response.json(invalid));
+    const response = await viewerResponse(getBusinessFunding);
+    assert.equal(response.status, 502);
+    assert.doesNotMatch(
+      await response.text(),
+      /private|apiKey|server-only-test-token/,
+    );
+    t.mock.restore();
   }
 });

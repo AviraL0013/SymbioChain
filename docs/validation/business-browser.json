@@ -1,12 +1,13 @@
 {
   "scope": "ISOLATED_LOCAL_PAPER",
-  "checkedAt": "2026-11-05T12:54:42.978Z",
+  "checkedAt": "2026-11-06T05:32:14.567Z",
   "mainnetTransactions": 0,
   "paidInferenceRequests": 0,
   "assertions": [
     "confirmed revenue is zero",
     "net and runway remain unknown",
-    "purchase and distribution unproven",
+    "purchase unavailable and funded distribution unproven",
+    "NFT funding code implemented but disabled",
     "stale and unavailable states",
     "390px layout",
     "no credential exposure",

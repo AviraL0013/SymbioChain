@@ -49,6 +49,14 @@ test("business evidence keeps unproven cash flows explicit and retains stale lab
     purchasedCreditsUsdMicros: "0",
     businessFundedNftDistributions: 0,
   });
+  const funding = await request.get("/api/swarm/funding");
+  expect(funding.status()).toBe(200);
+  expect(await funding.json()).toMatchObject({
+    nftFundingImplemented: true,
+    nftFundingEnabled: false,
+    completedDistributions: 0,
+    computePurchaseImplemented: false,
+  });
   await page.goto("/business");
   await expect(
     page.getByRole("heading", { name: "Business evidence" }),
@@ -58,6 +66,9 @@ test("business evidence keeps unproven cash flows explicit and retains stale lab
   ).toBeVisible();
   await expect(
     page.getByText("Not implemented", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Implemented · disabled", { exact: true }),
   ).toBeVisible();
   await expect(
     page.getByText("No verified self-funding business is claimed.", {
@@ -117,7 +128,8 @@ test("business evidence keeps unproven cash flows explicit and retains stale lab
         assertions: [
           "confirmed revenue is zero",
           "net and runway remain unknown",
-          "purchase and distribution unproven",
+          "purchase unavailable and funded distribution unproven",
+          "NFT funding code implemented but disabled",
           "stale and unavailable states",
           "390px layout",
           "no credential exposure",

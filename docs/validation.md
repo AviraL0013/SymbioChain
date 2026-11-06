@@ -86,3 +86,19 @@ but lacks funded mainnet validation. The owner has no mainnet funds/account/caps
 The existing testnet treasury received the new getters/pause protection in a
 state-preserving upgrade and remains paused; this is not business revenue or
 a proceeds-funded payout. See the [funding runbook](https://github.com/SuyashAlphaC/symbiochain-core/blob/feature/business-revenue-loop/docs/BUSINESS_FUNDING.md).
+
+### November 6 merge/deployment recheck
+
+The accounting PR #4 is already merged at
+`b855671653e4ac8a188f512b3a879c2a1a527227`; backend PR #1 is merged at
+`6a6a2ba6e6e1a4b3ad39a62b46d10500201453d6`. Both hosted business endpoints still
+return 404, and the Render API confirms the older `e1633c7` deployment. A main
+merge is not a completed paired production release. The frontend hash in the
+hosted-release section is the last independently verified exact deployment
+baseline, not a fresh assertion based on main. No production mutation was performed.
+
+The NFT funding extension is now reviewed separately in
+[frontend PR #5](https://github.com/AviraL0013/SymbioChain/pull/5) and
+[backend PR #2](https://github.com/SuyashAlphaC/symbiochain-core/pull/2). Read-only
+[preflight evidence](https://github.com/SuyashAlphaC/symbiochain-core/blob/feature/business-revenue-loop/artifacts/funding-production-preflight.json)
+records the merged/deployed distinction and required backend-first release.

@@ -34,3 +34,9 @@ The TEE deployment gate and provider purchase protocol remain unresolved. NFT
 conversion/distribution recovery code is implemented but disabled and lacks funded
 mainnet validation. The state-preserving testnet code upgrade is not revenue. Submission of the hackathon form or
 publication of a social post is outside this runbook.
+
+November 6 update: accounting PR #4 and backend PR #1 are already merged, but
+both hosted business endpoints return 404. Do not re-merge them or treat a main
+merge as release proof. The new funding code is in frontend PR #5 and backend
+PR #2. Release the paired backend/migration first and validate both business
+endpoints before the frontend. Use the existing projects and keep funding disabled.

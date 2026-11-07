@@ -32,3 +32,15 @@ npm run dev --workspace=@symbiochain/web -- --port 3300
 The suite checks public telemetry and event readiness, unauthenticated/cross-origin rejection, operator login, simulated funding, a paused Scout job, targeted crash/reclaim, settlement-bound cost approval, final receipt, private evidence access, proof lookup, logout, mobile layout and credential exposure. It never performs a real trade or paid inference. Funding references and cycle idempotency keys are unique per new test run and stable for their request.
 
 Screenshots and a sanitized verification summary go into ignored `artifacts/browser/`. They include PAPER cycle IDs, not credentials. Traces stay disabled so entered access codes are not archived in a network trace. Stop the local frontend and backend supervisor after the run.
+
+## Mainnet observation check
+
+Run `test/e2e/mainnet.spec.ts` separately against an isolated localhost frontend/backend pair configured with `EXECUTION_MODE=LIVE`, `EXECUTION_ENABLED=false`, the reviewed mainnet deployment IDs and a dedicated local test database. This profile needs no wallet private key or model API key. It reads finalized public mainnet state; it submits no transaction or paid inference.
+
+Set `E2E_BASE_URL` to the local frontend, `E2E_BACKEND_ORIGIN` to the local backend and optionally `E2E_MAINNET_SECRETS` to a comma-separated list of random local test credentials for the exposure check. Keep these values in the environment. Then run:
+
+```sh
+npm run test:e2e -- test/e2e/mainnet.spec.ts
+```
+
+This check covers the recorded deployment receipt, actual balances, stale-state recovery, page routes, mobile width and server credential isolation. The injected wallet is an explicit test adapter: it proves connection parameters and the absence of key grants or transaction requests. It does not prove that a user completed extension login in Meteor or MyNearWallet. The PAPER browser tests continue to require their separate PAPER profile.

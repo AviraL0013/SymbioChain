@@ -1,12 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
-import { BusinessStatus } from "@symbiochain/shared";
+import { BusinessStatus, FundingSummary } from "@symbiochain/shared";
 import { AppShell } from "@/features/application/app-shell";
-import { timestamp } from "@/features/swarm/format";
+import { timestamp, formatAtoms } from "@/features/swarm/format";
 import "@/features/cycles/cycles.css";
 
 export function BusinessPage() {
   const [data, setData] = useState<BusinessStatusData | null>(null);
+  const [funding, setFunding] = useState<ReturnType<
+    typeof FundingSummary.parse
+  > | null>(null);
   const [error, setError] = useState("");
   useEffect(() => {
     const controller = new AbortController();
@@ -15,14 +18,22 @@ export function BusinessPage() {
       if (pending) return;
       pending = true;
       try {
-        const response = await fetch("/api/swarm/business", {
-          cache: "no-store",
-          signal: controller.signal,
-        });
-        if (!response.ok) throw Error();
+        const [response, fundingResponse] = await Promise.all([
+          fetch("/api/swarm/business", {
+            cache: "no-store",
+            signal: controller.signal,
+          }),
+          fetch("/api/swarm/funding", {
+            cache: "no-store",
+            signal: controller.signal,
+          }),
+        ]);
+        if (!response.ok || !fundingResponse.ok) throw Error();
         const next = BusinessStatus.parse(await response.json());
+        const nextFunding = FundingSummary.parse(await fundingResponse.json());
         if (!controller.signal.aborted) {
           setData(next);
+          setFunding(nextFunding);
           setError("");
         }
       } catch {
@@ -53,7 +64,7 @@ export function BusinessPage() {
         </p>
       )}
       {!data && !error && <p role="status">Loading business evidence…</p>}
-      {data && (
+      {data && funding && (
         <>
           <div className="cycle-callout">
             {error ? "Stale record" : "Recorded status"} ·{" "}
@@ -123,6 +134,17 @@ export function BusinessPage() {
                 <dd>0</dd>
               </div>
               <div>
+                <dt>Proceeds-to-NFT workflow</dt>
+                <dd>Implemented · disabled</dd>
+              </div>
+              <div>
+                <dt>Native NEAR deposited / allocated</dt>
+                <dd>
+                  {formatAtoms(funding.distributedNearYocto, 24)} /{" "}
+                  {formatAtoms(funding.allocatedNearYocto, 24)}
+                </dd>
+              </div>
+              <div>
                 <dt>Business-funded NFT distributions</dt>
                 <dd>{data.businessFundedNftDistributions}</dd>
               </div>
@@ -133,10 +155,12 @@ export function BusinessPage() {
               prove that customers funded the payout.
             </p>
             <p>
-              Completion needs a provider-supported payment-to-credit flow,
-              actual earned proceeds, and confirmed conversion and distribution
-              transactions. Mainnet execution also requires a dedicated funded
-              account and explicit spending limits.
+              The NFT payout code converts reserved earnings through signed
+              Intents, withdraws native NEAR and reconciles the treasury
+              allocation. It remains disabled here and has no funded mainnet
+              proof. Mainnet use requires dedicated keys, a pinned treasury
+              deployment and spending caps. Automatic credit purchasing remains
+              blocked on a publicly supported NEAR AI payment-to-credit flow.
             </p>
           </section>
         </>

@@ -2,7 +2,9 @@
 
 Use the existing `symbiochain` project serving **https://symbiochain.vercel.app**. Preserve the owner/team, Node 22, Next.js configuration, `apps/web` root and access to workspace files. No new Vercel project or paid infrastructure is needed for this integration.
 
-PRs #1–#3 are merged. Production includes execution inspection, compute-budget telemetry, resumable event notification, protected PAPER operations and `/testnet`. The repository is public and operator configuration is complete. See [verified revisions and release evidence](validation.md#hosted-release-status). The checklist below applies to future updates; it does not describe pending initial deployment. Backend additions must remain compatible with the released frontend.
+PRs #1–#4 are merged. The earlier accounting source is on main, but the November 6
+read-only check still returns 404 for both hosted business endpoints; that feature
+has not been verified as released. Production includes execution inspection, compute-budget telemetry, resumable event notification, protected PAPER operations and `/testnet`. The repository is public and operator configuration is complete. See [verified revisions and release evidence](validation.md#hosted-release-status). The checklist below applies to future updates; it does not describe pending initial deployment. Backend additions must remain compatible with the released frontend.
 
 ## Server-only environment
 
@@ -52,10 +54,18 @@ Promote the preceding frontend deployment in the same project. Remove/rotate the
 ## Business evidence source update
 
 The `feature/business-revenue-loop` candidate adds `/business` and the fixed
-`/api/swarm/business` proxy to `/api/business/status`. It does not expose the
+`/api/swarm/business` proxy to `/api/business/status`, plus `/api/swarm/funding`
+to `/api/business/funding`. Both endpoints are required by the updated page. It does not expose the
 backend's financial-write APIs. Apply the backend's additive
 `20261105120000_business_evidence` migration and run server-only database
 hardening before deploying the paired backend, then release the frontend through
 the existing project. See [candidate revisions](validation.md#business-feature-source-candidate).
 The previous deployment remains valid without this page. An unavailable business
 endpoint produces an explicit failure state rather than fabricated economic data.
+
+The funding projection reports code capability separately from completed payments.
+For the unfunded PAPER deployment, NFT funding must be implemented but disabled,
+all completed payment counters must be zero, and compute purchasing must remain
+unimplemented with its provider-protocol blocker. No financial-write proxy or
+LIVE control was added. This extension requires no migration beyond the additive
+business table already listed above.

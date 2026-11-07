@@ -19,8 +19,8 @@ project or change the production domain.
    Keep read/admin credentials server-only and distinct from the operator access code.
    The preview should make unavailable or stale data explicit.
 3. Verify snapshot, cycles, proof, testnet and operator discovery. For the business
-   feature, verify `/business` and `/api/swarm/business` show zero confirmed revenue,
-   unknown net/runway and unfinished purchases/distributions in the unfunded PAPER
+   feature, verify `/business`, `/api/swarm/business` and `/api/swarm/funding` show zero confirmed revenue,
+   unknown net/runway, implemented-but-disabled NFT funding and unimplemented purchases in the unfunded PAPER
    deployment. Do not fabricate records when a backend route is unavailable.
 4. Inspect browser traffic, HTML, JavaScript and storage for backend credentials.
    Browser API requests must remain same-origin. Verify operator login/state/logout,
@@ -30,6 +30,13 @@ project or change the production domain.
 
 No funding, trade, mint, crash or paid inference is required for these checks.
 The mainnet account/caps are still unset and the owner has no mainnet funds.
-The TEE deployment gate, provider purchase protocol and business-funded NFT
-settlement remain separate unfinished work. Submission of the hackathon form or
+The TEE deployment gate and provider purchase protocol remain unresolved. NFT
+conversion/distribution recovery code is implemented but disabled and lacks funded
+mainnet validation. The state-preserving testnet code upgrade is not revenue. Submission of the hackathon form or
 publication of a social post is outside this runbook.
+
+November 6 update: accounting PR #4 and backend PR #1 are already merged, but
+both hosted business endpoints return 404. Do not re-merge them or treat a main
+merge as release proof. The new funding code is in frontend PR #5 and backend
+PR #2. Release the paired backend/migration first and validate both business
+endpoints before the frontend. Use the existing projects and keep funding disabled.

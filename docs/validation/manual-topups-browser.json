@@ -1,0 +1,23 @@
+{
+  "capturedAt": "2026-11-07T04:33:33.529Z",
+  "scope": "ISOLATED_LOCAL_PAPER_FIXTURES",
+  "assertions": [
+    "quarantine banner",
+    "HITL banner",
+    "unproven revenue",
+    "private task authentication",
+    "operator report flow",
+    "zero purchased provider credits",
+    "zero external revenue",
+    "stale connection",
+    "390px viewport",
+    "logout revocation",
+    "no browser backend credentials"
+  ],
+  "directBrowserBackendRequests": 0,
+  "credentialExposures": 0,
+  "browserErrors": 0,
+  "realPayments": 0,
+  "paidInferenceRequests": 0,
+  "notificationsSent": 0
+}

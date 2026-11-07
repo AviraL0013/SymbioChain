@@ -1,5 +1,27 @@
 # Validation scope
 
+## Current mainnet observer
+
+The [production verification record](validation/mainnet-production.json) identifies
+the exact frontend/backend revisions on the existing Vercel and Render projects.
+It records real finalized mainnet reads, paused policy, code identity, receipt
+lookup, stale-state recovery and credential isolation. LIVE observations do not
+imply armed execution. Paid inference, trading, external revenue, automatic
+provider purchases and business-funded NFT distributions remain unproven.
+
+The isolated local mainnet browser check uses a wallet adapter fixture and
+public real chain data. It requests no key grant, signature or funds. An actual
+user's wallet login is not claimed by that fixture. Historical PAPER/testnet
+records below preserve their original scope and deployment dates. A submitted
+hackathon entry has not been confirmed.
+
+The artifact is a frozen verification snapshot. Documentation-only merges may
+create a later Vercel revision with the same application behavior; `/api/release`
+reports the current public identity. Such merges do not establish new trading,
+inference or revenue evidence.
+
+## Historical validation
+
 The integration has three separate browser proofs:
 
 - [Isolated PAPER lifecycle](validation/paper-browser.json): a real Chromium browser exercised the Next.js/Fastify/PostgreSQL path, simulated funding, a paused Scout job, a targeted worker crash, reclaim of that same job on attempt two, settlement-bound cost approval, a closed cycle, unminted receipt, private evidence access and logout. Both 1440px and 390px layouts were checked. No paid model or wallet operation was available to this isolated backend.

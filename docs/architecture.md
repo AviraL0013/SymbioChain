@@ -6,22 +6,27 @@ The browser uses same-origin Next.js routes. Next authenticates fixed requests t
 flowchart LR
   Browser --> Public[Public Next.js routes]
   Browser --> Operator[Operator routes / HttpOnly session]
-  Public -->|server-only read token| Viewer[Fastify curated PAPER views]
+  Public -->|server-only read token| Runtime[Fastify explicit runtime]
+  Runtime --> Mainnet[Finalized mainnet observation]
+  Runtime --> Viewer[Mode-bound PAPER views]
   Operator -->|server-only admin token / expected PAPER mode| Actions[Fastify capabilities and admin handlers]
   Viewer --> Database[(PostgreSQL)]
+  Mainnet --> RPC[NEAR mainnet RPC / pinned block hash]
   Actions --> Database
   Workers[SCOUT / BRAIN / HAND] --> Database
 ```
 
 ## Publication contracts
 
-`packages/shared/src/viewer-contract.ts` preserves the original strict v1 snapshot/proof contract. `viewer-details-contract.ts` adds status, paginated cycle details and event metadata. Both are generated from reviewed backend source using `scripts/sync-viewer-contract.mjs`. The backend rejects LIVE/REPLAY publication even with valid read credentials.
+`packages/shared/src/viewer-contract.ts` preserves the original strict v1 snapshot/proof contract. `viewer-details-contract.ts` adds status, paginated cycle details and event metadata. These PAPER endpoints reject LIVE/REPLAY even with valid credentials. `mainnet-contract.ts` separately validates explicit runtime, finalized mainnet snapshots, public wallet balances and known deployment receipts. All are synchronized from reviewed backend source using `scripts/sync-viewer-contract.mjs`.
+
+The deployment provider chooses the mode before rendering telemetry. LIVE starts no PAPER polling or event stream. It polls finalized mainnet state every 20 seconds, slows in a hidden tab and preserves explicit stale/disconnected states. Public wallet connection uses pinned Meteor/MyNearWallet executors and requests no key grant or transaction. It is not operator authentication.
 
 Cycle views publish selected proposal fields, quote arithmetic, phase names, sanitized job error codes, accounting summaries and proof hashes. They exclude raw decisions, model prompts, private event payloads, signing bytes and accounting references. Profit admission diagnostics compare the recorded quote with the **current policy**; they are not a historical policy attestation or realized P&L.
 
 Application compute allowance is published without its internal budget ID. Provider balance remains explicitly unknown when that allowance is the only spending control. The model/measurement fields report configuration, not a fresh attestation. Runway stays null.
 
-## Refresh and replay
+## PAPER refresh and replay
 
 The shared provider reads a snapshot every ten seconds, slowing to sixty seconds in a hidden tab. Requests abort on unmount or refresh. Failure marks retained data stale; an initial failure shows a disconnected empty state. Optional status failure does not prevent the main snapshot from loading.
 
@@ -35,10 +40,10 @@ Mutations require the browser Origin to match the HTTP request authority, JSON b
 
 Supported actions are simulated funding, idempotent cycle creation, treasury/lane pause and resume, revision-bound policy changes, a targeted one-shot PAPER worker crash and immutable settlement-bound cost approval. Uncertain funding/cycle responses retain the same request identity for explicit retry. Buttons remain disabled while an operation is pending. Evidence download requires the same operator session and mode gate; it is not a public viewer feature.
 
-Wallet authentication, mainnet funding, compute purchasing and new chain recovery signers are not supplied by this interface.
+Mainnet wallet connection is read-only. Mainnet funding, LIVE arming, compute purchasing and new recovery signers are not supplied by this interface. Disarmed runtime and the paused treasury independently prevent execution.
 
 ## Hosting and rollback
 
 The existing teammate-owned Vercel project continues serving `https://symbiochain.vercel.app`, with Node 22, `apps/web` and workspace access. The backend remains on Render with Node 24. Browser-to-backend CORS changes are unnecessary.
 
-Frontend rollback promotes the preceding deployment in the same project. Backend additions preserve the old snapshot and operator panel and require no schema migration. Withdrawing frontend access means rotating/removing its server credentials; wallet/provider keys remain solely in the backend environment.
+For a PAPER-only frontend rollback, first restore the compatible PAPER backend environment/image. Keep execution disarmed during transition; an old backend image cannot run in the LIVE/disarmed profile. The mainnet reader needs no database migration; the previously added business migration is additive. Withdrawing frontend access means rotating/removing its server credentials. No owner recovery key is loaded by Render or Vercel.

@@ -4,6 +4,16 @@ A policy-controlled three-agent treasury with durable execution, verifiable infe
 
 [Website](https://symbiochain.vercel.app) · [Dashboard](https://symbiochain.vercel.app/dashboard) · [Backend source](https://github.com/SuyashAlphaC/symbiochain-core) · [Architecture](docs/architecture.md) · [Deployment](docs/backend-integration.md)
 
+## Trust boundaries
+
+**TEE execution status: QUARANTINED.** The recorded November 7 unmodified Brave audit failed deployment approval in provenance-only mode. Intel TDX, NVIDIA and TLS subchecks do not approve the complete gateway/model/proxy chain. Missing launcher provenance, source/OS pin differences and missing required gateway services remain documented in the [backend audit](https://github.com/SuyashAlphaC/symbiochain-core/blob/feature/service-risk-loop/artifacts/brave-cli-verification.json). PAPER inference is a deterministic local simulation with no enclave or TEE signature; no cryptographically signed enclave emulator is claimed.
+
+**Compute funding: HUMAN IN THE LOOP.** The new source candidate displays pending manual tasks and lets authenticated operators record PAPER purchase reports. Those reports remain provider-unverified: they cannot change credits, release held proceeds or open the TEE gate. LIVE reporting uses the private backend administrator API. Automatic provider purchases remain unimplemented.
+
+**External revenue and demand: UNPROVEN.** Team payments and synthetic transactions prove only the tested mechanics. Receipt counts do not establish independent ownership, organic demand, complete net profit or product-market fit. The [backend service path](https://github.com/SuyashAlphaC/symbiochain-core/blob/feature/service-risk-loop/docs/SERVICE_LOOP.md) accepts prepaid quote-risk reports separately from trading; it is not a wallet security audit or guarantee of profit. Do not solicit real payments while approved service delivery remains unavailable.
+
+The quarantine banner, manual-task interface and backend service additions require the paired release. They have not been deployed by this change. The production baseline remains recorded below; unavailable APIs produce unavailable/stale states instead of invented approval or revenue.
+
 **The deployed demonstration uses PAPER execution.** Its telemetry comes from persisted backend records; economic results, inference and receipts in that mode are simulated. Real wallet deposits, live trading and on-chain ownership are not enabled by this frontend. The goal of an agent earning and purchasing its own compute remains an incomplete business loop.
 
 The deployed site includes a separate `/testnet` evidence page. It publishes

@@ -5,6 +5,7 @@ import {
   OperatorCapabilities,
   OperatorPolicy,
   OperatorState,
+  ManualTopupTask,
 } from "@symbiochain/shared";
 import { BackendError, readBackend } from "./backend";
 export async function getOperatorState(token: string) {
@@ -38,6 +39,10 @@ export async function performOperatorAction(token: string, input: unknown) {
     "x-symbio-expected-mode": "PAPER",
   };
   switch (action.action) {
+    case "report-compute-topup":
+      path = "/api/business/compute-topups/report";
+      body = action.report;
+      break;
     case "treasury":
       path = `/api/admin/${action.control}`;
       body = {};
@@ -89,4 +94,14 @@ export async function performOperatorAction(token: string, input: unknown) {
     ok: true,
     ...("cycleId" in action ? { cycleId: action.cycleId } : {}),
   };
+}
+
+export async function getManualTopups(token: string) {
+  await getOperatorState(token);
+  return readBackend(
+    "/api/business/compute-topups",
+    z.array(ManualTopupTask.refine((task) => task.simulated)).max(100),
+    { headers: { "x-symbio-expected-mode": "PAPER" } },
+    token,
+  );
 }

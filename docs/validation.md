@@ -102,3 +102,13 @@ The NFT funding extension is now reviewed separately in
 [backend PR #2](https://github.com/SuyashAlphaC/symbiochain-core/pull/2). Read-only
 [preflight evidence](https://github.com/SuyashAlphaC/symbiochain-core/blob/feature/business-revenue-loop/artifacts/funding-production-preflight.json)
 records the merged/deployed distinction and required backend-first release.
+
+## November 7 quarantine and manual credit reports candidate
+
+Application source: frontend [`b879d05`](https://github.com/AviraL0013/SymbioChain/commit/b879d0514d2551eb53504b757dde9cdfaed27974), paired backend [`e59d172`](https://github.com/SuyashAlphaC/symbiochain-core/commit/e59d172c30caab19f8ccf1d7e3a114d54ee57ff0). Subsequent documentation commits do not change those application revisions. Production has not been deployed by this change.
+
+The candidate adds a recorded QUARANTINED TEE banner, explicit HUMAN IN THE LOOP funding status, unproven revenue labels, protected pending tasks and PAPER-only operator reports. Receipt references are hashed in the browser. Confirmation cannot change provider credits, release reserved proceeds or approve TEE execution. LIVE reports remain on the private backend API. No browser wallet, paid customer checkout or enclave emulator is introduced.
+
+Validation passed 25 tests, formatting, lint, type checks and production build. The [browser report](validation/manual-topups-browser.json) covers desktop and 390px layouts, login/report/logout, private-task access, zero provider purchases, zero external revenue, stale connections, no direct browser-to-backend requests and no backend credential exposure. Tests used a dedicated local PostgreSQL database and explicit PAPER accounting fixtures. No payment, paid model request or Discord alert was sent.
+
+Deploy the backend, including its existing BusinessEntry migration and recorded audit artifact, before this frontend. Release the paired strategy schema before creating service orders: older cycle-detail clients accept only round-trip. Unavailable APIs retain unavailable/stale states. This is source and local evidence, separate from the hosted baseline above and from any hackathon form submission. See the [backend runbook](https://github.com/SuyashAlphaC/symbiochain-core/blob/feature/service-risk-loop/docs/SERVICE_LOOP.md) for remaining service and reconciliation boundaries.

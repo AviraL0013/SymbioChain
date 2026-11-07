@@ -1,0 +1,37 @@
+.ops-boundaries {
+  width: min(1440px, calc(100% - 48px));
+  margin: 16px auto;
+  padding: 16px 20px;
+  border: 1px solid #526168;
+  border-radius: 14px;
+  background: #19232a;
+  color: #e3e9ec;
+  font-size: 13px;
+}
+.ops-boundaries dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 32px;
+  margin: 0;
+}
+.ops-boundaries dt {
+  color: #b6c4ca;
+  margin-bottom: 4px;
+}
+.ops-boundaries dd {
+  margin: 0;
+  font-weight: 700;
+}
+.ops-boundaries .ops-quarantined {
+  color: #ffb2a9;
+}
+.ops-boundaries p {
+  margin: 10px 0 0;
+  line-height: 1.5;
+}
+@media (max-width: 640px) {
+  .ops-boundaries {
+    width: calc(100% - 24px);
+    padding: 14px;
+  }
+}

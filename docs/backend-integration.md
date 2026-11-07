@@ -1,5 +1,30 @@
 # Existing Vercel project release
 
+## Current mainnet release
+
+The paired release uses the existing hosting projects and the same server-only
+variables below. `/api/swarm/runtime` chooses the explicit backend mode. LIVE
+reads `/api/swarm/mainnet`, `/mainnet/wallet` and `/mainnet/transaction` through
+fixed server routes and strict shared schemas. The old PAPER publication refuses
+LIVE, so historical simulation rows cannot become production balances.
+
+Production is LIVE with execution disarmed. The API starts no worker, mutations
+are disabled and the on-chain treasury remains paused. Wallet connection requests
+no new key or transaction and grants no backend privileges. Paid inference stays
+quarantined; numeric trading/gas caps and operational funding remain unset.
+The [current production record](validation/mainnet-production.json) supersedes
+older release notes below. `/api/release` exposes only the public frontend commit,
+Vercel deployment ID and deployment environment, using [Vercel's system variables](https://vercel.com/docs/environment-variables/system-environment-variables).
+
+Release compatible backend code in PAPER first, release this frontend through
+the existing Git integration, then select LIVE with `EXECUTION_ENABLED=false`.
+Preserve backend tokens, database credentials, encryption and AI budget identity.
+For rollback restore the compatible PAPER backend/environment before promoting
+a PAPER-only frontend. Never deploy an old backend image into the new LIVE
+environment. See the [backend runbook](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/MAINNET_PRODUCTION.md).
+
+## Historical PAPER release instructions
+
 Use the existing `symbiochain` project serving **https://symbiochain.vercel.app**. Preserve the owner/team, Node 22, Next.js configuration, `apps/web` root and access to workspace files. No new Vercel project or paid infrastructure is needed for this integration.
 
 PRs #1–#4 are merged. The earlier accounting source is on main, but the November 6

@@ -144,3 +144,16 @@
     flex-direction: column;
   }
 }
+.operator-topup-form {
+  margin: 18px 0;
+  padding: 16px;
+  border: 1px solid var(--sc-line, #526168);
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+.operator-topup-form fieldset {
+  border: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}

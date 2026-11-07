@@ -9,6 +9,7 @@ import {
   TestnetReport,
   BusinessStatus,
   FundingSummary,
+  OperatingStatus,
 } from "@symbiochain/shared";
 import { z } from "zod";
 
@@ -143,6 +144,14 @@ export const getBusinessFunding = () =>
   readBackend("/api/business/funding", FundingSummary);
 export const getBusinessStatus = () =>
   readBackend("/api/business/status", BusinessStatus);
+export const getOperatingStatus = () =>
+  readBackend(
+    "/api/operations/status",
+    OperatingStatus.refine(
+      (value) => value.mode === "PAPER",
+      "The public dashboard is PAPER only",
+    ),
+  );
 export const getTestnetReport = () =>
   readBackend("/api/viewer/testnet", TestnetReport);
 export function getViewerCycles(cursor?: string) {

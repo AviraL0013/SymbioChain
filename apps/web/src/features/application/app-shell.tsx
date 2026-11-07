@@ -9,6 +9,7 @@ import { RibbonMark } from "@/features/landing/brand";
 import { ConnectionNotice, useSwarm } from "@/features/swarm/swarm-provider";
 import "@/features/dashboard/dashboard.css";
 import "./application.css";
+import { OperatingBoundaries } from "./operating-boundaries";
 
 const navigation = [
   ["/dashboard", "Overview"],
@@ -71,6 +72,7 @@ export function AppHeader() {
         </div>
       </header>
       <WalletPreview open={walletOpen} onClose={() => setWalletOpen(false)} />
+      <OperatingBoundaries />
     </>
   );
 }

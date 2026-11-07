@@ -17,6 +17,7 @@ import { AppShell } from "@/features/application/app-shell";
 import { useSwarm } from "@/features/swarm/swarm-provider";
 import { agentName, formatAtoms, workerStatus } from "@/features/swarm/format";
 import "./operator.css";
+import { ManualTopups } from "./manual-topups";
 
 type ActionResult = { ok?: boolean; cycleId?: string; error?: string };
 type CostDraft = {
@@ -466,6 +467,7 @@ export function OperatorPage() {
         </section>
       ) : (
         <>
+          <ManualTopups />
           <section className="operator-card">
             <div className="operator-heading">
               <div>

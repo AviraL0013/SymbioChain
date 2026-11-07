@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ManualTopupReport } from "./operating-contract";
 const atoms = z.string().regex(/^(0|[1-9]\d{0,76})$/),
   positive = atoms.refine((v) => BigInt(v) > 0n),
   id = z.uuid(),
@@ -90,6 +91,13 @@ const policy = z
   })
   .strict();
 export const OperatorAction = z.discriminatedUnion("action", [
+  z
+    .object({
+      action: z.literal("report-compute-topup"),
+      report: ManualTopupReport,
+      acknowledged: z.literal(true),
+    })
+    .strict(),
   z.object({ action: z.literal("treasury"), control }).strict(),
   z.object({ action: z.literal("agent"), role, control }).strict(),
   z

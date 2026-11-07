@@ -122,7 +122,7 @@ export function BusinessPage() {
             <h2>What earned proceeds have funded</h2>
             <dl className="cycle-metrics">
               <div>
-                <dt>Proceeds reserved, not paid</dt>
+                <dt>Proceeds held for payment reconciliation</dt>
                 <dd>{data.reservedAtoms}</dd>
               </div>
               <div>
@@ -153,6 +153,12 @@ export function BusinessPage() {
               A credit balance, grant or staking sync is not a purchase. A
               testnet NFT distribution proves contract mechanics; it does not
               prove that customers funded the payout.
+            </p>
+            <p>
+              The human-in-the-loop bridge creates operator tasks from eligible
+              reported net proceeds. A purchase confirmation remains operator
+              reported and provider unverified; it leaves the reservation held
+              and does not change compute credits or TEE approval.
             </p>
             <p>
               The NFT payout code converts reserved earnings through signed

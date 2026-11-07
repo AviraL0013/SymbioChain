@@ -29,3 +29,8 @@ export { TestnetReport, emptyTestnetReport } from "./testnet-contract";
 export { BusinessStatus } from "./business-contract";
 
 export { FundingSummary } from "./funding-contract";
+export {
+  OperatingStatus,
+  ManualTopupTask,
+  ManualTopupReport,
+} from "./operating-contract";

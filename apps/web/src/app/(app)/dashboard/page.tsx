@@ -4,7 +4,7 @@ import { DashboardPage } from "@/features/dashboard/dashboard-page";
 export const metadata: Metadata = {
   title: "Mission Control",
   description:
-    "The SymbioChain swarm at a glance. Frontend preview with clearly labelled sample data.",
+    "Real NEAR mainnet balances, deployment evidence and execution controls.",
 };
 
 export default function Page() {

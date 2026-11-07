@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
-import { ArrowRight, ArrowUpRight, Wallet } from "lucide-react";
-import { Dialog } from "@/components/ui/dialog";
+import { ArrowUpRight, Wallet } from "lucide-react";
+import { WalletPanel } from "@/features/wallet/wallet-panel";
+import { useWallet } from "@/features/wallet/wallet-provider";
+import { useDeployment } from "@/features/mainnet/deployment-provider";
 import { RibbonMark } from "@/features/landing/brand";
 import { ConnectionNotice, useSwarm } from "@/features/swarm/swarm-provider";
 import "@/features/dashboard/dashboard.css";
@@ -24,6 +26,8 @@ const navigation = [
 
 export function AppHeader() {
   const path = usePathname();
+  const deployment = useDeployment();
+  const wallet = useWallet();
   const { data, error, loading } = useSwarm();
   const [walletOpen, setWalletOpen] = useState(false);
   return (
@@ -52,13 +56,17 @@ export function AppHeader() {
           <div className="sc-header-actions">
             <span className="sc-network">
               <span />
-              {error
-                ? "Disconnected"
-                : loading
-                  ? "Connecting"
-                  : data
-                    ? "PAPER"
-                    : "Unavailable"}
+              {deployment.runtime?.mode === "LIVE"
+                ? deployment.error
+                  ? "Mainnet stale"
+                  : "Mainnet"
+                : error
+                  ? "Disconnected"
+                  : loading
+                    ? "Connecting"
+                    : data
+                      ? "PAPER"
+                      : "Unavailable"}
             </span>
             <button
               type="button"
@@ -66,7 +74,11 @@ export function AppHeader() {
               onClick={() => setWalletOpen(true)}
             >
               <Wallet size={16} />
-              Wallet status
+              {wallet.pending
+                ? "Connecting…"
+                : wallet.account
+                  ? wallet.account.accountId.slice(0, 12) + "…"
+                  : "Connect wallet"}
             </button>
           </div>
         </div>
@@ -84,24 +96,7 @@ export function WalletPreview({
   open: boolean;
   onClose: () => void;
 }) {
-  return (
-    <Dialog open={open} onClose={onClose} title="Connect your wallet">
-      <div className="sc-dialog-art">
-        <Wallet size={34} />
-      </div>
-      <p>
-        The connected dashboard publishes PAPER telemetry. Wallet authentication
-        and real deposits are not available here.
-      </p>
-      <button
-        type="button"
-        className="sc-button sc-button-dark sc-dialog-primary"
-        onClick={onClose}
-      >
-        Back to dashboard <ArrowRight size={16} />
-      </button>
-    </Dialog>
-  );
+  return <WalletPanel open={open} onClose={onClose} />;
 }
 
 export function AppFooter() {

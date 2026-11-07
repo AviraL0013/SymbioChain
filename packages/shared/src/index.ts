@@ -34,3 +34,10 @@ export {
   ManualTopupTask,
   ManualTopupReport,
 } from "./operating-contract";
+
+export {
+  RuntimeStatus,
+  MainnetSnapshot,
+  MainnetTransaction,
+  MainnetWallet,
+} from "./mainnet-contract";

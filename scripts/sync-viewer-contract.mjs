@@ -13,6 +13,7 @@ for (const name of [
   "testnet-contract",
   "testnet-swarm-contract",
   "operating-contract",
+  "mainnet-contract",
 ]) {
   const source = await readFile(resolve(backend, `src/${name}.ts`), "utf8");
   await writeFile(

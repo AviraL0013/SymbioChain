@@ -10,6 +10,10 @@ import {
   BusinessStatus,
   FundingSummary,
   OperatingStatus,
+  RuntimeStatus,
+  MainnetSnapshot,
+  MainnetWallet,
+  MainnetTransaction,
 } from "@symbiochain/shared";
 import { z } from "zod";
 
@@ -63,7 +67,7 @@ export async function readBackend<T>(
       },
       cache: "no-store",
       redirect: "error",
-      signal: AbortSignal.timeout(15_000),
+      signal: init.signal ?? AbortSignal.timeout(15_000),
     });
     if (response.status === 404)
       throw new BackendError(
@@ -80,10 +84,7 @@ export async function readBackend<T>(
             : "The operation was not confirmed. Refresh before retrying; do not submit a different reference.",
       );
     if (!response.ok)
-      throw new BackendError(
-        503,
-        "The PAPER backend is temporarily unavailable.",
-      );
+      throw new BackendError(503, "The backend is temporarily unavailable.");
     if (Number(response.headers.get("content-length") ?? 0) > 2_000_000)
       throw new BackendError(
         502,
@@ -122,15 +123,38 @@ export async function readBackend<T>(
     return parsed.data;
   } catch (error) {
     if (error instanceof BackendError) throw error;
-    throw new BackendError(
-      503,
-      "The PAPER backend is temporarily unavailable.",
-    );
+    throw new BackendError(503, "The backend is temporarily unavailable.");
   }
 }
 
 export const getViewerSnapshot = () =>
   readBackend("/api/viewer/snapshot", ViewerSnapshot);
+export const getRuntimeStatus = () =>
+  readBackend("/api/runtime", RuntimeStatus);
+export const getMainnetSnapshot = () =>
+  readBackend("/api/mainnet/snapshot", MainnetSnapshot, {
+    signal: AbortSignal.timeout(25_000),
+  });
+export function getMainnetWallet(accountId: string) {
+  if (
+    !/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/.test(accountId) ||
+    accountId.length < 2 ||
+    accountId.length > 64
+  )
+    throw new BackendError(400, "Enter a valid NEAR account ID.");
+  return readBackend(
+    `/api/mainnet/wallet?accountId=${encodeURIComponent(accountId)}`,
+    MainnetWallet,
+  );
+}
+export function getMainnetTransaction(hash: string) {
+  if (!/^[1-9A-HJ-NP-Za-km-z]{43,44}$/.test(hash))
+    throw new BackendError(400, "Enter a valid NEAR transaction hash.");
+  return readBackend(
+    `/api/mainnet/transaction?hash=${hash}`,
+    MainnetTransaction,
+  );
+}
 export function getViewerProof(input: string) {
   const hash = input.replace(/^0x/i, "").toLowerCase();
   if (!/^[a-f0-9]{64}$/.test(hash))

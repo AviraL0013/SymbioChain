@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { ViewerSnapshot, ViewerStatus } from "@symbiochain/shared";
+import { useDeployment } from "@/features/mainnet/deployment-provider";
 
 type Swarm = {
   data: ViewerSnapshot | null;
@@ -22,6 +23,7 @@ type Swarm = {
 const Context = createContext<Swarm | null>(null);
 
 export function SwarmProvider({ children }: { children: ReactNode }) {
+  const { runtime } = useDeployment();
   const [data, setData] = useState<ViewerSnapshot | null>(null);
   const [status, setStatus] = useState<ViewerStatus | null>(null);
   const [streaming, setStreaming] = useState(false);
@@ -32,6 +34,7 @@ export function SwarmProvider({ children }: { children: ReactNode }) {
   const refresh = useCallback(() => setRefreshCount((value) => value + 1), []);
 
   useEffect(() => {
+    if (runtime?.mode !== "PAPER") return;
     let active = true;
     let timer: ReturnType<typeof setTimeout> | undefined;
     const controller = new AbortController();
@@ -89,9 +92,9 @@ export function SwarmProvider({ children }: { children: ReactNode }) {
       clearTimeout(timer);
       document.removeEventListener("visibilitychange", onVisible);
     };
-  }, [refreshCount, refresh]);
+  }, [refreshCount, refresh, runtime?.mode]);
 
-  const initialized = !!data;
+  const initialized = !!data && runtime?.mode === "PAPER";
   useEffect(() => {
     if (!initialized) return;
     const source = new EventSource(`/api/swarm/events?after=${cursor.current}`);
@@ -112,7 +115,14 @@ export function SwarmProvider({ children }: { children: ReactNode }) {
 
   return (
     <Context.Provider
-      value={{ data, status, streaming, error, loading, refresh }}
+      value={{
+        data: runtime?.mode === "PAPER" ? data : null,
+        status: runtime?.mode === "PAPER" ? status : null,
+        streaming: runtime?.mode === "PAPER" && streaming,
+        error: runtime?.mode === "PAPER" ? error : null,
+        loading: runtime?.mode === "PAPER" ? loading : !runtime,
+        refresh,
+      }}
     >
       {children}
     </Context.Provider>

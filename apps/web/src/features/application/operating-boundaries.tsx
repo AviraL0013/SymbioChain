@@ -1,15 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useDeployment } from "@/features/mainnet/deployment-provider";
 import { OperatingStatus } from "@symbiochain/shared";
 import { timestamp } from "@/features/swarm/format";
 import "./operating-boundaries.css";
 
 export function OperatingBoundaries() {
+  const deployment = useDeployment();
   const [data, setData] = useState<ReturnType<
     typeof OperatingStatus.parse
   > | null>(null);
   const [stale, setStale] = useState(false);
   useEffect(() => {
+    if (deployment.runtime?.mode !== "PAPER") return;
     const controller = new AbortController();
     let pending = false;
     async function refresh() {
@@ -39,7 +42,17 @@ export function OperatingBoundaries() {
       controller.abort();
       clearInterval(timer);
     };
-  }, []);
+  }, [deployment.runtime?.mode]);
+  if (deployment.runtime?.mode === "LIVE")
+    return (
+      <aside className="ops-boundaries" aria-label="Live execution boundary">
+        <p>
+          <strong>LIVE mainnet data · Execution disarmed.</strong> TEE inference
+          remains quarantined. Wallet connection does not enable trading,
+          minting or credit purchases.
+        </p>
+      </aside>
+    );
   return (
     <aside
       className="ops-boundaries"

@@ -110,7 +110,7 @@ test("publishes testnet scope through server authorization and rejects expanded 
   assert.deepEqual(await getTestnetReport(), report);
   assert.equal(
     String(transport.mock.calls[0]!.arguments[0]),
-    "https://backend.example/api/viewer/testnet",
+    "https://backend.example/api/evidence/testnet",
   );
   transport.mock.restore();
   for (const invalid of [

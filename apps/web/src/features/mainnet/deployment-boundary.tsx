@@ -1,9 +1,11 @@
 "use client";
 import type { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { useDeployment } from "./deployment-provider";
 import { MainnetPage } from "./mainnet-page";
 export function DeploymentBoundary({ children }: { children: ReactNode }) {
   const { runtime, error, refresh } = useDeployment();
+  const path = usePathname();
   if (!runtime)
     return (
       <main className="sc-main">
@@ -16,6 +18,8 @@ export function DeploymentBoundary({ children }: { children: ReactNode }) {
         </button>
       </main>
     );
-  if (runtime.mode === "LIVE") return <MainnetPage />;
+  // The recorded testnet report has its own strict schema and network labels.
+  // It never consumes the PAPER treasury feed or enables financial mutations.
+  if (runtime.mode === "LIVE" && path !== "/testnet") return <MainnetPage />;
   return children;
 }

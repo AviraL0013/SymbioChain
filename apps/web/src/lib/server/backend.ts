@@ -177,7 +177,7 @@ export const getOperatingStatus = () =>
     ),
   );
 export const getTestnetReport = () =>
-  readBackend("/api/viewer/testnet", TestnetReport);
+  readBackend("/api/evidence/testnet", TestnetReport);
 export function getViewerCycles(cursor?: string) {
   if (cursor && !z.uuid().safeParse(cursor).success)
     throw new BackendError(400, "Invalid cycle cursor.");

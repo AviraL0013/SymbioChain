@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { TestnetReport } from "@symbiochain/shared";
 import { AppShell } from "@/features/application/app-shell";
 import { timestamp } from "@/features/swarm/format";
@@ -53,6 +54,13 @@ export function TestnetPage() {
       description="Inspect recorded contract checks, signatures and verification gates."
       notice="Historical NEAR testnet evidence. The current mainnet dashboard is separate; settlement and economics in this rehearsal are SIMULATED."
     >
+      <div className="cycle-callout">
+        This page is the historical testnet archive.{" "}
+        <Link href="/evidence">
+          Open Execution evidence for the completed mainnet checks and funding
+          receipt ↗
+        </Link>
+      </div>
       {error && (
         <p className="app-field-error" role="alert">
           {error}

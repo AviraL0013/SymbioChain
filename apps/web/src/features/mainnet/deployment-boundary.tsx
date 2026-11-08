@@ -20,6 +20,7 @@ export function DeploymentBoundary({ children }: { children: ReactNode }) {
     );
   // The recorded testnet report has its own strict schema and network labels.
   // It never consumes the PAPER treasury feed or enables financial mutations.
-  if (runtime.mode === "LIVE" && path !== "/testnet") return <MainnetPage />;
+  if (runtime.mode === "LIVE" && path !== "/testnet" && path !== "/evidence")
+    return <MainnetPage />;
   return children;
 }

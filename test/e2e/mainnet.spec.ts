@@ -178,6 +178,7 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
     ["/nfts", "Mainnet Receipts."],
     ["/business", "Business Readiness."],
     ["/operator", "Execution Controls."],
+    ["/evidence", "Execution evidence"],
     ["/testnet", "Testnet rehearsal"],
     ["/cycles", "Mainnet Transactions."],
   ]) {
@@ -201,8 +202,45 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
         page.getByText("TEE deployment approval · BLOCKED", { exact: true }),
       ).toBeVisible();
     }
+    if (path === "/evidence") {
+      await expect(
+        page.getByRole("heading", {
+          name: "Mainnet deployment and safety checks",
+        }),
+      ).toBeVisible();
+      await expect(
+        page.getByText("NEAR MAINNET", { exact: true }),
+      ).toBeVisible();
+      await expect(
+        page.getByRole("heading", { name: "Confirmed mainnet funding" }),
+      ).toBeVisible();
+      await expect(
+        page.locator(
+          'a[href="https://nearblocks.io/txns/BUAMQU1darHsDvDesZVE8U8bnPm7pwMNvGyszczNxQej"]',
+        ),
+      ).toBeVisible();
+      await expect(
+        page
+          .getByRole("region", { name: "Execution still gated" })
+          .getByText("QUARANTINED", { exact: true }),
+      ).toBeVisible();
+      await expect(
+        page.getByRole("link", {
+          name: "Open the testnet rehearsal archive ↗",
+        }),
+      ).toBeVisible();
+    }
   }
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/evidence");
+  await expect(
+    page.getByRole("heading", { name: "Confirmed mainnet funding" }),
+  ).toBeVisible({ timeout: 60000 });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
   await page.goto("/dashboard");
   await expect(
     page.getByText(expectedBalance, { exact: false }).first(),

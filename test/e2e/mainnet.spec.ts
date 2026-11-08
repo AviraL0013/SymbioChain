@@ -5,7 +5,9 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
   page,
   request,
 }) => {
-  const state = await (await request.get("/api/swarm/mainnet")).json();
+  const response = await request.get("/api/swarm/mainnet");
+  expect(response.status()).toBe(200);
+  const state = await response.json();
   const treasury = state.accounts.find(
     (a: { role: string }) => a.role === "TREASURY",
   );

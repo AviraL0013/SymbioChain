@@ -8,39 +8,38 @@ A policy-controlled three-agent treasury with durable execution, verifiable infe
 
 **TEE execution status: QUARANTINED.** The recorded November 7 unmodified Brave audit failed deployment approval in provenance-only mode. Intel TDX, NVIDIA and TLS subchecks do not approve the complete gateway/model/proxy chain. Missing launcher provenance, source/OS pin differences and missing required gateway services remain documented in the [backend audit](https://github.com/SuyashAlphaC/symbiochain-core/blob/feature/service-risk-loop/artifacts/brave-cli-verification.json). PAPER inference is a deterministic local simulation with no enclave or TEE signature; no cryptographically signed enclave emulator is claimed.
 
-**Compute funding: HUMAN IN THE LOOP.** The new source candidate displays pending manual tasks and lets authenticated operators record PAPER purchase reports. Those reports remain provider-unverified: they cannot change credits, release held proceeds or open the TEE gate. LIVE reporting uses the private backend administrator API. Automatic provider purchases remain unimplemented.
+**Compute funding: HUMAN IN THE LOOP.** The backend implements durable manual tasks and provider-unverified purchase reports. Those reports cannot change credits, release held proceeds or open the TEE gate. The disarmed mainnet interface is read-only. Automatic provider purchases remain unimplemented.
 
 **External revenue and demand: UNPROVEN.** Team payments and synthetic transactions prove only the tested mechanics. Receipt counts do not establish independent ownership, organic demand, complete net profit or product-market fit. The [backend service path](https://github.com/SuyashAlphaC/symbiochain-core/blob/feature/service-risk-loop/docs/SERVICE_LOOP.md) accepts prepaid quote-risk reports separately from trading; it is not a wallet security audit or guarantee of profit. Do not solicit real payments while approved service delivery remains unavailable.
 
-The quarantine banner, manual-task interface and backend service additions require the paired release. They have not been deployed by this change. The production baseline remains recorded below; unavailable APIs produce unavailable/stale states instead of invented approval or revenue.
+**The current release serves LIVE mainnet observations with execution DISARMED.** Treasury balances, storage collateral, worker permissions, executable identity and deployment transactions come from finalized NEAR mainnet state. The treasury remains paused. Paid AI inference, trading, customer delivery and NFT distributions are not active. The goal of an agent earning and purchasing its own compute remains an incomplete business loop. Unavailable data is labelled stale or disconnected.
 
-**The deployed demonstration uses PAPER execution.** Its telemetry comes from persisted backend records; economic results, inference and receipts in that mode are simulated. Real wallet deposits, live trading and on-chain ownership are not enabled by this frontend. The goal of an agent earning and purchasing its own compute remains an incomplete business loop.
+The `/testnet` route points to the historical rehearsal and transaction evidence.
+Recorded testnet contract checks and MPC signatures are real; market settlement
+and reported economics in that rehearsal remain simulated. PAPER records remain
+separate backend history and are never relabelled mainnet execution.
 
-The deployed site includes a separate `/testnet` evidence page. It publishes
-recorded NEAR testnet contract checks and real MPC signature results independently
-from the PAPER agent feed. Market settlement and reported economics in that
-rehearsal remain explicitly simulated. Hardware verification, deployment approval
-and signed inference are displayed as separate gates.
+EYE (the SCOUT worker) discovers candidate routes, BRAIN assesses committed terms, and HAND tracks execution, reconciliation and receipts when execution is enabled. The production observer starts no worker. The Fastify backend owns PostgreSQL, jobs, signing and provider integrations. This Next.js repository supplies the public mainnet application and separately mode-bound PAPER operator controls.
 
-EYE (the SCOUT worker) discovers candidate routes, BRAIN assesses committed terms, and HAND tracks execution, reconciliation and receipts. The Fastify backend owns PostgreSQL, jobs, signing and provider integrations. This Next.js repository supplies the public application and protected PAPER operator controls.
-
-Released frontend: [`83d46d8`](https://github.com/AviraL0013/SymbioChain/commit/83d46d8eb5db2257989bf1c831694da20617635e) (PR #3). The repository is public and the existing Vercel project serves `/testnet`; operator configuration and owner login/logout checks are complete. See [release evidence and revision scope](docs/validation.md#hosted-release-status). This records deployment, not confirmation of a hackathon form submission.
+Both repositories are public. The existing Vercel project is retained. See the [current production verification](docs/validation/mainnet-production.json) for exact frontend/backend revisions and checks; `/api/release` exposes only curated public deployment identifiers. Earlier records remain dated history. A hackathon form submission has not been confirmed.
 
 ## Explore
 
-| Route         | Connected behavior                                                                                                                                              |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/dashboard`  | Treasury history, agent heartbeats, recorded decisions, settlements and the application compute allowance                                                       |
-| `/topology`   | Actual worker availability and recorded coordination                                                                                                            |
-| `/cycles`     | Paginated execution journal, including rejected and incomplete cycles                                                                                           |
-| `/cycles/:id` | Quote shortfall, current-policy comparison, durable job attempts, settlement economics and recorded proofs                                                      |
-| `/verify`     | Stored verification lookup; a missing record does not mean a signature is invalid                                                                               |
-| `/nfts`       | Persisted PAPER receipts, clearly marked unminted and simulated                                                                                                 |
-| `/business`   | Source candidate: confirmed receipts, reported-cost windows and explicit unfinished funding claims; requires paired backend release                             |
-| `/testnet`    | Separate historical rehearsal report, testnet transaction links, explicit simulations and TEE approval gates                                                    |
-| `/operator`   | Authenticated simulated funding, idempotent cycle creation, pause/resume, recovery demonstration, policy revisions, cost approval and private evidence download |
+| Route         | Connected behavior                                                                        |
+| ------------- | ----------------------------------------------------------------------------------------- |
+| `/dashboard`  | Finalized mainnet treasury balance, storage collateral, paused policy and execution gates |
+| `/topology`   | Actual mainnet agent accounts, recovery custody and worker permissions                    |
+| `/cycles`     | Known confirmed deployment transactions, labelled infrastructure rather than revenue      |
+| `/cycles/:id` | Mainnet transaction view; historical PAPER cycle details are not published as LIVE        |
+| `/verify`     | Bounded lookup of known deployment transactions, including receipt outcomes               |
+| `/nfts`       | Actual on-chain supply and revenue-share totals; no simulated mint claims                 |
+| `/business`   | Unproven revenue, unknown full-business runway and unfinished funding claims              |
+| `/testnet`    | Historical rehearsal archive with precise simulation boundaries                           |
+| `/operator`   | Read-only mainnet execution gates; no public arming or spending control                   |
 
-Public pages read runtime-validated publication schemas through fixed server routes. A resumable event stream refreshes persisted telemetry; polling continues through interruptions. Stale and disconnected states retain their labels. No page invents records when the backend is unavailable.
+Public pages read runtime-validated schemas through fixed server routes. Mainnet snapshots poll finalized state; PAPER telemetry retains its existing event stream and polling behavior when that mode is selected. No page invents records when the backend is unavailable.
+
+Meteor and MyNearWallet connect using pinned wallet executors. Connection requests account access without adding keys or requesting a transaction. Wallet connection is separate from operator authentication. The automated browser check uses an explicit wallet adapter fixture; actual extension login still requires the user.
 
 Operator access uses a separate code and a signed, 30-minute HttpOnly session. Backend read/admin credentials stay on the server. Each operation checks backend capabilities and binds the requested execution mode to PAPER, including across a backend deployment change. No public catch-all proxy or LIVE arming control exists.
 
@@ -52,9 +51,9 @@ Operator access uses a separate code and a signed, 30-minute HttpOnly session. B
 - Application compute allowance is distinct from provider credit balance. It does not establish a measured business runway or a profit-funded compute purchase.
 - Proof lookup exposes recorded verification scope. PAPER inference never becomes a verified hardware proof.
 
-The backend has separate real gateway/model hardware audit evidence and confidential-inference verification code. Final deployment approval and a signed paid completion still depend on the [documented provenance gate](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TEE_APPROVAL_HANDOFF.md). Mainnet execution awaits the dedicated account, explicit funding limits and a genuinely profitable executable route. More detail: [trading evidence](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TRADING_GATES.md).
+The backend has separate real gateway/model hardware audit evidence and confidential-inference verification code. Final deployment approval and a signed paid completion still depend on the [documented provenance gate](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TEE_APPROVAL_HANDOFF.md). The mainnet foundation is deployed; execution still needs explicit trading/gas limits, operational funding, owner-approved permissions and a profitable executable route. More detail: [mainnet activation requirements](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/MAINNET_PRODUCTION.md).
 
-The business-accounting source candidate adds `/business` through a strict server-only proxy. It reports zero confirmed external revenue and unknown net costs for the unfunded PAPER deployment. Proceeds reservations begin unpaid. The backend now implements signed proceeds conversion, native withdrawal and verified NFT allocation with durable recovery, while the dashboard shows that workflow as implemented but disabled. No funded mainnet payout is claimed. Automatic credit purchasing remains blocked on a publicly supported NEAR AI payment flow. This feature is locally verified and not part of the deployed baseline above. See [candidate revisions and validation](docs/validation.md#business-feature-source-candidate).
+Business accounting, signed proceeds conversion, native withdrawal and NFT allocation with durable recovery are implemented. No funded mainnet payout or confirmed external revenue is claimed. These execution paths remain disabled. Automatic credit purchasing remains blocked on a publicly supported NEAR AI payment flow. The mainnet interface reports these limits explicitly; local and historical PAPER tests establish mechanics only.
 
 ## Run locally
 

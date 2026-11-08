@@ -23,6 +23,8 @@ EYE (the SCOUT worker) discovers candidate routes, BRAIN assesses committed term
 
 Both repositories are public. The existing Vercel project is retained. See the [current production verification](docs/validation/mainnet-production.json) for exact frontend/backend revisions and checks; `/api/release` exposes only curated public deployment identifiers. Earlier records remain dated history. A hackathon form submission has not been confirmed.
 
+The [controlled demo walkthrough](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/CONTROLLED_DEMO.md) records the owner's separate 0.001 NEAR funding call while paused. `/testnet` displays the original recorded distribution and claim with explicit test-token/simulated-economics labels; the testnet allocation was 10%, and no mainnet revenue split is claimed.
+
 ## Explore
 
 | Route         | Connected behavior                                                                        |

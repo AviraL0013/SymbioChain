@@ -1,8 +1,15 @@
 import { test, expect } from "@playwright/test";
+import { formatNear } from "../../apps/web/src/features/mainnet/format";
 
 test("shows real mainnet data, verifies a receipt, and connects without permissions or payments", async ({
   page,
+  request,
 }) => {
+  const state = await (await request.get("/api/swarm/mainnet")).json();
+  const treasury = state.accounts.find(
+    (a: { role: string }) => a.role === "TREASURY",
+  );
+  const expectedBalance = formatNear(treasury.balanceYocto);
   let backendCalls = 0;
   const errors: string[] = [];
   const secrets = (process.env.E2E_MAINNET_SECRETS ?? "")
@@ -90,7 +97,9 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
   await expect(
     page.getByRole("heading", { name: "Mainnet Mission Control." }),
   ).toBeVisible({ timeout: 90000 });
-  await expect(page.getByText("6.1000", { exact: false }).first()).toBeVisible({
+  await expect(
+    page.getByText(expectedBalance, { exact: false }).first(),
+  ).toBeVisible({
     timeout: 90000,
   });
   await expect(
@@ -109,7 +118,7 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
       .filter({ hasText: "Mainnet connection unavailable" }),
   ).toContainText("stale");
   await expect(
-    page.getByText("6.1000", { exact: false }).first(),
+    page.getByText(expectedBalance, { exact: false }).first(),
   ).toBeVisible();
   await page.unroute("**/api/swarm/mainnet");
   await page.getByRole("button", { name: "Refresh", exact: true }).click();
@@ -167,17 +176,35 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
     ["/nfts", "Mainnet Receipts."],
     ["/business", "Business Readiness."],
     ["/operator", "Execution Controls."],
-    ["/testnet", "Testnet Evidence Archive."],
+    ["/testnet", "Testnet rehearsal"],
     ["/cycles", "Mainnet Transactions."],
   ]) {
     await page.goto(path!);
     await expect(page.getByRole("heading", { name: title! })).toBeVisible({
       timeout: 60000,
     });
+    if (path === "/testnet") {
+      await expect(
+        page.getByText("PAPER backend", { exact: true }),
+      ).toHaveCount(0);
+      await expect(
+        page.getByText("Test-token distribution · PASSED", { exact: true }),
+      ).toBeVisible();
+      await expect(
+        page.locator(
+          'a[href="https://testnet.nearblocks.io/txns/2Asero1kxG7xfM633fuahR4Xuk3izeRvWnrTLevkLR4c"]',
+        ),
+      ).toBeVisible();
+      await expect(
+        page.getByText("TEE deployment approval · BLOCKED", { exact: true }),
+      ).toBeVisible();
+    }
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/dashboard");
-  await expect(page.getByText("6.1000", { exact: false }).first()).toBeVisible({
+  await expect(
+    page.getByText(expectedBalance, { exact: false }).first(),
+  ).toBeVisible({
     timeout: 60000,
   });
   expect(

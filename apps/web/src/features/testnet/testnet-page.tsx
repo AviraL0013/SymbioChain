@@ -51,7 +51,7 @@ export function TestnetPage() {
     <AppShell
       title="Testnet rehearsal"
       description="Inspect recorded contract checks, signatures and verification gates."
-      notice="Separate testnet evidence. The agent dashboard remains PAPER; settlement and economics here use explicit fixtures."
+      notice="Historical NEAR testnet evidence. The current mainnet dashboard is separate; settlement and economics in this rehearsal are SIMULATED."
     >
       {error && (
         <p className="app-field-error" role="alert">

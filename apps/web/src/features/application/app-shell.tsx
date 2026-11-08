@@ -126,6 +126,7 @@ export function AppShell({
   children: ReactNode;
   action?: ReactNode;
 }) {
+  const { runtime } = useDeployment();
   return (
     <div className="mission-control app-page">
       <a href="#app-content" className="sc-skip-link">
@@ -133,7 +134,7 @@ export function AppShell({
       </a>
       <AppHeader />
       <main className="sc-main" id="app-content">
-        <ConnectionNotice />
+        {runtime?.mode === "PAPER" && <ConnectionNotice />}
         <p className="app-muted">{notice}</p>
         <section className="sc-page-heading">
           <div>

@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { MainnetAcceptance } from "@symbiochain/shared";
 import { AppShell } from "@/features/application/app-shell";
 import { useDeployment } from "@/features/mainnet/deployment-provider";
 import { formatNear } from "@/features/mainnet/format";
@@ -9,13 +11,35 @@ import "@/features/cycles/cycles.css";
 
 export function EvidencePage() {
   const { runtime, mainnet, error, refresh } = useDeployment();
+  const [report, setReport] = useState<MainnetAcceptance | null>(null);
+  const [reportError, setReportError] = useState("");
+  const [generation, setGeneration] = useState(0);
+  useEffect(() => {
+    const controller = new AbortController();
+    void fetch("/api/swarm/mainnet/acceptance", {
+      cache: "no-store",
+      signal: controller.signal,
+    })
+      .then(async (response) => {
+        if (!response.ok) throw Error("Report unavailable");
+        setReport(MainnetAcceptance.parse(await response.json()));
+        setReportError("");
+      })
+      .catch(() => {
+        if (!controller.signal.aborted)
+          setReportError(
+            "Recorded mainnet acceptance report unavailable. Refresh to retry; any previous report retains its original date.",
+          );
+      });
+    return () => controller.abort();
+  }, [generation]);
   const workers =
     mainnet?.accounts.filter((a) => a.workerEnabled !== null) ?? [];
   return (
     <AppShell
       title="Execution evidence"
-      description="Completed mainnet checks, the confirmed funding receipt and historical testnet results."
-      notice="Mainnet deployment and funding are real. Testnet distribution uses faucet tokens and simulated economics."
+      description="Mainnet state, finalized transaction proofs and explicit execution gaps."
+      notice="Recorded results apply only to their stated scope and date. Blocked and unexecuted checks do not count as successful execution."
     >
       <section className="cycle-card" aria-labelledby="mainnet-evidence">
         <h2 id="mainnet-evidence">Mainnet deployment and safety checks</h2>
@@ -36,7 +60,7 @@ export function EvidencePage() {
               {timestamp(mainnet.capturedAt)}
               {error ? " · STALE" : ""}
             </p>
-            <dl className="cycle-metrics">
+            <dl className="cycle-metrics evidence-metrics">
               <div>
                 <dt>Network</dt>
                 <dd>NEAR MAINNET</dd>
@@ -102,10 +126,127 @@ export function EvidencePage() {
               : "Live mainnet observation is unavailable in this runtime. The recorded funding receipt below retains its original network and date."}
           </p>
         )}
-        <button type="button" className="sc-text-button" onClick={refresh}>
+        <button
+          type="button"
+          className="sc-text-button"
+          onClick={() => {
+            refresh();
+            setGeneration((n) => n + 1);
+          }}
+        >
           Refresh current checks
         </button>
       </section>
+
+      <section className="cycle-card" aria-labelledby="mainnet-acceptance">
+        <h2 id="mainnet-acceptance">Recorded mainnet acceptance</h2>
+        {reportError && (
+          <p role="alert" className="app-field-error">
+            {reportError}
+          </p>
+        )}
+        {!report && !reportError && (
+          <p role="status">Loading mainnet acceptance results…</p>
+        )}
+        {report && (
+          <>
+            <p>
+              Recorded {timestamp(report.capturedAt)} at finalized block{" "}
+              {report.block.height}
+              {reportError ? " · STALE COPY" : ""}. Refresh reloads this
+              recorded audit; live state is shown above.
+            </p>
+            <p>
+              <strong>
+                {report.summary.passed} passed · {report.summary.blocked}{" "}
+                blocked · {report.summary.notRun} not run
+              </strong>
+              .{" "}
+              {report.summary.complete
+                ? "All recorded checks passed."
+                : "Mainnet execution coverage is incomplete."}
+            </p>
+            <ul className="cycle-timeline evidence-checks">
+              {report.checks.map((check) => (
+                <li key={check.id}>
+                  <h3>
+                    {check.label} · {check.status}
+                  </h3>
+                  <p>{check.scope.replaceAll("_", " ")}</p>
+                  <p>{check.detail}</p>
+                  {check.links.map((url, index) => (
+                    <p key={url}>
+                      <a href={url} target="_blank" rel="noopener noreferrer">
+                        {check.id} source {index + 1} ↗
+                      </a>
+                    </p>
+                  ))}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </section>
+
+      {report?.serviceRoundTrip && (
+        <section className="cycle-card" aria-labelledby="mainnet-service">
+          <h2 id="mainnet-service">
+            Confirmed mainnet service balance round trip
+          </h2>
+          <p>
+            Self-funded deposit and return of service credit. The treasury
+            stayed paused. This proves escrow mechanics; agent payments, Intents
+            settlement and earned revenue remain unproven.
+          </p>
+          <dl className="cycle-metrics evidence-metrics">
+            {[
+              ["Deposit", report.serviceRoundTrip.depositedYocto],
+              ["Returned to owner", report.serviceRoundTrip.returnedYocto],
+              [
+                "Retained storage collateral",
+                report.serviceRoundTrip.storageCollateralYocto,
+              ],
+              ["Combined network fees", report.serviceRoundTrip.totalFeeYocto],
+              ["Net owner cost", report.serviceRoundTrip.totalOwnerCostYocto],
+            ].map(([label, value]) => (
+              <div key={label}>
+                <dt>{label}</dt>
+                <dd>{formatNear(value!, 16)} NEAR</dd>
+              </div>
+            ))}
+            <div>
+              <dt>Wallet balance reconciliation</dt>
+              <dd>
+                {report.serviceRoundTrip.walletBalanceReconciled
+                  ? "EXACT MATCH"
+                  : "NOT RECONCILED"}
+              </dd>
+            </div>
+          </dl>
+          <p>
+            Final service credit: zero. Storage collateral remains in the
+            contract.
+          </p>
+          <p>
+            <a
+              href={`https://nearblocks.io/txns/${report.serviceRoundTrip.depositHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View service deposit ↗
+            </a>
+          </p>
+          <p>
+            <a
+              href={`https://nearblocks.io/txns/${report.serviceRoundTrip.withdrawalHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View returned service credit ↗
+            </a>
+          </p>
+        </section>
+      )}
 
       <section className="cycle-card" aria-labelledby="mainnet-funding">
         <h2 id="mainnet-funding">Confirmed mainnet funding</h2>
@@ -114,7 +255,7 @@ export function EvidencePage() {
           owner-signed funding call kept the treasury paused. It is team-funded
           treasury capital, not customer revenue or profit.
         </p>
-        <dl className="cycle-metrics">
+        <dl className="cycle-metrics evidence-metrics">
           <div>
             <dt>Network</dt>
             <dd>NEAR MAINNET · RECORDED RECEIPT</dd>
@@ -157,7 +298,7 @@ export function EvidencePage() {
 
       <section className="cycle-card" aria-labelledby="remaining-evidence">
         <h2 id="remaining-evidence">Execution still gated</h2>
-        <dl className="cycle-metrics">
+        <dl className="cycle-metrics evidence-metrics">
           <div>
             <dt>TEE deployment approval</dt>
             <dd>QUARANTINED</dd>
@@ -186,20 +327,6 @@ export function EvidencePage() {
         <p>
           These unfinished claims are independent of the completed deployment
           and funding checks.
-        </p>
-      </section>
-
-      <section className="cycle-card" aria-labelledby="testnet-archive">
-        <h2 id="testnet-archive">Historical testnet evidence</h2>
-        <p>
-          Recorded NEAR testnet contract checks, MPC signatures and a test-token
-          NFT distribution and holder claim remain available separately. The
-          distribution allocated 10% of a faucet-funded deposit. Its underlying
-          market settlement and accountant profit are SIMULATED; it is not a
-          mainnet revenue distribution.
-        </p>
-        <p>
-          <Link href="/testnet">Open the testnet rehearsal archive ↗</Link>
         </p>
       </section>
     </AppShell>

@@ -9,6 +9,7 @@ import {
   getViewerEvents,
   getViewerStatus,
   getTestnetReport,
+  getMainnetAcceptance,
   getBusinessStatus,
   getBusinessFunding,
   viewerResponse,
@@ -402,5 +403,62 @@ test("NFT funding capability remains separate from actual paid distributions", a
       /private|apiKey|server-only-test-token/,
     );
     t.mock.restore();
+  }
+});
+
+test("mainnet acceptance uses a fixed authorized route and refuses simulated or expanded records", async () => {
+  const report = {
+    contractVersion: 1,
+    profile: "MAINNET_ACCEPTANCE",
+    network: "mainnet",
+    capturedAt: "2026-11-09T05:00:00.000Z",
+    block: { height: "123", hash: "final" },
+    summary: { passed: 0, blocked: 1, notRun: 0, complete: false },
+    checks: [
+      {
+        id: "inference",
+        label: "Paid AI",
+        status: "BLOCKED",
+        scope: "NOT_EXECUTED",
+        detail: "Approval missing.",
+        links: [],
+      },
+    ],
+    transactions: [],
+    serviceRoundTrip: null,
+    runner: {
+      paidInferenceRequests: 0,
+      transactionsSubmitted: 0,
+      readOnly: true,
+    },
+  };
+  const transport = mock.method(
+    globalThis,
+    "fetch",
+    async (_url: URL, _options: RequestInit) => Response.json(report),
+  );
+  assert.deepEqual(await getMainnetAcceptance(), report);
+  const [url, options] = transport.mock.calls[0]!.arguments;
+  assert.equal(String(url), "https://backend.example/api/evidence/mainnet");
+  assert.equal(
+    (options!.headers as Record<string, string>).authorization,
+    "Bearer server-only-test-token",
+  );
+  transport.mock.restore();
+  for (const invalid of [
+    { ...report, network: "testnet" },
+    { ...report, secret: "SECRET_SENTINEL" },
+    { ...report, summary: { ...report.summary, complete: true } },
+  ]) {
+    const mocked = mock.method(globalThis, "fetch", async () =>
+      Response.json(invalid),
+    );
+    const response = await viewerResponse(getMainnetAcceptance);
+    assert.equal(response.status, 502);
+    assert.doesNotMatch(
+      await response.text(),
+      /SECRET_SENTINEL|server-only-test-token/,
+    );
+    mocked.mock.restore();
   }
 });

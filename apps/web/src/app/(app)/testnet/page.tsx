@@ -1,2 +1,4 @@
-import { TestnetPage } from "@/features/testnet/testnet-page";
-export default TestnetPage;
+import { redirect } from "next/navigation";
+export default function LegacyTestnetPage() {
+  redirect("/evidence");
+}

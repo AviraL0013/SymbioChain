@@ -179,29 +179,12 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
     ["/business", "Business Readiness."],
     ["/operator", "Execution Controls."],
     ["/evidence", "Execution evidence"],
-    ["/testnet", "Testnet rehearsal"],
     ["/cycles", "Mainnet Transactions."],
   ]) {
     await page.goto(path!);
     await expect(page.getByRole("heading", { name: title! })).toBeVisible({
       timeout: 60000,
     });
-    if (path === "/testnet") {
-      await expect(
-        page.getByText("PAPER backend", { exact: true }),
-      ).toHaveCount(0);
-      await expect(
-        page.getByText("Test-token distribution · PASSED", { exact: true }),
-      ).toBeVisible();
-      await expect(
-        page.locator(
-          'a[href="https://testnet.nearblocks.io/txns/2Asero1kxG7xfM633fuahR4Xuk3izeRvWnrTLevkLR4c"]',
-        ),
-      ).toBeVisible();
-      await expect(
-        page.getByText("TEE deployment approval · BLOCKED", { exact: true }),
-      ).toBeVisible();
-    }
     if (path === "/evidence") {
       await expect(
         page.getByRole("heading", {
@@ -215,9 +198,10 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
         page.getByRole("heading", { name: "Confirmed mainnet funding" }),
       ).toBeVisible();
       await expect(
-        page.locator(
-          'a[href="https://nearblocks.io/txns/BUAMQU1darHsDvDesZVE8U8bnPm7pwMNvGyszczNxQej"]',
-        ),
+        page.getByRole("link", {
+          name: "View confirmed funding transaction ↗",
+          exact: true,
+        }),
       ).toBeVisible();
       await expect(
         page
@@ -225,10 +209,35 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
           .getByText("QUARANTINED", { exact: true }),
       ).toBeVisible();
       await expect(
-        page.getByRole("link", {
-          name: "Open the testnet rehearsal archive ↗",
+        page.getByRole("heading", { name: "Recorded mainnet acceptance" }),
+      ).toBeVisible();
+      await expect(
+        page.getByRole("heading", {
+          name: "Confirmed mainnet service balance round trip",
         }),
       ).toBeVisible();
+      await expect(
+        page.getByText("Mainnet execution coverage is incomplete.", {
+          exact: false,
+        }),
+      ).toBeVisible();
+      await expect(
+        page.getByRole("link", { name: "View service deposit ↗" }),
+      ).toHaveAttribute(
+        "href",
+        "https://nearblocks.io/txns/5TJYtz6mgKmLCUtm671nad5yLiUCGE3c7exe91WXgtiN",
+      );
+      await expect(
+        page.getByRole("link", { name: "View returned service credit ↗" }),
+      ).toHaveAttribute(
+        "href",
+        "https://nearblocks.io/txns/8yY6i69VtQgknNxzTEz3qR9uxWEyUojCAiQi3HzbLEAC",
+      );
+      await expect(
+        page.locator(
+          'a[href*="testnet"], a[href*="sepolia"], a[href*="cluster=devnet"]',
+        ),
+      ).toHaveCount(0);
     }
   }
   await page.setViewportSize({ width: 390, height: 844 });
@@ -236,11 +245,31 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
   await expect(
     page.getByRole("heading", { name: "Confirmed mainnet funding" }),
   ).toBeVisible({ timeout: 60000 });
+  await expect(
+    page.getByRole("heading", {
+      name: "Confirmed mainnet service balance round trip",
+    }),
+  ).toBeVisible();
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
+  await page.screenshot({
+    path: "artifacts/browser/mainnet-evidence-mobile.png",
+    fullPage: true,
+  });
+  await page.route("**/api/swarm/mainnet/acceptance", (route) =>
+    route.fulfill({ status: 503, body: "{}", contentType: "application/json" }),
+  );
+  await page.getByRole("button", { name: "Refresh current checks" }).click();
+  await expect(
+    page
+      .getByRole("alert")
+      .filter({ hasText: "Recorded mainnet acceptance report unavailable" }),
+  ).toBeVisible();
+  await expect(page.getByText("STALE COPY", { exact: false })).toBeVisible();
+  await page.unroute("**/api/swarm/mainnet/acceptance");
   await page.goto("/dashboard");
   await expect(
     page.getByText(expectedBalance, { exact: false }).first(),

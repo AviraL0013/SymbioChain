@@ -122,3 +122,7 @@
 .evidence-metrics dd {
   margin-left: auto;
 }
+
+.evidence-checks {
+  overflow-wrap: anywhere;
+}

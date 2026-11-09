@@ -166,7 +166,7 @@ export function EvidencePage() {
                 ? "All recorded checks passed."
                 : "Mainnet execution coverage is incomplete."}
             </p>
-            <ul className="cycle-timeline">
+            <ul className="cycle-timeline evidence-checks">
               {report.checks.map((check) => (
                 <li key={check.id}>
                   <h3>

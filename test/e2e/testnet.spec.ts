@@ -6,7 +6,7 @@ test("legacy rehearsal URL redirects to current mainnet evidence", async ({
   await page.goto("/testnet");
   await expect(page).toHaveURL(/\/evidence$/);
   await expect(
-    page.getByRole("heading", { name: "Execution evidence", exact: true }),
+    page.getByRole("heading", { name: "Execution evidence.", exact: true }),
   ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Recorded mainnet acceptance" }),

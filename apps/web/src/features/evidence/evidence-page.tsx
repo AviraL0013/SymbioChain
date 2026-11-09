@@ -60,7 +60,7 @@ export function EvidencePage() {
               {timestamp(mainnet.capturedAt)}
               {error ? " · STALE" : ""}
             </p>
-            <dl className="cycle-metrics">
+            <dl className="cycle-metrics evidence-metrics">
               <div>
                 <dt>Network</dt>
                 <dd>NEAR MAINNET</dd>
@@ -198,7 +198,7 @@ export function EvidencePage() {
             stayed paused. This proves escrow mechanics; agent payments, Intents
             settlement and earned revenue remain unproven.
           </p>
-          <dl className="cycle-metrics">
+          <dl className="cycle-metrics evidence-metrics">
             {[
               ["Deposit", report.serviceRoundTrip.depositedYocto],
               ["Returned to owner", report.serviceRoundTrip.returnedYocto],
@@ -255,7 +255,7 @@ export function EvidencePage() {
           owner-signed funding call kept the treasury paused. It is team-funded
           treasury capital, not customer revenue or profit.
         </p>
-        <dl className="cycle-metrics">
+        <dl className="cycle-metrics evidence-metrics">
           <div>
             <dt>Network</dt>
             <dd>NEAR MAINNET · RECORDED RECEIPT</dd>
@@ -298,7 +298,7 @@ export function EvidencePage() {
 
       <section className="cycle-card" aria-labelledby="remaining-evidence">
         <h2 id="remaining-evidence">Execution still gated</h2>
-        <dl className="cycle-metrics">
+        <dl className="cycle-metrics evidence-metrics">
           <div>
             <dt>TEE deployment approval</dt>
             <dd>QUARANTINED</dd>

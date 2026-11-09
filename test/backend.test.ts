@@ -10,6 +10,7 @@ import {
   getViewerStatus,
   getTestnetReport,
   getMainnetAcceptance,
+  getMainnetActivation,
   getBusinessStatus,
   getBusinessFunding,
   viewerResponse,
@@ -460,5 +461,90 @@ test("mainnet acceptance uses a fixed authorized route and refuses simulated or 
       /SECRET_SENTINEL|server-only-test-token/,
     );
     mocked.mock.restore();
+  }
+});
+
+test("bounded activation keeps owner permission separate from AI approval and never exposes configuration credentials", async () => {
+  const data = {
+    contractVersion: 1,
+    network: "mainnet",
+    capturedAt: "2026-11-09T09:00:00.000Z",
+    ownerActivation: "PENDING",
+    paused: true,
+    enabledWorkerCount: 0,
+    executionEnabled: false,
+    automaticTradingEnabled: false,
+    monitorOnlyWorkers: true,
+    monitors: [],
+    configuration: {
+      scope: "CONFIGURATION_PRESENCE",
+      treasurySigningKeys: 3,
+      dedicatedIntentsKeys: 2,
+      evmRpcConfigured: true,
+      nftReceiver: "solidvideo4090.near",
+    },
+    intentsRegistration: { brain: "NOT_REGISTERED", hand: "NOT_REGISTERED" },
+    limits: {
+      asset: "USDC",
+      decimals: 6,
+      onChainMaxTradeAtoms: "1",
+      onChainMaxDailyAtoms: "1",
+      configuredMaxTradeAtoms: "50000",
+      configuredMaxDailyAtoms: "100000",
+      matches: false,
+      scope: "AUTHORIZED_CROSS_CHAIN_TRANSFERS",
+      universalNativeSpendingCap: false,
+      nativeReserveYocto: "100000000000000000000000",
+      mpcSigningDepositLimitYocto: "1",
+    },
+    tee: {
+      status: "QUARANTINED",
+      reason: "APPLICATION_WORKLOAD_MEASUREMENT_POLICY",
+      message:
+        "Inference blocked by application-level TEE workload measurement policy.",
+    },
+    proof: {
+      contractVersion: 1,
+      profile: "BOUNDED_OWNER_ACTIVATION_TEE_QUARANTINED",
+      status: "PENDING",
+      checkedAt: null,
+      transactions: [],
+      totalFeeYocto: "0",
+      newStorageYocto: "0",
+      treasuryTopupYocto: "0",
+      paidInferenceRequests: 0,
+      externalRevenueProven: false,
+    },
+    externalRevenueProven: false,
+    automaticCreditPurchaseImplemented: false,
+  };
+  const transport = mock.method(
+    globalThis,
+    "fetch",
+    async (_url: URL, _options: RequestInit) => Response.json(data),
+  );
+  assert.deepEqual(await getMainnetActivation(), data);
+  const [url, options] = transport.mock.calls[0]!.arguments;
+  assert.equal(String(url), "https://backend.example/api/mainnet/activation");
+  assert.equal(
+    (options.headers as Record<string, string>).authorization,
+    "Bearer server-only-test-token",
+  );
+  transport.mock.restore();
+  for (const invalid of [
+    { ...data, apiKey: "SECRET_SENTINEL" },
+    { ...data, limits: { ...data.limits, universalNativeSpendingCap: true } },
+    { ...data, tee: { ...data.tee, status: "VERIFIED" } },
+  ]) {
+    const t = mock.method(globalThis, "fetch", async () =>
+      Response.json(invalid),
+    );
+    const response = await viewerResponse(getMainnetActivation);
+    assert.equal(response.status, 502);
+    assert.doesNotMatch(
+      await response.text(),
+      /SECRET_SENTINEL|server-only-test-token/,
+    );
+    t.mock.restore();
   }
 });

@@ -47,9 +47,9 @@ export function OperatingBoundaries() {
     return (
       <aside className="ops-boundaries" aria-label="Live execution boundary">
         <p>
-          <strong>LIVE mainnet data · Execution disarmed.</strong> TEE inference
-          remains quarantined. Wallet connection does not enable trading,
-          minting or credit purchases.
+          <strong>LIVE mainnet data · Execution disarmed.</strong> Inference
+          blocked by application-level TEE workload measurement policy. Wallet
+          connection does not enable trading, minting or credit purchases.
         </p>
       </aside>
     );

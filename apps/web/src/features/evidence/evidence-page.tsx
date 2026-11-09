@@ -7,6 +7,7 @@ import { useDeployment } from "@/features/mainnet/deployment-provider";
 import { formatNear } from "@/features/mainnet/format";
 import { timestamp } from "@/features/swarm/format";
 import funding from "./recorded-mainnet-funding.json";
+import { ActivationPanel } from "@/features/mainnet/activation-panel";
 import "@/features/cycles/cycles.css";
 
 export function EvidencePage() {
@@ -138,6 +139,7 @@ export function EvidencePage() {
         </button>
       </section>
 
+      <ActivationPanel />
       <section className="cycle-card" aria-labelledby="mainnet-acceptance">
         <h2 id="mainnet-acceptance">Recorded mainnet acceptance</h2>
         {reportError && (
@@ -154,7 +156,8 @@ export function EvidencePage() {
               Recorded {timestamp(report.capturedAt)} at finalized block{" "}
               {report.block.height}
               {reportError ? " · STALE COPY" : ""}. Refresh reloads this
-              recorded audit; live state is shown above.
+              recorded audit from before bounded owner activation; current state
+              and the seven activation receipts are shown above.
             </p>
             <p>
               <strong>

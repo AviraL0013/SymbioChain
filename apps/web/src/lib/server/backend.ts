@@ -15,6 +15,7 @@ import {
   MainnetWallet,
   MainnetTransaction,
   MainnetAcceptance,
+  MainnetActivation,
 } from "@symbiochain/shared";
 import { z } from "zod";
 
@@ -138,6 +139,10 @@ export const getMainnetSnapshot = () =>
   });
 export const getMainnetAcceptance = () =>
   readBackend("/api/evidence/mainnet", MainnetAcceptance);
+export const getMainnetActivation = () =>
+  readBackend("/api/mainnet/activation", MainnetActivation, {
+    signal: AbortSignal.timeout(30_000),
+  });
 export function getMainnetWallet(accountId: string) {
   if (
     !/^[a-z0-9]+(?:[._-][a-z0-9]+)*$/.test(accountId) ||

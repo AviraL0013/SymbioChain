@@ -12,7 +12,7 @@ A policy-controlled three-agent treasury with durable execution, verifiable infe
 
 **External revenue and demand: UNPROVEN.** Team payments and synthetic transactions prove only the tested mechanics. Receipt counts do not establish independent ownership, organic demand, complete net profit or product-market fit. The [backend service path](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/SERVICE_LOOP.md) accepts prepaid quote-risk reports separately from trading; it is not a wallet security audit or guarantee of profit. Do not solicit real payments while approved service delivery remains unavailable.
 
-**The current release serves LIVE mainnet observations with execution DISARMED.** Treasury balances, storage collateral, worker permissions, executable identity and deployment transactions come from finalized NEAR mainnet state. The treasury remains paused. Paid AI inference, trading, customer delivery and NFT distributions are not active. The goal of an agent earning and purchasing its own compute remains an incomplete business loop. Unavailable data is labelled stale or disconnected.
+**The current release serves LIVE mainnet observations with execution DISARMED.** Treasury balances, storage collateral, worker permissions, executable identity and deployment transactions come from finalized NEAR mainnet state. The owner has activated bounded contract permissions; the runtime remains disarmed with monitor-only heartbeats. Paid AI inference, trading, customer delivery and NFT distributions are not active. The goal of an agent earning and purchasing its own compute remains an incomplete business loop. Unavailable data is labelled stale or disconnected.
 
 The public `/evidence` view now contains mainnet-only results. It reports **13 passed, 11 blocked and 1 not run**, with 12 verified finalized mainnet transaction records. The legacy `/testnet` URL redirects there; historical testnet artifacts remain in Git and are excluded from mainnet coverage.
 
@@ -20,22 +20,27 @@ EYE (the SCOUT worker) discovers candidate routes, BRAIN assesses committed term
 
 Both repositories are public. The existing Vercel project is retained. See the [mainnet acceptance release verification](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-acceptance-release.json) for exact frontend/backend revisions and checks; `/api/release` exposes only curated public deployment identifiers. Earlier records remain dated history. A hackathon form submission has not been confirmed.
 
-The [Evidence overview](https://symbiochain.vercel.app/evidence) separates current finalized state from a dated acceptance audit, capital funding and the completed self-funded service-balance round trip. The 0.002 NEAR service deposit returned 0.0012 NEAR, retained 0.0008 NEAR as storage collateral and incurred 0.0007785144816934 NEAR in fees. Service credit is zero; the treasury stayed paused. This is escrow mechanics, not agent settlement, external revenue or a mainnet NFT distribution. [Audit scope and reproduction](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/MAINNET_ACCEPTANCE.md).
+The [Evidence overview](https://symbiochain.vercel.app/evidence) separates current finalized state from a dated acceptance audit, capital funding and the completed self-funded service-balance round trip. The 0.002 NEAR service deposit returned 0.0012 NEAR, retained 0.0008 NEAR as storage collateral and incurred 0.0007785144816934 NEAR in fees. Service credit is zero; the treasury stayed paused. This is escrow mechanics, not agent settlement, external revenue or a mainnet NFT distribution. The later activation panel records all seven owner-reviewed receipts, 0.05-USDC per-authorization / 0.10-USDC daily limits and the internal 0.02-NEAR owner gas allocation. [Audit scope and reproduction](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/MAINNET_ACCEPTANCE.md).
+
+The [paired release record](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-bounded-release.json)
+identifies the deployed application revisions and production checks. Dated testnet,
+PAPER and paused-state records preserve their original scope; they are not current
+mainnet execution evidence.
 
 ## Explore
 
-| Route         | Connected behavior                                                                        |
-| ------------- | ----------------------------------------------------------------------------------------- |
-| `/dashboard`  | Finalized mainnet treasury balance, storage collateral, paused policy and execution gates |
-| `/evidence`   | Mainnet acceptance results, confirmed funding, service escrow and explicit execution gaps |
-| `/topology`   | Actual mainnet agent accounts, recovery custody and worker permissions                    |
-| `/cycles`     | Known confirmed deployment transactions, labelled infrastructure rather than revenue      |
-| `/cycles/:id` | Mainnet transaction view; historical PAPER cycle details are not published as LIVE        |
-| `/verify`     | Bounded lookup of known deployment transactions, including receipt outcomes               |
-| `/nfts`       | Actual on-chain supply and revenue-share totals; no simulated mint claims                 |
-| `/business`   | Unproven revenue, unknown full-business runway and unfinished funding claims              |
-| `/testnet`    | Redirect to current mainnet evidence                                                      |
-| `/operator`   | Read-only mainnet execution gates; no public arming or spending control                   |
+| Route         | Connected behavior                                                                       |
+| ------------- | ---------------------------------------------------------------------------------------- |
+| `/dashboard`  | Finalized mainnet treasury balance, storage collateral, owner policy and execution gates |
+| `/evidence`   | Owner activation, seven receipts, dated acceptance, service escrow and execution gaps    |
+| `/topology`   | Actual mainnet agent accounts, recovery custody and worker permissions                   |
+| `/cycles`     | Known confirmed deployment transactions, labelled infrastructure rather than revenue     |
+| `/cycles/:id` | Mainnet transaction view; historical PAPER cycle details are not published as LIVE       |
+| `/verify`     | Bounded lookup of known deployment transactions, including receipt outcomes              |
+| `/nfts`       | Actual on-chain supply and revenue-share totals; no simulated mint claims                |
+| `/business`   | Unproven revenue, unknown full-business runway and unfinished funding claims             |
+| `/testnet`    | Redirect to current mainnet evidence                                                     |
+| `/operator`   | Read-only mainnet execution gates; no public arming or spending control                  |
 
 Public pages read runtime-validated schemas through fixed server routes. Mainnet snapshots poll finalized state; PAPER telemetry retains its existing event stream and polling behavior when that mode is selected. No page invents records when the backend is unavailable.
 
@@ -51,7 +56,7 @@ Operator access uses a separate code and a signed, 30-minute HttpOnly session. B
 - Application compute allowance is distinct from provider credit balance. It does not establish a measured business runway or a profit-funded compute purchase.
 - Proof lookup exposes recorded verification scope. PAPER inference never becomes a verified hardware proof.
 
-The backend has separate real gateway/model hardware audit evidence and confidential-inference verification code. Final deployment approval and a signed paid completion still depend on the [documented provenance gate](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TEE_APPROVAL_HANDOFF.md). The mainnet foundation is deployed; execution still needs explicit trading/gas limits, operational funding, owner-approved permissions and a profitable executable route. More detail: [mainnet activation requirements](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/MAINNET_PRODUCTION.md).
+The backend has separate real gateway/model hardware audit evidence and confidential-inference verification code. Final deployment approval and a signed paid completion still depend on the [documented provenance gate](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TEE_APPROVAL_HANDOFF.md). Mainnet deployment, owner-approved permissions and bounded USDC authorization limits are complete. Actual trading still needs separate approved capital/gas funding, TEE approval and a viable route. More detail: [mainnet activation requirements](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/MAINNET_PRODUCTION.md).
 
 Business accounting, signed proceeds conversion, native withdrawal and NFT allocation with durable recovery are implemented. No funded mainnet payout or confirmed external revenue is claimed. These execution paths remain disabled. Automatic credit purchasing remains blocked on a publicly supported NEAR AI payment flow. The mainnet interface reports these limits explicitly; local and historical PAPER tests establish mechanics only.
 

@@ -156,7 +156,8 @@ export function EvidencePage() {
               Recorded {timestamp(report.capturedAt)} at finalized block{" "}
               {report.block.height}
               {reportError ? " · STALE COPY" : ""}. Refresh reloads this
-              recorded audit; live state is shown above.
+              recorded audit from before bounded owner activation; current state
+              and the seven activation receipts are shown above.
             </p>
             <p>
               <strong>

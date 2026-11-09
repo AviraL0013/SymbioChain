@@ -229,8 +229,16 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
         ),
       ).toBeVisible({ timeout: 60000 });
       await expect(
-        activation.getByText("MONITOR ONLY", { exact: false }),
-      ).toHaveCount(0);
+        activation.getByText("ACTIVE", { exact: true }),
+      ).toBeVisible();
+      await expect(
+        activation.getByText("Confirmed owner-activation receipts:", {
+          exact: false,
+        }),
+      ).toContainText("7 / 7 · COMPLETE");
+      await expect(
+        activation.locator('a[href^="https://nearblocks.io/txns/"]'),
+      ).toHaveCount(7);
 
       await expect(
         page.getByRole("heading", {

@@ -6,38 +6,35 @@ A policy-controlled three-agent treasury with durable execution, verifiable infe
 
 ## Trust boundaries
 
-**TEE execution status: QUARANTINED.** The recorded November 7 unmodified Brave audit failed deployment approval in provenance-only mode. Intel TDX, NVIDIA and TLS subchecks do not approve the complete gateway/model/proxy chain. Missing launcher provenance, source/OS pin differences and missing required gateway services remain documented in the [backend audit](https://github.com/SuyashAlphaC/symbiochain-core/blob/feature/service-risk-loop/artifacts/brave-cli-verification.json). PAPER inference is a deterministic local simulation with no enclave or TEE signature; no cryptographically signed enclave emulator is claimed.
+**TEE execution status: QUARANTINED.** The recorded November 7 unmodified Brave audit failed deployment approval in provenance-only mode. Intel TDX, NVIDIA and TLS subchecks do not approve the complete gateway/model/proxy chain. Missing launcher provenance, source/OS pin differences and missing required gateway services remain documented in the [backend audit](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/brave-cli-verification.json). PAPER inference is a deterministic local simulation with no enclave or TEE signature; no cryptographically signed enclave emulator is claimed.
 
 **Compute funding: HUMAN IN THE LOOP.** The backend implements durable manual tasks and provider-unverified purchase reports. Those reports cannot change credits, release held proceeds or open the TEE gate. The disarmed mainnet interface is read-only. Automatic provider purchases remain unimplemented.
 
-**External revenue and demand: UNPROVEN.** Team payments and synthetic transactions prove only the tested mechanics. Receipt counts do not establish independent ownership, organic demand, complete net profit or product-market fit. The [backend service path](https://github.com/SuyashAlphaC/symbiochain-core/blob/feature/service-risk-loop/docs/SERVICE_LOOP.md) accepts prepaid quote-risk reports separately from trading; it is not a wallet security audit or guarantee of profit. Do not solicit real payments while approved service delivery remains unavailable.
+**External revenue and demand: UNPROVEN.** Team payments and synthetic transactions prove only the tested mechanics. Receipt counts do not establish independent ownership, organic demand, complete net profit or product-market fit. The [backend service path](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/SERVICE_LOOP.md) accepts prepaid quote-risk reports separately from trading; it is not a wallet security audit or guarantee of profit. Do not solicit real payments while approved service delivery remains unavailable.
 
 **The current release serves LIVE mainnet observations with execution DISARMED.** Treasury balances, storage collateral, worker permissions, executable identity and deployment transactions come from finalized NEAR mainnet state. The treasury remains paused. Paid AI inference, trading, customer delivery and NFT distributions are not active. The goal of an agent earning and purchasing its own compute remains an incomplete business loop. Unavailable data is labelled stale or disconnected.
 
-The `/testnet` route points to the historical rehearsal and transaction evidence.
-Recorded testnet contract checks and MPC signatures are real; market settlement
-and reported economics in that rehearsal remain simulated. PAPER records remain
-separate backend history and are never relabelled mainnet execution.
+The public `/evidence` view now contains mainnet-only results. It reports **13 passed, 11 blocked and 1 not run**, with 12 verified finalized mainnet transaction records. The legacy `/testnet` URL redirects there; historical testnet artifacts remain in Git and are excluded from mainnet coverage.
 
 EYE (the SCOUT worker) discovers candidate routes, BRAIN assesses committed terms, and HAND tracks execution, reconciliation and receipts when execution is enabled. The production observer starts no worker. The Fastify backend owns PostgreSQL, jobs, signing and provider integrations. This Next.js repository supplies the public mainnet application and separately mode-bound PAPER operator controls.
 
 Both repositories are public. The existing Vercel project is retained. See the [current production verification](docs/validation/mainnet-production.json) for exact frontend/backend revisions and checks; `/api/release` exposes only curated public deployment identifiers. Earlier records remain dated history. A hackathon form submission has not been confirmed.
 
-The [Evidence overview](https://symbiochain.vercel.app/evidence) presents completed mainnet checks and the recorded funding receipt first. The [controlled demo walkthrough](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/CONTROLLED_DEMO.md) records the owner's separate 0.001 NEAR funding call while paused. `/testnet` remains the historical distribution and claim archive with explicit test-token/simulated-economics labels; the testnet allocation was 10%, and no mainnet revenue split is claimed.
+The [Evidence overview](https://symbiochain.vercel.app/evidence) separates current finalized state from a dated acceptance audit, capital funding and the completed self-funded service-balance round trip. The 0.002 NEAR service deposit returned 0.0012 NEAR, retained 0.0008 NEAR as storage collateral and incurred 0.0007785144816934 NEAR in fees. Service credit is zero; the treasury stayed paused. This is escrow mechanics, not agent settlement, external revenue or a mainnet NFT distribution. [Audit scope and reproduction](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/MAINNET_ACCEPTANCE.md).
 
 ## Explore
 
 | Route         | Connected behavior                                                                        |
 | ------------- | ----------------------------------------------------------------------------------------- |
 | `/dashboard`  | Finalized mainnet treasury balance, storage collateral, paused policy and execution gates |
-| `/evidence`   | Completed mainnet checks, recorded funding receipt, unfinished claims and testnet archive |
+| `/evidence`   | Mainnet acceptance results, confirmed funding, service escrow and explicit execution gaps |
 | `/topology`   | Actual mainnet agent accounts, recovery custody and worker permissions                    |
 | `/cycles`     | Known confirmed deployment transactions, labelled infrastructure rather than revenue      |
 | `/cycles/:id` | Mainnet transaction view; historical PAPER cycle details are not published as LIVE        |
 | `/verify`     | Bounded lookup of known deployment transactions, including receipt outcomes               |
 | `/nfts`       | Actual on-chain supply and revenue-share totals; no simulated mint claims                 |
 | `/business`   | Unproven revenue, unknown full-business runway and unfinished funding claims              |
-| `/testnet`    | Historical rehearsal archive with precise simulation boundaries                           |
+| `/testnet`    | Redirect to current mainnet evidence                                                      |
 | `/operator`   | Read-only mainnet execution gates; no public arming or spending control                   |
 
 Public pages read runtime-validated schemas through fixed server routes. Mainnet snapshots poll finalized state; PAPER telemetry retains its existing event stream and polling behavior when that mode is selected. No page invents records when the backend is unavailable.
@@ -60,11 +57,7 @@ Business accounting, signed proceeds conversion, native withdrawal and NFT alloc
 
 ## Run locally
 
-The testnet page also displays the integrated runner's recorded stage and
-remaining TEE gate, plus separate confirmed Sepolia and Solana devnet execution
-fixtures. These are independent of the PAPER overview. Follow the backend's
-[testnet judge walkthrough](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TESTNET_SUBMISSION.md)
-for commands, transaction links, recovery and precise simulation boundaries.
+Historical testnet and PAPER checks remain local regression evidence. They are not displayed as current mainnet results. The acceptance API is read-only and strictly validated at the server boundary; a blocked or unexecuted feature cannot appear as a passing execution check.
 
 Use **Node 22.13 or later in the 22.x line** and npm 10 or later. The separately deployed backend uses Node 24.
 

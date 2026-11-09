@@ -4,7 +4,7 @@
 
 The [production verification record](validation/mainnet-production.json) identifies
 the exact frontend/backend revisions on the existing Vercel and Render projects.
-It records real finalized mainnet reads, paused policy, code identity, receipt
+It records real finalized mainnet reads, the then-paused policy, code identity, receipt
 lookup, stale-state recovery and credential isolation. LIVE observations do not
 imply armed execution. Paid inference, trading, external revenue, automatic
 provider purchases and business-funded NFT distributions remain unproven.
@@ -19,6 +19,16 @@ The artifact is a frozen verification snapshot. Documentation-only merges may
 create a later Vercel revision with the same application behavior; `/api/release`
 reports the current public identity. Such merges do not establish new trading,
 inference or revenue evidence.
+
+## Bounded activation — November 9
+
+Seven owner-reviewed mainnet receipts are finalized. The treasury is unpaused with
+three enabled worker permissions, both scoped Intents keys registered and matching
+0.05-USDC per-authorization / 0.10-USDC daily limits. The new activation panel keeps
+that state separate from runtime execution, which remains DISARMED. Monitor-only
+heartbeats do not prove AI execution. The 0.02-NEAR owner gas allocation came from
+existing treasury funds; no treasury top-up or earned revenue is claimed.
+[Independent receipt proof](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-bounded-activation.json).
 
 ## Historical validation
 

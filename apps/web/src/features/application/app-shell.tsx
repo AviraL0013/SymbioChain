@@ -17,7 +17,7 @@ const navigation = [
   ["/dashboard", "Overview"],
   ["/topology", "Topology"],
   ["/cycles", "Cycles"],
-  ["/testnet", "Testnet"],
+  ["/evidence", "Evidence"],
   ["/business", "Business"],
   ["/verify", "Proofs"],
   ["/nfts", "Receipts"],
@@ -44,7 +44,9 @@ export function AppHeader() {
                 href={href}
                 key={href}
                 aria-current={
-                  path === href || path.startsWith(href + "/")
+                  path === href ||
+                  path.startsWith(href + "/") ||
+                  (href === "/evidence" && path === "/testnet")
                     ? "page"
                     : undefined
                 }

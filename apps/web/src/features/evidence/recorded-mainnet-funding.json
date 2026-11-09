@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-11-08T08:11:04.205Z",
+  "network": "mainnet",
+  "classification": "TEAM_FUNDED_TREASURY_CAPITAL_NOT_REVENUE",
+  "hash": "BUAMQU1darHsDvDesZVE8U8bnPm7pwMNvGyszczNxQej",
+  "blockHash": "DtD7YJrSY6aN2GygBYP5xBQexPaW2aATy4SPLnsqVaJ3",
+  "signerId": "solidvideo4090.near",
+  "receiverId": "treasury.symbio-fcef733893.near",
+  "method": "fund",
+  "depositYocto": "1000000000000000000000",
+  "actualFeeYocto": "226852716054800000000",
+  "final": true,
+  "succeeded": true,
+  "url": "https://nearblocks.io/txns/BUAMQU1darHsDvDesZVE8U8bnPm7pwMNvGyszczNxQej",
+  "totalOwnerDebitYocto": "1226852716054800000000",
+  "sourceUrl": "https://github.com/SuyashAlphaC/symbiochain-core/blob/1edb118/artifacts/mainnet-funding-demo.json"
+}

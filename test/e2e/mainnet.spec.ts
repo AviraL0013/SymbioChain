@@ -211,6 +211,22 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
       await expect(
         page.getByRole("heading", { name: "Recorded mainnet acceptance" }),
       ).toBeVisible();
+      const activation = page.getByRole("region", {
+        name: "Bounded mainnet activation",
+      });
+      await expect(
+        activation.getByRole("heading", { name: "Bounded mainnet activation" }),
+      ).toBeVisible();
+      await expect(
+        activation.getByText(
+          "Inference blocked by application-level TEE workload measurement policy.",
+          { exact: true },
+        ),
+      ).toBeVisible({ timeout: 60000 });
+      await expect(
+        activation.getByText("MONITOR ONLY", { exact: false }),
+      ).toHaveCount(0);
+
       await expect(
         page.getByRole("heading", {
           name: "Confirmed mainnet service balance round trip",

@@ -34,16 +34,19 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
     )
       leaks++;
   });
-  page.on("response", (r) => {
-    if (/json|javascript|html/.test(r.headers()["content-type"] ?? ""))
-      responseChecks.push(
-        r
-          .text()
-          .then((body) => {
-            if (secrets.some((s) => body.includes(s))) leaks++;
-          })
-          .catch(() => {}),
-      );
+  page.on("requestfinished", (request) => {
+    responseChecks.push(
+      (async () => {
+        const r = await request.response();
+        if (
+          r &&
+          /json|javascript|html/.test(r.headers()["content-type"] ?? "")
+        ) {
+          const body = await r.text();
+          if (secrets.some((s) => body.includes(s))) leaks++;
+        }
+      })().catch(() => {}),
+    );
   });
   await page.addInitScript(() => {
     const scope = window as unknown as {
@@ -105,7 +108,9 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
     timeout: 90000,
   });
   await expect(
-    page.getByText("Treasury paused", { exact: true }),
+    page.getByText(state.paused ? "Treasury paused" : "Treasury active", {
+      exact: true,
+    }),
   ).toBeVisible();
   await expect(
     page.getByText("Recorded simulation. No on-chain funds or NFTs."),
@@ -298,6 +303,14 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
     ),
   ).toBe(true);
   await Promise.all(responseChecks);
+  const visible = await page.evaluate(() =>
+    JSON.stringify({
+      html: document.documentElement.outerHTML,
+      local: { ...localStorage },
+      session: { ...sessionStorage },
+    }),
+  );
+  expect(secrets.some((s) => visible.includes(s))).toBe(false);
   expect(leaks).toBe(0);
   expect(backendCalls).toBe(0);
   expect(errors).toEqual([]);

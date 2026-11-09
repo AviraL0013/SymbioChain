@@ -143,7 +143,16 @@ export function ActivationPanel() {
           </p>
           <p>
             Confirmed owner-activation receipts:{" "}
-            {data.proof.transactions.length} / 6 · {data.proof.status}.
+            {data.proof.transactions.length} / {data.proof.requiredTransactions}{" "}
+            · {data.proof.status}.
+          </p>
+          <p>
+            Verified network fees: {formatNear(data.proof.totalFeeYocto, 6)}{" "}
+            NEAR. New storage collateral:{" "}
+            {formatNear(data.proof.newStorageYocto, 6)} NEAR. Owner gas
+            allocation from existing treasury funds:{" "}
+            {formatNear(data.proof.ownerGasReserveReallocatedYocto, 3)} NEAR. No
+            treasury top-up or earned revenue is recorded by these calls.
           </p>
           {data.proof.transactions.map((t) => (
             <p key={t.hash}>

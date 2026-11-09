@@ -41,3 +41,4 @@ export {
   MainnetTransaction,
   MainnetWallet,
 } from "./mainnet-contract";
+export { MainnetAcceptance } from "./mainnet-acceptance-contract";

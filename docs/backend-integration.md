@@ -13,7 +13,7 @@ API mutations remain disabled. The owner has unpaused the on-chain treasury and
 enabled three worker permissions under bounded USDC authorization limits. Wallet connection requests
 no new key or transaction and grants no backend privileges. Paid inference stays
 quarantined; actual trading still needs separate approved capital/gas funding and a viable route.
-The [current production record](validation/mainnet-production.json) supersedes
+The [bounded release record](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-bounded-release.json) supersedes
 older release notes below. `/api/release` exposes only the public frontend commit,
 Vercel deployment ID and deployment environment, using [Vercel's system variables](https://vercel.com/docs/environment-variables/system-environment-variables).
 

@@ -1,6 +1,13 @@
 # Validation scope
 
-## Current mainnet observer
+## Current bounded mainnet release
+
+The [paired bounded release record](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-bounded-release.json)
+identifies the exact backend/frontend application revisions and existing hosting
+deployments. Its production checks keep active on-chain permissions separate from
+disarmed execution and TEE quarantine. The release below is a frozen earlier audit.
+
+## Earlier mainnet observer
 
 The [production verification record](validation/mainnet-production.json) identifies
 the exact frontend/backend revisions on the existing Vercel and Render projects.

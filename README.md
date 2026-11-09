@@ -22,6 +22,11 @@ Both repositories are public. The existing Vercel project is retained. See the [
 
 The [Evidence overview](https://symbiochain.vercel.app/evidence) separates current finalized state from a dated acceptance audit, capital funding and the completed self-funded service-balance round trip. The 0.002 NEAR service deposit returned 0.0012 NEAR, retained 0.0008 NEAR as storage collateral and incurred 0.0007785144816934 NEAR in fees. Service credit is zero; the treasury stayed paused. This is escrow mechanics, not agent settlement, external revenue or a mainnet NFT distribution. The later activation panel records all seven owner-reviewed receipts, 0.05-USDC per-authorization / 0.10-USDC daily limits and the internal 0.02-NEAR owner gas allocation. [Audit scope and reproduction](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/MAINNET_ACCEPTANCE.md).
 
+The [paired release record](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-bounded-release.json)
+identifies the deployed application revisions and production checks. Dated testnet,
+PAPER and paused-state records preserve their original scope; they are not current
+mainnet execution evidence.
+
 ## Explore
 
 | Route         | Connected behavior                                                                       |

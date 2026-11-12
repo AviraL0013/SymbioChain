@@ -6,6 +6,18 @@ A policy-controlled three-agent treasury with durable execution, verifiable infe
 
 ## Trust boundaries
 
+**Manual API Probe (Unverified Inference): SUCCESS.** One explicitly authorized
+standalone request authenticated the Cloud API key, returned `NEAR_AI_OK` from
+`z-ai/glm-5.3-flash`, and incurred a reconciled **$0.00000548** provider charge
+(31 input / 6 completion tokens). The [sanitized record](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/manual-ai-probe.json)
+is displayed on `/evidence`; the raw response stays private. Organization
+membership was not independently established by the completion. This proves API
+connectivity and model availability, without approving TEE workloads, verifying
+a response signature, invoking the treasury or unlocking automated trading.
+The existing shared $1 AI allowance holds 6 micro-USD for this probe and leaves
+$0.999994 for future automated requests. Historical zero-request records retain
+their original dates and scopes; automated paid model requests remain zero.
+
 **TEE execution status: QUARANTINED.** The recorded November 7 unmodified Brave audit failed deployment approval in provenance-only mode. Intel TDX, NVIDIA and TLS subchecks do not approve the complete gateway/model/proxy chain. Missing launcher provenance, source/OS pin differences and missing required gateway services remain documented in the [backend audit](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/brave-cli-verification.json). PAPER inference is a deterministic local simulation with no enclave or TEE signature; no cryptographically signed enclave emulator is claimed.
 
 **Compute funding: HUMAN IN THE LOOP.** The backend implements durable manual tasks and provider-unverified purchase reports. Those reports cannot change credits, release held proceeds or open the TEE gate. The disarmed mainnet interface is read-only. Automatic provider purchases remain unimplemented.
@@ -59,6 +71,11 @@ Operator access uses a separate code and a signed, 30-minute HttpOnly session. B
 - Proof lookup exposes recorded verification scope. PAPER inference never becomes a verified hardware proof.
 
 The [owner-authorized execution record](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-owned-execution.json) now contains finalized Base and Solana Chain Signatures transfers and eight reconciled NEAR receipts. Both contract cycles closed. The Evidence page separates these owner-controlled fixtures, funding/refund outcomes and live preparation from TEE-approved AI and business profit. Continuation fees were 0.0435279283243207 NEAR against 0.45 NEAR of retained capital input, within the 0.50-NEAR additional planning ceiling.
+
+The [local idea-field draft](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/HACKATHON.md#idea-field-pitch)
+includes the manual unverified probe, current 0.25-USDC / 0.50-USDC limits and
+the application-level TEE gate. It does not claim that the contract verifies
+Cloud workload measurements. The project remains unsubmitted.
 
 The backend has separate real gateway/model hardware audit evidence and confidential-inference verification code. Final deployment approval and a signed paid completion still depend on the [documented provenance gate](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TEE_APPROVAL_HANDOFF.md). Mainnet deployment, capital/gas funding and owner-approved permissions are complete for the bounded fixtures. The later policy allows 0.25 USDC per authorization and 0.50 USDC daily, with separate native-SOL caps. Autonomous trading still requires TEE approval and a profitable route; the current signed preview fails the unchanged profit floor. More detail: [mainnet preparation](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/MAINNET_PREPARATION.md).
 

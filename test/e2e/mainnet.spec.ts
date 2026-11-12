@@ -378,6 +378,36 @@ test("transaction search uses readable actions and lookup distinguishes missing 
   await page.locator(".mn-route-detail summary").click();
   await expect(page.locator(".mn-route-detail")).toContainText("Signer");
   await expect(page.locator(".mn-route-detail")).toContainText("Receiver");
+  const identifier = page
+    .locator(".mn-data-table tbody tr")
+    .first()
+    .locator("td")
+    .nth(1)
+    .locator(".data-identifier-value");
+  const identifierText = identifier.locator("code");
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 960 });
+    await expect
+      .poll(() =>
+        identifierText.evaluate(
+          (element) =>
+            element.clientWidth > 0 &&
+            element.scrollWidth > element.clientWidth,
+        ),
+      )
+      .toBe(true);
+    await identifier.click();
+    await expect
+      .poll(() =>
+        identifierText.evaluate(
+          (element) =>
+            element.clientWidth > 0 &&
+            element.scrollWidth <= element.clientWidth,
+        ),
+      )
+      .toBe(true);
+    await identifier.click();
+  }
   await page.goto("/verify");
   await page.route("**/api/swarm/mainnet/transaction?**", (route) =>
     route.fulfill({ status: 404, json: {} }),

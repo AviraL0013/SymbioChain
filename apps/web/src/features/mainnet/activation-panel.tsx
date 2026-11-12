@@ -117,9 +117,11 @@ export function ActivationPanel() {
             <div>
               <dt>Worker monitors</dt>
               <dd>
-                {data.monitorOnlyWorkers
-                  ? `${data.monitors.filter((m) => m.fresh).length} / 3 fresh heartbeats · MONITOR ONLY`
-                  : "OFF"}
+                {data.preparationEnabled
+                  ? `${data.monitors.filter((m) => m.fresh).length} / 3 fresh heartbeats · PREPARATION READ ONLY`
+                  : data.monitorOnlyWorkers
+                    ? `${data.monitors.filter((m) => m.fresh).length} / 3 fresh heartbeats · MONITOR ONLY`
+                    : "OFF"}
               </dd>
             </div>
             <div>

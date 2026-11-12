@@ -12,11 +12,11 @@ A policy-controlled three-agent treasury with durable execution, verifiable infe
 
 **External revenue and demand: UNPROVEN.** Team payments and synthetic transactions prove only the tested mechanics. Receipt counts do not establish independent ownership, organic demand, complete net profit or product-market fit. The [backend service path](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/SERVICE_LOOP.md) accepts prepaid quote-risk reports separately from trading; it is not a wallet security audit or guarantee of profit. Do not solicit real payments while approved service delivery remains unavailable.
 
-**The current release serves LIVE mainnet observations with execution DISARMED.** Treasury balances, storage collateral, worker permissions, executable identity and deployment transactions come from finalized NEAR mainnet state. The owner has activated bounded contract permissions; the runtime remains disarmed with monitor-only heartbeats. Paid AI inference, trading, customer delivery and NFT distributions are not active. The goal of an agent earning and purchasing its own compute remains an incomplete business loop. Unavailable data is labelled stale or disconnected.
+**The current release serves LIVE mainnet observations with execution DISARMED.** Treasury balances, storage collateral, worker permissions, executable identity and deployment transactions come from finalized NEAR mainnet state. The owner has activated bounded contract permissions; the runtime remains disarmed with read-only preparation and heartbeats. Paid AI inference, trading, customer delivery and NFT distributions are not active. The goal of an agent earning and purchasing its own compute remains an incomplete business loop. Unavailable data is labelled stale or disconnected.
 
 The public `/evidence` view now contains mainnet-only results. It reports **13 passed, 11 blocked and 1 not run**, with 12 verified finalized mainnet transaction records. The legacy `/testnet` URL redirects there; historical testnet artifacts remain in Git and are excluded from mainnet coverage.
 
-EYE (the SCOUT worker) discovers candidate routes, BRAIN assesses committed terms, and HAND tracks execution, reconciliation and receipts when execution is enabled. The production observer starts no worker. The Fastify backend owns PostgreSQL, jobs, signing and provider integrations. This Next.js repository supplies the public mainnet application and separately mode-bound PAPER operator controls.
+EYE (the SCOUT worker) discovers candidate routes, BRAIN assesses committed terms, and HAND tracks execution, reconciliation and receipts when execution is enabled. The production preparation worker checks real chain state and signed dry quotes without constructing the paid execution engine. The Fastify backend owns PostgreSQL, jobs, signing and provider integrations. This Next.js repository supplies the public mainnet application and separately mode-bound PAPER operator controls.
 
 Both repositories are public. The existing Vercel project is retained. See the [mainnet acceptance release verification](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-acceptance-release.json) for exact frontend/backend revisions and checks; `/api/release` exposes only curated public deployment identifiers. Earlier records remain dated history. A hackathon form submission has not been confirmed.
 
@@ -27,20 +27,22 @@ identifies the deployed application revisions and production checks. Dated testn
 PAPER and paused-state records preserve their original scope; they are not current
 mainnet execution evidence.
 
+The November 12 [internal settlement record](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-intents-settlement.json) adds two finalized 0.0001-wNEAR agent payments, reconciled nonces and exact balance changes. Total network fees were 0.0037364334643139 NEAR, including the failed funding attempt and two same-key allowance repairs. The Evidence page labels these team-funded transfers separately from market swaps, AI execution and external revenue. Autonomous preparation reports independent capital, gas, return-chain authorization and signed-route gates; it cannot spend.
+
 ## Explore
 
-| Route         | Connected behavior                                                                       |
-| ------------- | ---------------------------------------------------------------------------------------- |
-| `/dashboard`  | Finalized mainnet treasury balance, storage collateral, owner policy and execution gates |
-| `/evidence`   | Owner activation, seven receipts, dated acceptance, service escrow and execution gaps    |
-| `/topology`   | Actual mainnet agent accounts, recovery custody and worker permissions                   |
-| `/cycles`     | Known confirmed deployment transactions, labelled infrastructure rather than revenue     |
-| `/cycles/:id` | Mainnet transaction view; historical PAPER cycle details are not published as LIVE       |
-| `/verify`     | Bounded lookup of known deployment transactions, including receipt outcomes              |
-| `/nfts`       | Actual on-chain supply and revenue-share totals; no simulated mint claims                |
-| `/business`   | Unproven revenue, unknown full-business runway and unfinished funding claims             |
-| `/testnet`    | Redirect to current mainnet evidence                                                     |
-| `/operator`   | Read-only mainnet execution gates; no public arming or spending control                  |
+| Route         | Connected behavior                                                                           |
+| ------------- | -------------------------------------------------------------------------------------------- |
+| `/dashboard`  | Finalized mainnet treasury balance, storage collateral, owner policy and execution gates     |
+| `/evidence`   | Owner activation, real internal Intents payments, read-only preparation and dated acceptance |
+| `/topology`   | Actual mainnet agent accounts, recovery custody and worker permissions                       |
+| `/cycles`     | Known confirmed deployment transactions, labelled infrastructure rather than revenue         |
+| `/cycles/:id` | Mainnet transaction view; historical PAPER cycle details are not published as LIVE           |
+| `/verify`     | Bounded lookup of known deployment transactions, including receipt outcomes                  |
+| `/nfts`       | Actual on-chain supply and revenue-share totals; no simulated mint claims                    |
+| `/business`   | Unproven revenue, unknown full-business runway and unfinished funding claims                 |
+| `/testnet`    | Redirect to current mainnet evidence                                                         |
+| `/operator`   | Read-only mainnet execution gates; no public arming or spending control                      |
 
 Public pages read runtime-validated schemas through fixed server routes. Mainnet snapshots poll finalized state; PAPER telemetry retains its existing event stream and polling behavior when that mode is selected. No page invents records when the backend is unavailable.
 

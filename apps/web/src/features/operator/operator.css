@@ -1,14 +1,15 @@
 .operator-card {
-  border: 1px solid #cfd7cc;
-  border-radius: 18px;
-  padding: 28px;
-  margin: 24px 0;
+  border: 1px solid var(--sc-line, #dfe4dc);
+  border-radius: 11px;
+  background: #fff;
+  padding: 23px;
+  margin: 20px 0;
   min-width: 0;
 }
 .operator-card h2 {
-  font-size: 26px;
+  font-size: 19px;
   letter-spacing: -0.03em;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 14px;
 }
 .operator-card p {
@@ -42,7 +43,7 @@
 }
 .operator-card .operator-policy {
   font-family: monospace;
-  min-height: 330px;
+  min-height: 240px;
   font-size: 13px;
 }
 .operator-card .operator-checkbox {

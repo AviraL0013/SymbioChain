@@ -100,7 +100,7 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
   });
   await page.goto("/dashboard");
   await expect(
-    page.getByRole("heading", { name: "Mainnet Mission Control." }),
+    page.getByRole("heading", { name: "Swarm overview", exact: true }),
   ).toBeVisible({ timeout: 90000 });
   await expect(
     page.getByText(expectedBalance, { exact: false }).first(),
@@ -108,9 +108,9 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
     timeout: 90000,
   });
   await expect(
-    page.getByText(state.paused ? "Treasury paused" : "Treasury active", {
-      exact: true,
-    }),
+    page
+      .locator(".mn-readiness")
+      .getByText(state.paused ? "Paused" : "Active", { exact: true }),
   ).toBeVisible();
   await expect(
     page.getByText("Recorded simulation. No on-chain funds or NFTs."),
@@ -118,7 +118,7 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
   await page.route("**/api/swarm/mainnet", (route) =>
     route.fulfill({ status: 503, body: "{}", contentType: "application/json" }),
   );
-  await page.getByRole("button", { name: "Refresh", exact: true }).click();
+  await page.getByRole("button", { name: "Refresh data", exact: true }).click();
   await expect(
     page
       .getByRole("alert")
@@ -128,7 +128,7 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
     page.getByText(expectedBalance, { exact: false }).first(),
   ).toBeVisible();
   await page.unroute("**/api/swarm/mainnet");
-  await page.getByRole("button", { name: "Refresh", exact: true }).click();
+  await page.getByRole("button", { name: "Refresh data", exact: true }).click();
   await expect(
     page
       .getByRole("alert")
@@ -152,10 +152,9 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
   });
   await page.getByRole("button", { name: /solidvideo/ }).click();
   await expect(page.getByRole("dialog")).toContainText("solidvideo4090.near");
-  await expect(page.getByRole("dialog")).toContainText(
-    /Total balance: [\d,.]+ NEAR/,
-    { timeout: 30000 },
-  );
+  await expect(
+    page.getByRole("dialog").locator(".wallet-account dl > div").first(),
+  ).toContainText(/Total balance[\d,.]+ NEAR/, { timeout: 30000 });
   await page.getByRole("button", { name: "Disconnect wallet" }).click();
   await expect(
     page.getByRole("button", { name: "Connect Meteor", exact: true }),
@@ -179,12 +178,12 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
   expect(calls.transactions).toBe(0);
   expect(calls.disconnected).toBe(true);
   for (const [path, title] of [
-    ["/topology", "Mainnet Agents."],
-    ["/nfts", "Mainnet Receipts."],
-    ["/business", "Business Readiness."],
-    ["/operator", "Execution Controls."],
+    ["/topology", "Meet your agents"],
+    ["/nfts", "Execution receipts"],
+    ["/business", "Business overview"],
+    ["/operator", "Execution controls"],
     ["/evidence", "Execution evidence"],
-    ["/cycles", "Mainnet Transactions."],
+    ["/cycles", "Transaction activity"],
   ]) {
     await page.goto(path!);
     await expect(page.getByRole("heading", { name: title! })).toBeVisible({
@@ -192,8 +191,16 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
     });
     if (path === "/evidence") {
       await expect(
+        page
+          .locator(".evidence-group > summary")
+          .filter({ hasText: "Service escrow round trip" }),
+      ).toBeVisible({ timeout: 60000 });
+      for (const group of await page.locator(".evidence-group").all()) {
+        await group.locator("summary").click();
+      }
+      await expect(
         page.getByRole("heading", {
-          name: "Mainnet deployment and safety checks",
+          name: "Current mainnet state",
         }),
       ).toBeVisible();
       await expect(
@@ -271,6 +278,16 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/evidence");
+  for (const title of [
+    "Initial treasury funding",
+    "Service escrow round trip",
+    "Historical mainnet acceptance audit",
+  ]) {
+    await page
+      .locator(".evidence-group > summary")
+      .filter({ hasText: title })
+      .click();
+  }
   await expect(
     page.getByRole("heading", { name: "Confirmed mainnet funding" }),
   ).toBeVisible({ timeout: 60000 });
@@ -284,6 +301,23 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
+  await page.setViewportSize({ width: 390, height: 430 });
+  const navigation = page.getByRole("button", {
+    name: "Open navigation",
+    exact: true,
+  });
+  await navigation.click();
+  await expect(
+    page.getByRole("dialog", { name: "Workspace navigation" }),
+  ).toBeVisible();
+  await page
+    .getByRole("link", { name: "Controls", exact: true })
+    .scrollIntoViewIfNeeded();
+  await expect(
+    page.getByRole("link", { name: "Controls", exact: true }),
+  ).toBeInViewport();
+  await page.keyboard.press("Escape");
+  await expect(navigation).toBeFocused();
   await page.screenshot({
     path: "artifacts/browser/mainnet-evidence-mobile.png",
     fullPage: true,
@@ -297,7 +331,11 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
       .getByRole("alert")
       .filter({ hasText: "Recorded mainnet acceptance report unavailable" }),
   ).toBeVisible();
-  await expect(page.getByText("STALE COPY", { exact: false })).toBeVisible();
+  await expect(
+    page
+      .getByRole("region", { name: "Recorded mainnet acceptance" })
+      .getByText("STALE COPY", { exact: false }),
+  ).toBeVisible();
   await page.unroute("**/api/swarm/mainnet/acceptance");
   await page.goto("/dashboard");
   await expect(
@@ -322,4 +360,48 @@ test("shows real mainnet data, verifies a receipt, and connects without permissi
   expect(leaks).toBe(0);
   expect(backendCalls).toBe(0);
   expect(errors).toEqual([]);
+});
+
+test("transaction search uses readable actions and lookup distinguishes missing records from an outage", async ({
+  page,
+}) => {
+  await page.goto("/cycles");
+  const search = page.getByRole("textbox", {
+    name: "Search recorded transactions",
+  });
+  await search.fill("no matching deployment record");
+  await expect(
+    page.getByText("No recorded transactions match this search."),
+  ).toBeVisible();
+  await search.fill("create treasury");
+  await expect(page.locator(".mn-data-table tbody tr")).toHaveCount(1);
+  await page.locator(".mn-route-detail summary").click();
+  await expect(page.locator(".mn-route-detail")).toContainText("Signer");
+  await expect(page.locator(".mn-route-detail")).toContainText("Receiver");
+  await page.goto("/verify");
+  await page.route("**/api/swarm/mainnet/transaction?**", (route) =>
+    route.fulfill({ status: 404, json: {} }),
+  );
+  await page
+    .getByLabel("NEAR transaction hash", { exact: true })
+    .fill("A".repeat(43));
+  await page
+    .getByRole("button", { name: "Verify transaction", exact: true })
+    .click();
+  await expect(
+    page.getByText("No verified record found", { exact: true }),
+  ).toBeVisible();
+  await page.unroute("**/api/swarm/mainnet/transaction?**");
+  await page.route("**/api/swarm/mainnet/transaction?**", (route) =>
+    route.fulfill({ status: 503, json: {} }),
+  );
+  await page
+    .getByRole("button", { name: "Verify transaction", exact: true })
+    .click();
+  await expect(
+    page.getByText("Verification unavailable", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("No verified record found", { exact: true }),
+  ).toHaveCount(0);
 });

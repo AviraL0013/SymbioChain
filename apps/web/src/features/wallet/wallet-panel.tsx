@@ -3,6 +3,9 @@ import { Dialog } from "@/components/ui/dialog";
 import { useWallet } from "./wallet-provider";
 import { useDeployment } from "@/features/mainnet/deployment-provider";
 import { formatNear } from "@/features/mainnet/format";
+import { ArrowUpRight, LockKeyhole, Wallet } from "lucide-react";
+import { Identifier } from "@/components/ui/data-display";
+import "./wallet-panel.css";
 export function WalletPanel({
   open,
   onClose,
@@ -18,28 +21,39 @@ export function WalletPanel({
       onClose={onClose}
       title={wallet.account ? "Connected NEAR wallet" : "Connect a NEAR wallet"}
     >
-      <p>
-        Mainnet connection. Signing keys stay in your wallet. Connecting does
-        not grant backend operator access or authorize a payment.
-      </p>
-      {wallet.error && <p role="status">{wallet.error}</p>}
+      <p>Connect to inspect your NEAR account and balance.</p>
+      {wallet.error && (
+        <p className="app-field-error" role="status">
+          {wallet.error}
+        </p>
+      )}
       {wallet.account ? (
         <>
-          <p>
-            <strong>{wallet.account.accountId}</strong>
-          </p>
-          <p>
-            Total balance:{" "}
-            {wallet.balance
-              ? formatNear(wallet.balance.balanceYocto) + " NEAR"
-              : "Loading mainnet balance…"}
-          </p>
-          <p>
-            Spendable after on-chain storage:{" "}
-            {wallet.balance
-              ? formatNear(wallet.balance.availableYocto) + " NEAR"
-              : "Unavailable"}
-          </p>
+          <div className="wallet-account">
+            <span>NEAR mainnet account</span>
+            <Identifier
+              value={wallet.account.accountId}
+              label="connected account"
+            />
+            <dl>
+              <div>
+                <dt>Total balance</dt>
+                <dd>
+                  {wallet.balance
+                    ? formatNear(wallet.balance.balanceYocto) + " NEAR"
+                    : "Loading…"}
+                </dd>
+              </div>
+              <div>
+                <dt>Available after storage</dt>
+                <dd>
+                  {wallet.balance
+                    ? formatNear(wallet.balance.availableYocto) + " NEAR"
+                    : "Unavailable"}
+                </dd>
+              </div>
+            </dl>
+          </div>
           <a
             href={
               "https://nearblocks.io/address/" +
@@ -47,8 +61,9 @@ export function WalletPanel({
             }
             target="_blank"
             rel="noopener noreferrer"
+            className="wallet-explorer"
           >
-            View account on NEAR Explorer ↗
+            View account on NEAR Explorer <ArrowUpRight size={14} />
           </a>
           <button
             className="sc-button sc-button-dark sc-dialog-primary"
@@ -68,7 +83,7 @@ export function WalletPanel({
               void wallet.connect("meteor-wallet");
             }}
           >
-            Connect Meteor
+            <Wallet size={16} /> Connect Meteor <ArrowUpRight size={14} />
           </button>
           <button
             className="sc-button sc-dialog-primary"
@@ -78,12 +93,8 @@ export function WalletPanel({
               void wallet.connect("mynearwallet");
             }}
           >
-            Connect MyNearWallet
+            <Wallet size={16} /> Connect MyNearWallet <ArrowUpRight size={14} />
           </button>
-          <p>
-            No access key, deposit or transaction is requested during
-            connection.
-          </p>
         </>
       ) : (
         <p>
@@ -91,6 +102,13 @@ export function WalletPanel({
           connections become available with the LIVE deployment.
         </p>
       )}
+      <div className="wallet-connection-note">
+        <LockKeyhole size={15} />
+        <p>
+          Read-only connection. Keys stay in your wallet. No access key,
+          deposit, transaction, or operator access is requested.
+        </p>
+      </div>
     </Dialog>
   );
 }

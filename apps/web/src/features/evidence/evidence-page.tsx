@@ -11,6 +11,7 @@ import funding from "./recorded-mainnet-funding.json";
 import { ActivationPanel } from "@/features/mainnet/activation-panel";
 import { PreparationPanel } from "@/features/mainnet/preparation-panel";
 import { OwnedExecutionPanel } from "@/features/mainnet/owned-execution-panel";
+import { ManualAiProbePanel } from "@/features/mainnet/manual-ai-probe-panel";
 import { ProvisioningPanel } from "@/features/mainnet/provisioning-panel";
 import { IntentsSettlementPanel } from "@/features/mainnet/intents-settlement-panel";
 import "@/features/cycles/cycles.css";
@@ -208,6 +209,12 @@ export function EvidencePage() {
             description="Configured limits, worker monitors and bounded activation receipts."
           >
             <ActivationPanel />
+          </EvidenceGroup>
+          <EvidenceGroup
+            title="Manual AI API probe"
+            description="Recorded API response with unverified inference; automated execution remains disarmed."
+          >
+            <ManualAiProbePanel />
           </EvidenceGroup>
           <EvidenceGroup
             title="Autonomous preparation"

@@ -49,3 +49,4 @@ export { MainnetSettlementFixture } from "./mainnet-settlement-contract";
 export { MainnetProvisioning } from "./mainnet-provisioning-contract";
 
 export { MainnetOwnedExecution } from "./mainnet-execution-contract";
+export { ManualAiProbe } from "./manual-ai-probe-contract";

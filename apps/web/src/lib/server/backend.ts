@@ -17,6 +17,7 @@ import {
   MainnetAcceptance,
   MainnetActivation,
   MainnetPreparation,
+  MainnetSettlementFixture,
 } from "@symbiochain/shared";
 import { z } from "zod";
 
@@ -175,6 +176,8 @@ export const getViewerStatus = () =>
   readBackend("/api/viewer/status", ViewerStatus);
 export const getMainnetPreparation = () =>
   readBackend("/api/mainnet/preparation", MainnetPreparation);
+export const getMainnetSettlement = () =>
+  readBackend("/api/evidence/mainnet-intents", MainnetSettlementFixture);
 export const getBusinessFunding = () =>
   readBackend("/api/business/funding", FundingSummary);
 export const getBusinessStatus = () =>

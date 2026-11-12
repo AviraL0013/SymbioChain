@@ -11,6 +11,7 @@ import {
   getTestnetReport,
   getMainnetAcceptance,
   getMainnetActivation,
+  getMainnetSettlement,
   getBusinessStatus,
   getBusinessFunding,
   viewerResponse,
@@ -48,6 +49,57 @@ const snapshot = {
 beforeEach(() => {
   process.env.BACKEND_URL = "https://backend.example";
   process.env.BACKEND_READ_TOKEN = "server-only-test-token";
+});
+
+test("keeps internal mainnet settlement separate from AI and revenue claims", async () => {
+  const hash = "A".repeat(43);
+  const receipt = { hash, url: `https://nearblocks.io/txns/${hash}` };
+  const report = {
+    contractVersion: 1,
+    network: "mainnet",
+    scope: "TEAM_FUNDED_INTERNAL_INTENTS_SETTLEMENT",
+    checkedAt: "2026-11-12T05:27:14.583Z",
+    funding: receipt,
+    payments: ["brain", "hand"].map((role) => ({
+      receipt,
+      payer: `${role}.example.near`,
+      recipient: "scout.example.near",
+      amountYocto: "100000000000000000000",
+      nonceConfirmed: true,
+      nativeFeeYocto: "1",
+    })),
+    allowanceRepairs: [receipt, receipt],
+    totalNetworkFeesYocto: "2",
+    fundedCapitalYocto: "2000000000000000000000",
+    storageCollateralYocto: "1250000000000000000000",
+    totalPlanningCeilingYocto: "30000000000000000000000",
+    paidInferenceRequests: 0,
+    teeApprovalClaimed: false,
+    externalRevenueProven: false,
+    marketSwapPerformed: false,
+  };
+  const transport = mock.method(globalThis, "fetch", async () =>
+    Response.json(report),
+  );
+  assert.deepEqual(await getMainnetSettlement(), report);
+  assert.equal(
+    String(transport.mock.calls[0]!.arguments[0]),
+    "https://backend.example/api/evidence/mainnet-intents",
+  );
+  transport.mock.restore();
+  for (const invalid of [
+    { ...report, teeApprovalClaimed: true },
+    { ...report, externalRevenueProven: true },
+    { ...report, privateKey: "private-test-material" },
+  ]) {
+    const mocked = mock.method(globalThis, "fetch", async () =>
+      Response.json(invalid),
+    );
+    const response = await viewerResponse(getMainnetSettlement);
+    assert.equal(response.status, 502);
+    assert.doesNotMatch(await response.text(), /private-test-material/);
+    mocked.mock.restore();
+  }
 });
 afterEach(() => {
   mock.restoreAll();

@@ -148,6 +148,13 @@ export function ActivationPanel() {
             {data.proof.transactions.length} / {data.proof.requiredTransactions}{" "}
             · {data.proof.status}.
           </p>
+          {data.proof.checkedAt && (
+            <p>
+              Original activation receipt set recorded{" "}
+              {timestamp(data.proof.checkedAt)}. Later owner policy and
+              gas-allowance calls are recorded in the provisioning panel.
+            </p>
+          )}
           <p>
             Verified network fees: {formatNear(data.proof.totalFeeYocto, 6)}{" "}
             NEAR. New storage collateral:{" "}

@@ -9,6 +9,8 @@ import { timestamp } from "@/features/swarm/format";
 import funding from "./recorded-mainnet-funding.json";
 import { ActivationPanel } from "@/features/mainnet/activation-panel";
 import { PreparationPanel } from "@/features/mainnet/preparation-panel";
+import { OwnedExecutionPanel } from "@/features/mainnet/owned-execution-panel";
+import { ProvisioningPanel } from "@/features/mainnet/provisioning-panel";
 import { IntentsSettlementPanel } from "@/features/mainnet/intents-settlement-panel";
 import "@/features/cycles/cycles.css";
 
@@ -143,6 +145,8 @@ export function EvidencePage() {
 
       <ActivationPanel />
       <IntentsSettlementPanel />
+      <OwnedExecutionPanel />
+      <ProvisioningPanel />
       <PreparationPanel />
       <section className="cycle-card" aria-labelledby="mainnet-acceptance">
         <h2 id="mainnet-acceptance">Recorded mainnet acceptance</h2>

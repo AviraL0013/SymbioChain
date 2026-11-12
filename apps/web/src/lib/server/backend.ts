@@ -18,6 +18,8 @@ import {
   MainnetActivation,
   MainnetPreparation,
   MainnetSettlementFixture,
+  MainnetProvisioning,
+  MainnetOwnedExecution,
 } from "@symbiochain/shared";
 import { z } from "zod";
 
@@ -236,3 +238,9 @@ export async function viewerResponse(operation: () => Promise<unknown>) {
     );
   }
 }
+
+export const getMainnetProvisioning = () =>
+  readBackend("/api/evidence/mainnet-provisioning", MainnetProvisioning);
+
+export const getMainnetOwnedExecution = () =>
+  readBackend("/api/evidence/mainnet-execution", MainnetOwnedExecution);

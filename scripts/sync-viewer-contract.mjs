@@ -18,6 +18,8 @@ for (const name of [
   "mainnet-activation-contract",
   "mainnet-preparation-contract",
   "mainnet-settlement-contract",
+  "mainnet-provisioning-contract",
+  "mainnet-execution-contract",
 ]) {
   const source = await readFile(resolve(backend, `src/${name}.ts`), "utf8");
   await writeFile(

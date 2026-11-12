@@ -8,12 +8,14 @@ reads `/api/swarm/mainnet`, `/mainnet/wallet` and `/mainnet/transaction` through
 fixed server routes and strict shared schemas. The old PAPER publication refuses
 LIVE, so historical simulation rows cannot become production balances.
 
-Production is LIVE with execution disarmed. The monitor-only worker publishes heartbeats without an execution engine or signer;
+Production is LIVE with execution disarmed. A read-only preparation worker publishes heartbeats, chain observations and signed dry previews without constructing the execution engine;
 API mutations remain disabled. The owner has unpaused the on-chain treasury and
 enabled three worker permissions under bounded USDC authorization limits. Wallet connection requests
-no new key or transaction and grants no backend privileges. Paid inference stays
-quarantined; actual trading still needs separate approved capital/gas funding and a viable route.
-The [bounded release record](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-bounded-release.json) supersedes
+no new key or transaction and grants no backend privileges. A separate manual
+Cloud probe returned one unverified completion at a reconciled $0.00000548 cost;
+automated paid inference stays quarantined. Capital/gas funding and controlled
+Base/Solana transfers are complete; trading still needs TEE approval and a viable route.
+The [RPC recovery release record](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-rpc-recovery.json) supersedes
 older release notes below. `/api/release` exposes only the public frontend commit,
 Vercel deployment ID and deployment environment, using [Vercel's system variables](https://vercel.com/docs/environment-variables/system-environment-variables).
 

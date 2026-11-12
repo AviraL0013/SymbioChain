@@ -14,16 +14,16 @@ A policy-controlled three-agent treasury with durable execution, verifiable infe
 
 **The current release serves LIVE mainnet observations with execution DISARMED.** Treasury balances, storage collateral, worker permissions, executable identity and deployment transactions come from finalized NEAR mainnet state. The owner has activated bounded contract permissions; the runtime remains disarmed with read-only preparation and heartbeats. Paid AI inference, trading, customer delivery and NFT distributions are not active. The goal of an agent earning and purchasing its own compute remains an incomplete business loop. Unavailable data is labelled stale or disconnected.
 
-The public `/evidence` view now contains mainnet-only results. It reports **13 passed, 11 blocked and 1 not run**, with 12 verified finalized mainnet transaction records. The legacy `/testnet` URL redirects there; historical testnet artifacts remain in Git and are excluded from mainnet coverage.
+The public `/evidence` view contains mainnet-only results. Its dated November 9 acceptance audit reports **13 passed, 11 blocked and 1 not run**, with 12 verified finalized mainnet transaction records. Later panels separately publish actual Intents payments, capital funding and completed Base/Solana MPC transfers. The legacy `/testnet` URL redirects there; historical testnet artifacts remain in Git and are excluded from mainnet coverage.
 
 EYE (the SCOUT worker) discovers candidate routes, BRAIN assesses committed terms, and HAND tracks execution, reconciliation and receipts when execution is enabled. The production preparation worker checks real chain state and signed dry quotes without constructing the paid execution engine. The Fastify backend owns PostgreSQL, jobs, signing and provider integrations. This Next.js repository supplies the public mainnet application and separately mode-bound PAPER operator controls.
 
-Both repositories are public. The existing Vercel project is retained. See the [mainnet acceptance release verification](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-acceptance-release.json) for exact frontend/backend revisions and checks; `/api/release` exposes only curated public deployment identifiers. Earlier records remain dated history. A hackathon form submission has not been confirmed.
+Both repositories are public. The existing Vercel project is retained. See the [controlled mainnet release verification](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-controlled-release.json) for exact frontend/backend revisions and checks; `/api/release` exposes only curated public deployment identifiers. Earlier records remain dated history. Submission is on hold at the owner's request; the project has not been submitted.
 
-The [Evidence overview](https://symbiochain.vercel.app/evidence) separates current finalized state from a dated acceptance audit, capital funding and the completed self-funded service-balance round trip. The 0.002 NEAR service deposit returned 0.0012 NEAR, retained 0.0008 NEAR as storage collateral and incurred 0.0007785144816934 NEAR in fees. Service credit is zero; the treasury stayed paused. This is escrow mechanics, not agent settlement, external revenue or a mainnet NFT distribution. The later activation panel records all seven owner-reviewed receipts, 0.05-USDC per-authorization / 0.10-USDC daily limits and the internal 0.02-NEAR owner gas allocation. [Audit scope and reproduction](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/MAINNET_ACCEPTANCE.md).
+The [Evidence overview](https://symbiochain.vercel.app/evidence) separates current finalized state from a dated acceptance audit, capital funding and the completed self-funded service-balance round trip. The 0.002 NEAR service deposit returned 0.0012 NEAR, retained 0.0008 NEAR as storage collateral and incurred 0.0007785144816934 NEAR in fees. Service credit is zero; the treasury stayed paused during that test. This is escrow mechanics, not agent settlement, external revenue or a mainnet NFT distribution. Seven November 9 activation receipts record the original 0.05-USDC per-authorization / 0.10-USDC daily limits and the internal 0.02-NEAR owner gas allocation. The funding/permission panel records the later policy update separately. [Audit scope and reproduction](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/MAINNET_ACCEPTANCE.md).
 
-The [paired release record](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-bounded-release.json)
-identifies the deployed application revisions and production checks. Dated testnet,
+The [earlier bounded release record](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-bounded-release.json)
+identifies the November 9 application revisions and production checks. Dated testnet,
 PAPER and paused-state records preserve their original scope; they are not current
 mainnet execution evidence.
 
@@ -31,18 +31,18 @@ The November 12 [internal settlement record](https://github.com/SuyashAlphaC/sym
 
 ## Explore
 
-| Route         | Connected behavior                                                                           |
-| ------------- | -------------------------------------------------------------------------------------------- |
-| `/dashboard`  | Finalized mainnet treasury balance, storage collateral, owner policy and execution gates     |
-| `/evidence`   | Owner activation, real internal Intents payments, read-only preparation and dated acceptance |
-| `/topology`   | Actual mainnet agent accounts, recovery custody and worker permissions                       |
-| `/cycles`     | Known confirmed deployment transactions, labelled infrastructure rather than revenue         |
-| `/cycles/:id` | Mainnet transaction view; historical PAPER cycle details are not published as LIVE           |
-| `/verify`     | Bounded lookup of known deployment transactions, including receipt outcomes                  |
-| `/nfts`       | Actual on-chain supply and revenue-share totals; no simulated mint claims                    |
-| `/business`   | Unproven revenue, unknown full-business runway and unfinished funding claims                 |
-| `/testnet`    | Redirect to current mainnet evidence                                                         |
-| `/operator`   | Read-only mainnet execution gates; no public arming or spending control                      |
+| Route         | Connected behavior                                                                              |
+| ------------- | ----------------------------------------------------------------------------------------------- |
+| `/dashboard`  | Finalized mainnet treasury balance, storage collateral, owner policy and execution gates        |
+| `/evidence`   | Finalized MPC transfers, owner funding, Intents payments, live preparation and dated acceptance |
+| `/topology`   | Actual mainnet agent accounts, recovery custody and worker permissions                          |
+| `/cycles`     | Known confirmed deployment transactions, labelled infrastructure rather than revenue            |
+| `/cycles/:id` | Mainnet transaction view; historical PAPER cycle details are not published as LIVE              |
+| `/verify`     | Bounded lookup of known deployment transactions, including receipt outcomes                     |
+| `/nfts`       | Actual on-chain supply and revenue-share totals; no simulated mint claims                       |
+| `/business`   | Unproven revenue, unknown full-business runway and unfinished funding claims                    |
+| `/testnet`    | Redirect to current mainnet evidence                                                            |
+| `/operator`   | Read-only mainnet execution gates; no public arming or spending control                         |
 
 Public pages read runtime-validated schemas through fixed server routes. Mainnet snapshots poll finalized state; PAPER telemetry retains its existing event stream and polling behavior when that mode is selected. No page invents records when the backend is unavailable.
 
@@ -60,7 +60,7 @@ Operator access uses a separate code and a signed, 30-minute HttpOnly session. B
 
 The [owner-authorized execution record](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-owned-execution.json) now contains finalized Base and Solana Chain Signatures transfers and eight reconciled NEAR receipts. Both contract cycles closed. The Evidence page separates these owner-controlled fixtures, funding/refund outcomes and live preparation from TEE-approved AI and business profit. Continuation fees were 0.0435279283243207 NEAR against 0.45 NEAR of retained capital input, within the 0.50-NEAR additional planning ceiling.
 
-The backend has separate real gateway/model hardware audit evidence and confidential-inference verification code. Final deployment approval and a signed paid completion still depend on the [documented provenance gate](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TEE_APPROVAL_HANDOFF.md). Mainnet deployment, owner-approved permissions and bounded USDC authorization limits are complete. Actual trading still needs separate approved capital/gas funding, TEE approval and a viable route. More detail: [mainnet activation requirements](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/MAINNET_PRODUCTION.md).
+The backend has separate real gateway/model hardware audit evidence and confidential-inference verification code. Final deployment approval and a signed paid completion still depend on the [documented provenance gate](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/TEE_APPROVAL_HANDOFF.md). Mainnet deployment, capital/gas funding and owner-approved permissions are complete for the bounded fixtures. The later policy allows 0.25 USDC per authorization and 0.50 USDC daily, with separate native-SOL caps. Autonomous trading still requires TEE approval and a profitable route; the current signed preview fails the unchanged profit floor. More detail: [mainnet preparation](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/MAINNET_PREPARATION.md).
 
 Business accounting, signed proceeds conversion, native withdrawal and NFT allocation with durable recovery are implemented. No funded mainnet payout or confirmed external revenue is claimed. These execution paths remain disabled. Automatic credit purchasing remains blocked on a publicly supported NEAR AI payment flow. The mainnet interface reports these limits explicitly; local and historical PAPER tests establish mechanics only.
 

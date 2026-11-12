@@ -16,6 +16,7 @@ import type { ViewerSnapshot } from "@symbiochain/shared";
 import { Dialog } from "@/components/ui/dialog";
 import { BrainArt, EyeArt, HandArt } from "@/features/landing/artwork";
 import { AppHeader, AppFooter } from "@/features/application/app-shell";
+import { OperatingBoundaries } from "@/features/application/operating-boundaries";
 import { ConnectionNotice, useSwarm } from "@/features/swarm/swarm-provider";
 import {
   agentInfo,
@@ -93,6 +94,7 @@ export function DashboardPage() {
             </span>
           </div>
         </section>
+        <OperatingBoundaries />
         <section className="sc-vitals" aria-label="Swarm vital signs">
           <article className="sc-vital">
             <div className="sc-vital-label">

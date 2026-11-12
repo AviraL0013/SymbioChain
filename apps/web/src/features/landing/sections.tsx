@@ -101,7 +101,7 @@ export function Features() {
               on-chain records.
             </p>
             <Link className="text-link" href="/nfts">
-              Explore the NFT gallery{" "}
+              Explore execution receipts{" "}
               <ArrowUpRight size={18} aria-hidden="true" />
             </Link>
           </div>
@@ -134,7 +134,7 @@ export function Agents() {
           <h2>Meet the swarm.</h2>
         </div>
         <Link href="/topology" className="text-link">
-          Explore the topology <ArrowUpRight size={18} aria-hidden="true" />
+          Explore the agents <ArrowUpRight size={18} aria-hidden="true" />
         </Link>
       </div>
       <div className="agents-grid">
@@ -176,7 +176,7 @@ export function Security() {
           step can be inspected.
         </p>
         <Link className="text-link" href="/verify">
-          Open the proof verifier <ArrowUpRight size={18} aria-hidden="true" />
+          Open verification <ArrowUpRight size={18} aria-hidden="true" />
         </Link>
       </div>
       <div className="security-viewport content-width">
@@ -304,8 +304,8 @@ export function Footer() {
           <nav aria-label="Product">
             <span>Product</span>
             <Link href="/dashboard">Dashboard</Link>
-            <Link href="/topology">Topology</Link>
-            <Link href="/nfts">NFT gallery</Link>
+            <Link href="/topology">Agents</Link>
+            <Link href="/nfts">Receipts</Link>
           </nav>
           <nav aria-label="Explore">
             <span>Explore</span>
@@ -316,7 +316,7 @@ export function Footer() {
           <nav aria-label="Proof">
             <span>Proof</span>
             <a href="#privacy">Privacy</a>
-            <Link href="/verify">TEE verifier</Link>
+            <Link href="/verify">Verification</Link>
           </nav>
         </div>
         <div className="footer-bottom">

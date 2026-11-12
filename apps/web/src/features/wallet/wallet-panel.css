@@ -1,0 +1,63 @@
+.wallet-account {
+  background: #f6f8f3;
+  border: 1px solid #e4e9df;
+  border-radius: 9px;
+  padding: 17px;
+  margin: 22px 0 14px;
+}
+.wallet-account > span {
+  display: block;
+  font-size: 12px;
+  color: #6e7966;
+  margin-bottom: 5px;
+}
+.wallet-account > .data-identifier {
+  color: #283523;
+}
+.wallet-account > .data-identifier code {
+  font-size: 14px;
+}
+.wallet-account dl {
+  margin: 16px 0 0;
+  border-top: 1px solid #e2e7dc;
+  padding-top: 12px;
+}
+.wallet-account dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 5px 0;
+  font-size: 13px;
+}
+.wallet-account dt {
+  color: #76816e;
+}
+.wallet-account dd {
+  text-align: right;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.wallet-explorer {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: #557447 !important;
+}
+.wallet-connection-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 22px;
+  padding-top: 17px;
+  border-top: 1px solid #e4e8df;
+  color: #7c8972;
+}
+.wallet-connection-note > svg {
+  flex: none;
+  margin-top: 3px;
+}
+.wallet-connection-note p {
+  font-size: 12px !important;
+  line-height: 1.65 !important;
+}

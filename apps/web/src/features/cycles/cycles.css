@@ -41,18 +41,19 @@
   margin-top: 24px;
 }
 .cycle-card {
-  border: 1px solid #cfd7cc;
-  border-radius: 18px;
-  padding: 28px;
-  margin: 24px 0;
+  border: 1px solid var(--sc-line, #dfe4dc);
+  border-radius: 11px;
+  background: #fff;
+  padding: 23px;
+  margin: 20px 0;
   min-width: 0;
 }
 .cycle-grid .cycle-card {
   margin: 0;
 }
 .cycle-card h2 {
-  font-size: 25px;
-  font-weight: 500;
+  font-size: 19px;
+  font-weight: 600;
   letter-spacing: -0.03em;
   margin-bottom: 16px;
 }
@@ -66,9 +67,11 @@
 }
 .cycle-metrics dt {
   color: #687368;
-  flex-shrink: 0;
+  min-width: 0;
 }
 .cycle-metrics dd {
+  margin: 0;
+  min-width: 0;
   text-align: right;
   overflow-wrap: anywhere;
 }
@@ -110,6 +113,11 @@
   }
   .cycle-metrics > div {
     gap: 16px;
+    flex-wrap: wrap;
+  }
+  .cycle-metrics dd {
+    margin-left: auto;
+    max-width: 100%;
   }
   .cycle-table {
     min-width: 600px;

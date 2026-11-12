@@ -16,7 +16,7 @@ body {
   margin: 0;
   background: var(--color-background);
   color: var(--color-foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "DM Sans", Arial, Helvetica, sans-serif;
 }
 
 /* Default spacing for application scaffolds; the marketing page owns its layout. */

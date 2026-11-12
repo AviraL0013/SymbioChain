@@ -20,6 +20,7 @@ import {
   MainnetSettlementFixture,
   MainnetProvisioning,
   MainnetOwnedExecution,
+  ManualAiProbe,
 } from "@symbiochain/shared";
 import { z } from "zod";
 
@@ -244,3 +245,6 @@ export const getMainnetProvisioning = () =>
 
 export const getMainnetOwnedExecution = () =>
   readBackend("/api/evidence/mainnet-execution", MainnetOwnedExecution);
+
+export const getManualAiProbe = () =>
+  readBackend("/api/evidence/manual-ai-probe", ManualAiProbe);

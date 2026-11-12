@@ -43,3 +43,4 @@ export {
 } from "./mainnet-contract";
 export { MainnetAcceptance } from "./mainnet-acceptance-contract";
 export { MainnetActivation } from "./mainnet-activation-contract";
+export { MainnetPreparation } from "./mainnet-preparation-contract";

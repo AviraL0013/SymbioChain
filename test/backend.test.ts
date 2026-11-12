@@ -475,6 +475,7 @@ test("bounded activation keeps owner permission separate from AI approval and ne
     executionEnabled: false,
     automaticTradingEnabled: false,
     monitorOnlyWorkers: true,
+    preparationEnabled: false,
     monitors: [],
     configuration: {
       scope: "CONFIGURATION_PRESENCE",

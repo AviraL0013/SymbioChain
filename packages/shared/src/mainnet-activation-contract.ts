@@ -91,6 +91,7 @@ export const MainnetActivation = z
     executionEnabled: z.boolean(),
     automaticTradingEnabled: z.boolean(),
     monitorOnlyWorkers: z.boolean(),
+    preparationEnabled: z.boolean().default(false),
     proof: MainnetActivationProof,
     monitors: z
       .array(

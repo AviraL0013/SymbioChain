@@ -16,6 +16,7 @@ import {
   MainnetTransaction,
   MainnetAcceptance,
   MainnetActivation,
+  MainnetPreparation,
 } from "@symbiochain/shared";
 import { z } from "zod";
 
@@ -172,6 +173,8 @@ export function getViewerProof(input: string) {
 
 export const getViewerStatus = () =>
   readBackend("/api/viewer/status", ViewerStatus);
+export const getMainnetPreparation = () =>
+  readBackend("/api/mainnet/preparation", MainnetPreparation);
 export const getBusinessFunding = () =>
   readBackend("/api/business/funding", FundingSummary);
 export const getBusinessStatus = () =>

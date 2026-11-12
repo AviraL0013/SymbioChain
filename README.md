@@ -31,18 +31,18 @@ The November 12 [internal settlement record](https://github.com/SuyashAlphaC/sym
 
 ## Explore
 
-| Route         | Connected behavior                                                                           |
-| ------------- | -------------------------------------------------------------------------------------------- |
-| `/dashboard`  | Finalized mainnet treasury balance, storage collateral, owner policy and execution gates     |
+| Route         | Connected behavior                                                                              |
+| ------------- | ----------------------------------------------------------------------------------------------- |
+| `/dashboard`  | Finalized mainnet treasury balance, storage collateral, owner policy and execution gates        |
 | `/evidence`   | Finalized MPC transfers, owner funding, Intents payments, live preparation and dated acceptance |
-| `/topology`   | Actual mainnet agent accounts, recovery custody and worker permissions                       |
-| `/cycles`     | Known confirmed deployment transactions, labelled infrastructure rather than revenue         |
-| `/cycles/:id` | Mainnet transaction view; historical PAPER cycle details are not published as LIVE           |
-| `/verify`     | Bounded lookup of known deployment transactions, including receipt outcomes                  |
-| `/nfts`       | Actual on-chain supply and revenue-share totals; no simulated mint claims                    |
-| `/business`   | Unproven revenue, unknown full-business runway and unfinished funding claims                 |
-| `/testnet`    | Redirect to current mainnet evidence                                                         |
-| `/operator`   | Read-only mainnet execution gates; no public arming or spending control                      |
+| `/topology`   | Actual mainnet agent accounts, recovery custody and worker permissions                          |
+| `/cycles`     | Known confirmed deployment transactions, labelled infrastructure rather than revenue            |
+| `/cycles/:id` | Mainnet transaction view; historical PAPER cycle details are not published as LIVE              |
+| `/verify`     | Bounded lookup of known deployment transactions, including receipt outcomes                     |
+| `/nfts`       | Actual on-chain supply and revenue-share totals; no simulated mint claims                       |
+| `/business`   | Unproven revenue, unknown full-business runway and unfinished funding claims                    |
+| `/testnet`    | Redirect to current mainnet evidence                                                            |
+| `/operator`   | Read-only mainnet execution gates; no public arming or spending control                         |
 
 Public pages read runtime-validated schemas through fixed server routes. Mainnet snapshots poll finalized state; PAPER telemetry retains its existing event stream and polling behavior when that mode is selected. No page invents records when the backend is unavailable.
 

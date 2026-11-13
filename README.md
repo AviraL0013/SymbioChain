@@ -76,7 +76,8 @@ frontend tests; `npm run check` runs formatting, lint, TypeScript and the build.
 The paired project has 290 automated tests plus contract/sandbox checks.
 
 Implementation details: [architecture](docs/architecture.md),
-[validation](docs/validation.md), [shared schemas](packages/shared/src), and the
+[current backend verification](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/VERIFICATION.md),
+[shared schemas](packages/shared/src), and the
 [demo/X-post draft](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/DEMO_POST.md).
 
 ## 4. Simulated vs. Real

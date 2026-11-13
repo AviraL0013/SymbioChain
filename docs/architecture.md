@@ -40,7 +40,7 @@ Mutations require the browser Origin to match the HTTP request authority, JSON b
 
 Supported actions are simulated funding, idempotent cycle creation, treasury/lane pause and resume, revision-bound policy changes, a targeted one-shot PAPER worker crash and immutable settlement-bound cost approval. Uncertain funding/cycle responses retain the same request identity for explicit retry. Buttons remain disabled while an operation is pending. Evidence download requires the same operator session and mode gate; it is not a public viewer feature.
 
-Mainnet wallet connection is read-only. Mainnet funding, LIVE arming, compute purchasing and new recovery signers are not supplied by this interface. Disarmed runtime and the paused treasury independently prevent execution.
+Mainnet wallet connection is read-only. Mainnet funding, LIVE arming, compute purchasing and new recovery signers are not supplied by this interface. The runtime stays disarmed even though the owner has unpaused the contract and enabled bounded worker permissions. Contract permission is independent of application arming.
 
 ## Hosting and rollback
 

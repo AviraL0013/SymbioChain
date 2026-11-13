@@ -1,5 +1,11 @@
 # Integration testing
 
+[Architecture](architecture.md) · [Configuration/release](backend-integration.md) · [Current paired verification](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/VERIFICATION.md)
+
+Historical sanitized browser summaries remain in [validation/](validation/) with
+their original scope and dates. Current deployment identities are reported by
+`/api/release` and the backend release guide; those fixtures are not live status.
+
 `npm test` runs credential-free transport, schema, BigInt display, replay, operator-session, CSRF and mode-boundary checks. `npm run check` adds formatting, lint, TypeScript and production build. Normal GitHub CI runs these without production secrets.
 
 `npm run test:e2e` is a mutating browser suite for an **isolated localhost PAPER backend**. It refuses a remote frontend origin and requires the backend URL in `apps/web/.env.local` to be loopback. Do not point this suite at the shared Render/Vercel deployment.

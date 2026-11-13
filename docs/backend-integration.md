@@ -1,99 +1,82 @@
-# Existing Vercel project release
+# Backend integration and release
 
-## Current mainnet release
+[Overview](../README.md) · [Architecture](architecture.md) · [Testing](testing.md) · [Backend operations](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/OPERATIONS.md)
 
-The paired release uses the existing hosting projects and the same server-only
-variables below. `/api/swarm/runtime` chooses the explicit backend mode. LIVE
-reads `/api/swarm/mainnet`, `/mainnet/wallet` and `/mainnet/transaction` through
-fixed server routes and strict shared schemas. The old PAPER publication refuses
-LIVE, so historical simulation rows cannot become production balances.
+## Existing deployment
 
-Production is LIVE with execution disarmed. A read-only preparation worker publishes heartbeats, chain observations and signed dry previews without constructing the execution engine;
-API mutations remain disabled. The owner has unpaused the on-chain treasury and
-enabled three worker permissions under bounded USDC authorization limits. Wallet connection requests
-no new key or transaction and grants no backend privileges. A separate manual
-Cloud probe returned one unverified completion at a reconciled $0.00000548 cost;
-automated paid inference stays quarantined. Capital/gas funding and controlled
-Base/Solana transfers are complete; trading still needs TEE approval and a viable route.
-The [RPC recovery release record](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/artifacts/mainnet-rpc-recovery.json) supersedes
-older release notes below. `/api/release` exposes only the public frontend commit,
-Vercel deployment ID and deployment environment, using [Vercel's system variables](https://vercel.com/docs/environment-variables/system-environment-variables).
+Use the existing `avirals-projects-27965510/symbiochain` Vercel project serving
+**https://symbiochain.vercel.app**. Preserve Node 22, Next.js configuration, the
+`apps/web` root and workspace access. The backend remains on the existing
+[Render service](https://symbiochain-core.onrender.com/readyz), using Node 24.
 
-Release compatible backend code in PAPER first, release this frontend through
-the existing Git integration, then select LIVE with `EXECUTION_ENABLED=false`.
-Preserve backend tokens, database credentials, encryption and AI budget identity.
-For rollback restore the compatible PAPER backend/environment before promoting
-a PAPER-only frontend. Never deploy an old backend image into the new LIVE
-environment. See the [backend runbook](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/MAINNET_PRODUCTION.md).
+Production observes LIVE mainnet with automated execution **DISARMED** and AI
+**QUARANTINED**. Human-authorized mainnet transfers and the isolated unverified
+Cloud completion are captured evidence, not actions initiated by opening a page.
+The [backend verification guide](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/VERIFICATION.md)
+separates actual transfers, manual inference, PAPER simulation and unproven claims.
 
-## Historical PAPER release instructions
-
-Use the existing `symbiochain` project serving **https://symbiochain.vercel.app**. Preserve the owner/team, Node 22, Next.js configuration, `apps/web` root and access to workspace files. No new Vercel project or paid infrastructure is needed for this integration.
-
-PRs #1–#4 are merged. The earlier accounting source is on main, but the November 6
-read-only check still returns 404 for both hosted business endpoints; that feature
-has not been verified as released. Production includes execution inspection, compute-budget telemetry, resumable event notification, protected PAPER operations and `/testnet`. The repository is public and operator configuration is complete. See [verified revisions and release evidence](validation.md#hosted-release-status). The checklist below applies to future updates; it does not describe pending initial deployment. Backend additions must remain compatible with the released frontend.
+`/api/swarm/runtime` chooses the explicit mode before telemetry starts. LIVE
+uses fixed mainnet server routes and strict shared schemas; the old PAPER
+publication refuses LIVE. Missing data becomes unavailable/stale rather than
+sample balances. Wallet connection requests no key grant or transaction and
+does not authenticate an operator.
 
 ## Server-only environment
 
-Configure Preview and Production deliberately in the existing project:
+Use ignored `apps/web/.env.local` locally. Configure Preview and Production
+deliberately in the existing Vercel project:
 
-| Variable                | Value / source                                                                               |
-| ----------------------- | -------------------------------------------------------------------------------------------- |
-| `BACKEND_URL`           | `https://symbiochain-core.onrender.com`                                                      |
-| `BACKEND_READ_TOKEN`    | Existing backend `READ_TOKEN`, shared privately                                              |
-| `SITE_URL`              | Production domain above; the intended preview origin for preview metadata                    |
-| `BACKEND_ADMIN_TOKEN`   | Optional operator feature: existing backend `ADMIN_TOKEN`, shared privately                  |
-| `OPERATOR_ACCESS_TOKEN` | Optional operator feature: a distinct randomly generated access code, at least 32 characters |
+| Variable                | Value / source                                                                 |
+| ----------------------- | ------------------------------------------------------------------------------ |
+| `BACKEND_URL`           | `https://symbiochain-core.onrender.com`, or an isolated local backend          |
+| `BACKEND_READ_TOKEN`    | Matching backend read token, shared privately                                  |
+| `SITE_URL`              | Production domain above, or the intended local/preview origin                  |
+| `BACKEND_ADMIN_TOKEN`   | Optional private PAPER operator feature: matching backend admin token          |
+| `OPERATOR_ACCESS_TOKEN` | Optional operator feature: distinct random access code, at least 32 characters |
 
-Both operator variables are required to unlock administrative controls. Missing variables disable that feature without breaking public data views. All three credentials must differ. Generate a fresh random access code, for example with `openssl rand -hex 32`, and deliver it privately to the operator. Do not put its output in chat, a PR, committed documentation or a `NEXT_PUBLIC_` variable.
+Both operator variables are required to unlock administrative controls. All
+three credentials must differ. Missing operator configuration disables controls
+without breaking public views. Never publish these values or use `NEXT_PUBLIC_`
+for credentials. Public judging needs no login, token or wallet.
 
-Do not copy the backend `.env` into Vercel. This frontend does not need `DATABASE_URL`, NEAR recovery/worker keys, provider/model keys, Render credentials or the evidence encryption key. Keep local configuration in ignored `apps/web/.env.local`.
+Do not copy the backend `.env` into Vercel. The frontend needs no database URL,
+NEAR recovery/worker key, AI key, Cloud session, Render credential or evidence
+encryption key. The browser uses only same-origin Next.js routes.
 
-Operator cookies expire after 30 minutes. Production uses Secure, HttpOnly, SameSite=Strict and a host-scoped cookie. The access code is entered on `/operator`; backend bearer credentials are never returned to the browser. The operator page cannot arm LIVE or purchase inference.
+Operator login creates a 30-minute HttpOnly, SameSite=Strict cookie, with Secure
+and host scope in production. No credential enters browser storage. Operator
+actions are separately checked against PAPER mode and fixed schemas; this
+interface cannot arm LIVE, purchase inference or submit a financial payout.
 
-## Release sequence
+## Release checks
 
-1. Confirm the existing Render backend includes the new `/api/viewer/status`, `/cycles`, `/cycles/:id` and `/events` routes, plus the operator expected-mode check.
-2. Run `npm ci`, `npm test` and `npm run check` at the repository root with Node 22. Browser checks use a separate isolated local backend; see [testing](testing.md).
-3. Configure the variables above in the existing Vercel project. Environment changes need a new deployment.
-4. Push/deploy the PR branch as a protected preview in that same project. GitHub repository access and Vercel project access are separate. If Vercel refuses the commit author or project access, the existing owner must resolve that access or trigger the preview through their authorized account. Do not impersonate a teammate or create another project.
-5. Complete the read-only preview checks below. Confirm operator configuration without funding, trades or crash injection on the shared hosted backend.
-6. Merge through the repository's reviewed workflow, preserving the scoped commit history. Let the existing project's Git integration deploy production.
-7. Repeat read-only production checks. Do not call a local build or unmerged PR a completed production release.
+1. Validate compatible backend schemas first. Preserve its database, encryption
+   key, tokens and cumulative AI budget identity.
+2. Run `npm ci`, `npm test` and `npm run check` here with Node 22. Use an
+   isolated localhost backend for mutating browser checks; see [testing](testing.md).
+3. Deploy a protected preview through the existing Vercel Git integration.
+   Environment changes require a new deployment. Project/repository access must
+   be resolved by their owner, not by creating a replacement project.
+4. Check dashboard/evidence reads, strict mode selection, wallet connection
+   parameters, proof lookup, stale/disconnected recovery and mobile layout.
+   Verify no backend credential in traffic, storage, HTML or JavaScript, and no
+   browser request directly to the backend.
+5. Check anonymous/cross-origin operator rejection. On shared hosted systems,
+   test only login, state and logout; crash/funding mutations belong on localhost.
+6. Merge with the scoped commit history preserved, wait for the existing
+   project's production deployment and repeat the read-only checks.
 
-## Hosted acceptance
-
-- `/api/swarm/snapshot`: 200, contractVersion 1, PAPER, exact integer strings, null runway and no backend credentials.
-- `/api/swarm/status`: application allowance distinguished from unknown provider credits; configuration gates do not claim fresh TEE verification.
-- `/cycles` and `/cycles/:id`: real persisted records and job attempts; no quote/profit fixtures invented by the browser.
-- `/api/swarm/events`: bounded sanitized SSE; reconnects use sequence IDs, with polling fallback.
-- `/nfts`: persisted unminted PAPER receipts with unknown net values until cost approval.
-- `/verify?hash=...`: hash is prefilled; unknown hashes show no verified record, not an invalid-signature verdict.
-- Anonymous `/api/operator/action` and private evidence requests fail. Cross-origin mutations fail even with an operator session. No arbitrary backend path can be proxied.
-- `/operator`: missing optional configuration is explicit; configured access opens a short-lived session. Check state and logout only on the shared preview. The mutating recovery demonstration belongs on an isolated local PAPER backend.
-- Browser traffic/storage, HTML and JavaScript contain no backend read/admin credentials or provider keys. Browser API calls remain same-origin.
-- Unavailable/stale backend data stays visibly disconnected or stale, with no sample fallback.
+`/api/release` exposes the public frontend commit, deployment ID and environment.
+The [backend release guide](https://github.com/SuyashAlphaC/symbiochain-core/blob/main/docs/RELEASE_REVISIONS.md)
+links the frozen paired application record. Newer documentation-only deployments
+are not new mainnet execution evidence. The records in [validation/](validation/)
+retain their original dates; they do not override current mode or deployment.
 
 ## Rollback
 
-Promote the preceding frontend deployment in the same project. Remove/rotate the optional operator access code to revoke sessions. Backend additions preserve the old viewer and require no database migration. Mainnet mode and funding remain separately unarmed.
-
-## Business evidence source update
-
-The `feature/business-revenue-loop` candidate adds `/business` and the fixed
-`/api/swarm/business` proxy to `/api/business/status`, plus `/api/swarm/funding`
-to `/api/business/funding`. Both endpoints are required by the updated page. It does not expose the
-backend's financial-write APIs. Apply the backend's additive
-`20261105120000_business_evidence` migration and run server-only database
-hardening before deploying the paired backend, then release the frontend through
-the existing project. See [candidate revisions](validation.md#business-feature-source-candidate).
-The previous deployment remains valid without this page. An unavailable business
-endpoint produces an explicit failure state rather than fabricated economic data.
-
-The funding projection reports code capability separately from completed payments.
-For the unfunded PAPER deployment, NFT funding must be implemented but disabled,
-all completed payment counters must be zero, and compute purchasing must remain
-unimplemented with its provider-protocol blocker. No financial-write proxy or
-LIVE control was added. This extension requires no migration beyond the additive
-business table already listed above.
+Promote a compatible prior frontend in the same Vercel project. Rotate/remove
+the operator access code to revoke sessions. Preserve financial records and
+schema compatibility. Restore a compatible PAPER backend/environment before a
+PAPER-only frontend; never run an older backend image under new LIVE settings.
+Keep execution disarmed during recovery and reconcile existing payment
+identities. Documentation cleanup requires no change to runtime configuration.
